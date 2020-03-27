@@ -10,5 +10,4 @@ public interface BoardInterface {
 
     public int getSize();
 
-
 }

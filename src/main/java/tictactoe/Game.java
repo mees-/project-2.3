@@ -2,13 +2,14 @@ package tictactoe;
 
 import framework.*;
 
-public class Game2 implements GameInterface
+public class Game implements GameInterface
 {
     private static final String GAME_NAME = "Tic-Tac-Toe";
     private Board board;
     private PlayerType lastTurn;
+    private Boolean printToCommandLine = false;
 
-    public Game2() {
+    public Game() {
         board = new Board();
         lastTurn = null;
     }
@@ -28,6 +29,11 @@ public class Game2 implements GameInterface
         CellContent cellContent = move.getPlayer() == PlayerType.Local ? CellContent.Local : CellContent.Remote;
         board.setCell(move.getX(), move.getY(), cellContent);
 
+        setLastTurn(move.getPlayer());
+
+        if(printToCommandLine) {
+            board.printBoard();
+        }
         return getResult(move);
     }
 
@@ -42,11 +48,11 @@ public class Game2 implements GameInterface
         else if(board.boardIsFull()) {
             return MoveResult.Draw;
         }
-        else if(move.getPlayer() == PlayerType.Local) {
-            return MoveResult.RemoteMove;
-        }
         else if(move.getPlayer() == PlayerType.Remote) {
             return MoveResult.LocalMove;
+        }
+        else if(move.getPlayer() == PlayerType.Local) {
+            return MoveResult.RemoteMove;
         }
         return null;
     }
@@ -61,13 +67,25 @@ public class Game2 implements GameInterface
         return true;
     }
 
+    private void setLastTurn(PlayerType player) {
+        lastTurn = player;
+    }
+
     @Override
     public void start() {
-
+        board.reset();
     }
 
     @Override
     public GameType getType() {
         return GameType.TicTacToe;
+    }
+
+    public void setPrintToCommandLine(Boolean printToCommandLine) {
+        this.printToCommandLine = printToCommandLine;
+    }
+
+    public void printBoard() {
+        board.printBoard();
     }
 }

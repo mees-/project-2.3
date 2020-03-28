@@ -1,15 +1,74 @@
 package framework;
 
-public abstract class Framework {
-    public abstract void move(Move move);
+import connection.Connection;
 
-    public abstract State getState();
+public class Framework {
+    private GameInterface game;
+    private State state;
+    private Connection connection;
 
-    public abstract void startGame(GameType gameType);
+    public Framework() {
+        state = new GameState();
+    }
 
-    public abstract void notifyMove(Move move);
+    public void move(Move move) {
+        try {
+            BoardInterface board = state.getBoard();
+            MoveResult result = game.doMove(move);
 
-    public abstract void notifyGameOffer(GameType gameType);
+            if (move.player == PlayerType.Local) {
+                connection.sendMove(move);
+            }
 
-    public abstract void notifyTurn(PlayerType playerType);
+            switch (result) {
+                case LocalTurn:
+                    notifyTurn(PlayerType.Local);
+                    break;
+                case RemoteTurn:
+                    notifyTurn(PlayerType.Remote);
+                    break;
+                case Draw:
+                case Loss:
+                case Win:
+                    board.reset();
+                    break;
+                default:
+                    System.out.println("Something went wrong");
+            }
+        } catch (InvalidMoveException e) {
+            System.out.println(e);
+        }
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void startGame(GameType gameType) {
+        switch (gameType) {
+            case TicTacToe:
+//                game = new TicTacToe();
+                break;
+            case Reversi:
+//                game = new Reversi();
+                break;
+        }
+
+        state.setBoard(game.getBoard());
+        connection.login(state.getLocalUsername());
+        connection.subscribe(gameType);
+        game.start();
+    }
+
+    public void notifyMove(Move move) {
+        move(move);
+    }
+
+    public void notifyGameOffer(GameType gameType) {
+        startGame(gameType);
+    }
+
+    public void notifyTurn(PlayerType playerType) {
+        state.setTurn(playerType);
+    }
 }

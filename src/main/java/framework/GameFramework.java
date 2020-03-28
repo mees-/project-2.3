@@ -14,15 +14,18 @@ public class GameFramework extends Framework {
     public void move(Move move) {
         try {
             BoardInterface board = state.getBoard();
+            MoveResult result = game.doMove(move);
 
-            switch (game.doMove(move)) {
-                case LocalMove:
-                    board.setCell(move.x, move.y, CellContent.Local);
-                    notifyTurn(PlayerType.Remote);
-                    break;
-                case RemoteMove:
-                    board.setCell(move.x, move.y, CellContent.Remote);
+            if (move.player == PlayerType.Local) {
+                connection.sendMove(move);
+            }
+
+            switch (result) {
+                case LocalTurn:
                     notifyTurn(PlayerType.Local);
+                    break;
+                case RemoteTurn:
+                    notifyTurn(PlayerType.Remote);
                     break;
                 case Draw:
                 case Loss:

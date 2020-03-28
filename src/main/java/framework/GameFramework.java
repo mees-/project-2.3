@@ -46,6 +46,7 @@ public class GameFramework extends Framework {
         state.setBoard(game.getBoard());
         connection.login(state.getLocalUsername());
         connection.subscribe(gameType);
+        game.start();
     }
 
     public void notifyMove(Move move) {

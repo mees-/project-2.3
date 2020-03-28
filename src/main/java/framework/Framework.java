@@ -1,7 +1,7 @@
 package framework;
 
 public abstract class Framework {
-    public abstract void Move(Move move);
+    public abstract void move(Move move);
 
     public abstract State getState();
 

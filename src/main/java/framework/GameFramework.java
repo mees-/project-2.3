@@ -11,7 +11,7 @@ public class GameFramework extends Framework {
         state = new GameState();
     }
 
-    public void Move(Move move) {
+    public void move(Move move) {
         try {
             BoardInterface board = state.getBoard();
 
@@ -43,16 +43,13 @@ public class GameFramework extends Framework {
 
     public void startGame(GameType gameType) {
         game = new Game(gameType);
+        state.setBoard(game.getBoard());
         connection.login(state.getLocalUsername());
         connection.subscribe(gameType);
     }
 
     public void notifyMove(Move move) {
-        try {
-            game.doMove(move);
-        } catch (InvalidMoveException e) {
-            e.printStackTrace();
-        }
+        move(move);
     }
 
     public void notifyGameOffer(GameType gameType) {

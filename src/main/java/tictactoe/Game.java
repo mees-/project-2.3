@@ -49,10 +49,10 @@ public class Game implements GameInterface
             return MoveResult.Draw;
         }
         else if(move.getPlayer() == PlayerType.Remote) {
-            return MoveResult.LocalMove;
+            return MoveResult.LocalTurn;
         }
         else if(move.getPlayer() == PlayerType.Local) {
-            return MoveResult.RemoteMove;
+            return MoveResult.RemoteTurn;
         }
         return null;
     }

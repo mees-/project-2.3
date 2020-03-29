@@ -35,10 +35,10 @@ public class Demo
                 case Loss:
                     isGameOver = true;
                     break;
-                case LocalMove:
+                case LocalTurn:
                     currentTurn = Local;
                     break;
-                case RemoteMove:
+                case RemoteTurn:
                     currentTurn = Remote;
                     break;
             }

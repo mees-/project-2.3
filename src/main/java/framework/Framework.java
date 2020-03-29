@@ -1,6 +1,9 @@
 package framework;
 
 import connection.Connection;
+import tictactoe.Game;
+
+import java.io.IOException;
 
 public class Framework {
     private GameInterface game;
@@ -9,6 +12,11 @@ public class Framework {
 
     public Framework() {
         state = new GameState();
+//        try {
+//            connection = new Connection(this);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void move(Move move) {
@@ -16,8 +24,8 @@ public class Framework {
             BoardInterface board = state.getBoard();
             MoveResult result = game.doMove(move);
 
-            if (move.player == PlayerType.Local) {
-                connection.sendMove(move);
+            if (move.getPlayer() == PlayerType.Local) {
+//                connection.sendMove(move);
             }
 
             switch (result) {
@@ -47,7 +55,7 @@ public class Framework {
     public void startGame(GameType gameType) {
         switch (gameType) {
             case TicTacToe:
-//                game = new TicTacToe();
+                game = new Game();
                 break;
             case Reversi:
 //                game = new Reversi();
@@ -55,8 +63,8 @@ public class Framework {
         }
 
         state.setBoard(game.getBoard());
-        connection.login(state.getLocalUsername());
-        connection.subscribe(gameType);
+//        connection.login(state.getLocalUsername());
+//        connection.subscribe(gameType);
         game.start();
     }
 

@@ -15,7 +15,7 @@ import framework.Framework;
 import framework.GameType;
 import framework.Move;
 
-public abstract class Connection {
+public class Connection {
     private static String serverIP = System.getenv("env") == "production" ? "" : "localhost";
     private static int serverPort = 7789;
 
@@ -85,7 +85,9 @@ public abstract class Connection {
         }
     }
 
-    public abstract void sendMove(Move move);
+    public void sendMove(Move move) {
+
+    }
 
     public void subscribe(GameType gameType) {
         executeCommand(new SubscribeCommand(gameType));

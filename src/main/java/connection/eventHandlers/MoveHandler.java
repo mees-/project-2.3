@@ -21,8 +21,8 @@ public class MoveHandler extends EventHandler {
         try {
             String rawDetails = Parser.sliceStringFromParts(message, 3, message.length);
             HashMap<String, String> details = Parser.parseMap(rawDetails);
-            Move move = new Move();
-            move.player = PlayerType.Remote;
+            Move move = new Move(PlayerType.Remote, 0, 0);
+//            move.player = PlayerType.Remote;
             // TODO: add more to move
             framework.notifyMove(move);
         } catch (ParseException e) {

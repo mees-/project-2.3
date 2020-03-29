@@ -6,7 +6,7 @@ public class Game implements GameInterface
 {
     private static final String GAME_NAME = "Tic-Tac-Toe";
     private Board board;
-    private MoveResult lastTurn;
+    private GameState lastTurn;
     private Boolean printToCommandLine = true;
 
     public Game() {
@@ -20,13 +20,13 @@ public class Game implements GameInterface
     }
 
     @Override
-    public MoveResult doMove(Move move) throws InvalidMoveException {
+    public GameState doMove(Move move) throws InvalidMoveException {
 
         if(!validCurrentTurn(move.getPlayer())) {
             throw new InvalidMoveException(move.getPlayer() + " took two turns in a row, only one is allowed.");
         }
 
-        CellContent cellContent = move.getPlayer() == MoveResult.LocalTurn ? CellContent.Local : CellContent.Remote;
+        CellContent cellContent = move.getPlayer() == GameState.LocalTurn ? CellContent.Local : CellContent.Remote;
         board.setCell(move.getX(), move.getY(), cellContent);
 
         setLastTurn(move.getPlayer());
@@ -37,27 +37,27 @@ public class Game implements GameInterface
         return getResult(move);
     }
 
-    private MoveResult getResult(Move move) {
+    private GameState getResult(Move move) {
         // todo CheckForWin laten controleren welke speler gewonnen heeft.
-        if(board.checkForWin() && move.getPlayer() == MoveResult.LocalTurn) {
-            return MoveResult.Win;
+        if(board.checkForWin() && move.getPlayer() == GameState.LocalTurn) {
+            return GameState.Win;
         }
-        else if(board.checkForWin() && move.getPlayer() == MoveResult.RemoteTurn) {
-            return MoveResult.Loss;
+        else if(board.checkForWin() && move.getPlayer() == GameState.RemoteTurn) {
+            return GameState.Loss;
         }
         else if(board.boardIsFull()) {
-            return MoveResult.Draw;
+            return GameState.Draw;
         }
-        else if(move.getPlayer() == MoveResult.RemoteTurn) {
-            return MoveResult.LocalTurn;
+        else if(move.getPlayer() == GameState.RemoteTurn) {
+            return GameState.LocalTurn;
         }
-        else if(move.getPlayer() == MoveResult.LocalTurn) {
-            return MoveResult.RemoteTurn;
+        else if(move.getPlayer() == GameState.LocalTurn) {
+            return GameState.RemoteTurn;
         }
         return null;
     }
 
-    private boolean validCurrentTurn(MoveResult player) {
+    private boolean validCurrentTurn(GameState player) {
         if(lastTurn == null) {
             lastTurn = player;
         }
@@ -67,7 +67,7 @@ public class Game implements GameInterface
         return true;
     }
 
-    private void setLastTurn(MoveResult player) {
+    private void setLastTurn(GameState player) {
         lastTurn = player;
     }
 

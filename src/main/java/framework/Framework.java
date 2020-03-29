@@ -19,19 +19,19 @@ public class Framework {
         }
     }
 
-    public MoveResult move(Move move) throws InvalidMoveException {
+    public GameState move(Move move) throws InvalidMoveException {
 //        BoardInterface board = state.getBoard();
-        MoveResult result = game.doMove(move);
+        GameState result = game.doMove(move);
 
-        if (move.getPlayer() == MoveResult.LocalTurn) {
+        if (move.getPlayer() == GameState.LocalTurn) {
             connection.sendMove(move);
         }
 
         switch (result) {
             case LocalTurn:
-                notifyState(MoveResult.LocalTurn);
+                notifyState(GameState.LocalTurn);
             case RemoteTurn:
-                notifyState(MoveResult.RemoteTurn);
+                notifyState(GameState.RemoteTurn);
                 break;
             case Draw:
             case Loss:
@@ -45,7 +45,7 @@ public class Framework {
     }
 
     public synchronized void waitTurn() {
-        while (state.getTurn() == MoveResult.RemoteTurn || state.getTurn() == null) {
+        while (state.getGameState() == GameState.RemoteTurn || state.getGameState() == null) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -54,7 +54,7 @@ public class Framework {
         }
     }
 
-    public MoveResult moveSync(Move move) throws InvalidMoveException {
+    public GameState moveSync(Move move) throws InvalidMoveException {
         waitTurn();
         return move(move);
     }
@@ -103,8 +103,8 @@ public class Framework {
         notifyAll();
     }
 
-    public synchronized void notifyState(MoveResult playerType) {
-        state.setTurn(playerType);
+    public synchronized void notifyState(GameState playerType) {
+        state.setGameState(playerType);
         notifyAll();
     }
 

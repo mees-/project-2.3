@@ -1,6 +1,6 @@
 package framework;
 
-public enum MoveResult {
+public enum GameState {
     Win("win"),
     Loss("loss"),
     Draw("draw"),
@@ -9,15 +9,15 @@ public enum MoveResult {
 
     private String token;
 
-    MoveResult(String token) {
+    GameState(String token) {
         this.token = token;
     }
-    MoveResult() {
+    GameState() {
 
     }
 
-    public static MoveResult fromString(String token) {
-        for (MoveResult value : MoveResult.values()) {
+    public static GameState fromString(String token) {
+        for (GameState value : GameState.values()) {
             if (token.equalsIgnoreCase(value.token)) {
                 return value;
             }

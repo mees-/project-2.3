@@ -21,7 +21,7 @@ public class Main {
         while (true) {
             framework.waitTurn();
             synchronized (framework) {
-                switch (framework.getState().getTurn()) {
+                switch (framework.getState().getGameState()) {
                     case Win:
                     case Draw:
                     case Loss:
@@ -29,7 +29,7 @@ public class Main {
                     default:
                         try {
                             framework.waitTurn();
-                            Move move = new Move(MoveResult.LocalTurn, rand.nextInt(3), rand.nextInt(3));
+                            Move move = new Move(GameState.LocalTurn, rand.nextInt(3), rand.nextInt(3));
                             framework.moveSync(move);
                             moves.add(move);
                         } catch (InvalidMoveException e) {

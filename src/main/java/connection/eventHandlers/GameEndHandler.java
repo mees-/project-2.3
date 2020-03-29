@@ -1,7 +1,7 @@
 package connection.eventHandlers;
 
 import framework.Framework;
-import framework.MoveResult;
+import framework.GameState;
 
 public class GameEndHandler extends EventHandler {
     public GameEndHandler(Framework framework) {
@@ -11,14 +11,14 @@ public class GameEndHandler extends EventHandler {
     @Override
     public boolean isValidMessage(String[] message) {
         return EventHandler.validateWords(new String[]{"svr", "game"}, message)
-                && MoveResult.fromString(message[2]) != null;
+                && GameState.fromString(message[2]) != null;
     }
 
     @Override
     public void handle(String[] message) {
-        MoveResult result = MoveResult.fromString(message[2]);
+        GameState result = GameState.fromString(message[2]);
         framework.notifyState(result);
-        if (result == MoveResult.Win) {
+        if (result == GameState.Win) {
             System.out.println("You win!");
         }
     }

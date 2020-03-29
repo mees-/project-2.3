@@ -3,7 +3,7 @@ package framework;
 public class State {
     private String remoteUsername;
     private String localUsername;
-    private MoveResult turn;
+    private GameState gameState;
     private BoardInterface board;
 
     public String getRemoteUsername() {
@@ -22,12 +22,12 @@ public class State {
         this.localUsername = localUsername;
     }
 
-    public MoveResult getTurn() {
-        return turn;
+    public GameState getGameState() {
+        return gameState;
     }
 
-    public void setTurn(MoveResult turn) {
-        this.turn = turn;
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public BoardInterface getBoard() {

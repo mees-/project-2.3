@@ -11,7 +11,7 @@ public class Parser {
     public static HashMap<String, String> parseMap(String raw) throws ParseException {
         HashMap<String, String> result = new HashMap<>();
 
-        char[] chars = raw.toCharArray();
+        char[] chars = raw.trim().toCharArray();
         if (chars[0] != '{') {
             throw new ParseException("Map must begin with '{'.\n string: " + raw, 0);
         }

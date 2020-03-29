@@ -5,7 +5,6 @@ import framework.Framework;
 import framework.GameType;
 
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class MatchOfferHandler extends EventHandler {
@@ -23,10 +22,12 @@ public class MatchOfferHandler extends EventHandler {
         String rawMap = Parser.sliceStringFromParts(message, 3, message.length);
         try {
             HashMap<String, String> details = Parser.parseMap(rawMap);
-            framework.notifyGameOffer(GameType.fromString(details.get("GAMETYPE")));
+            framework.notifyGameOffer(
+                    GameType.fromString(details.get("GAMETYPE")),
+                    details.get("OPPONENT")
+                    );
         } catch (ParseException e) {
             System.err.println(e.toString());
         }
-
     }
 }

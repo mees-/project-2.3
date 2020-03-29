@@ -40,7 +40,7 @@ public interface ICommand {
             return new CommandResponse(true);
         } else {
 
-            String error = String.join(", ", Arrays.copyOfRange(response, 1, response.length));
+            String error = String.join(" ", Arrays.copyOfRange(response, 1, response.length));
             return new CommandResponse(error);
         }
     }

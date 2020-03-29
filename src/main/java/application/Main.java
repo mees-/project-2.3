@@ -1,28 +1,51 @@
 package application;
 
 import framework.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
     public static void main(String[] argv) {
         System.out.println("Hello, world!");
-        Framework framework = new Framework();
-        State state = framework.getState();
-        state.setLocalUsername("Test");
-        framework.startGame(GameType.TicTacToe);
-
         Random rand = new Random();
-        int x = 0, y = 0, i = 0;
-        PlayerType type = null;
-        while (i < 9) {
-            x = rand.nextInt(3);
-            y = rand.nextInt(3);
+        Framework framework = new Framework();
+        framework.login("test" + rand.nextInt(100));
+        framework.requestGameSync(GameType.TicTacToe);
 
-            type = i % 2 == 0 ? PlayerType.Local : PlayerType.Remote;
 
-            Move move = new Move(type, x, y);
-            framework.notifyMove(move);
-            i++;
+        ArrayList<Move> moves = new ArrayList<>();
+
+        mainloop:
+        while (true) {
+            framework.waitTurn();
+            synchronized (framework) {
+                switch (framework.getState().getTurn()) {
+                    case Win:
+                    case Draw:
+                    case Loss:
+                        break mainloop;
+                    default:
+                        try {
+                            framework.waitTurn();
+                            Move move = new Move(MoveResult.LocalTurn, rand.nextInt(3), rand.nextInt(3));
+                            framework.moveSync(move);
+                            moves.add(move);
+                        } catch (InvalidMoveException e) {
+                            System.out.println("Tried to do invalid move, retrying.");
+                            System.out.println(e.getMessage());
+                        }
+
+                }
+            }
+
+        }
+
+        try {
+            framework.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,7 +1,7 @@
 package connection.eventHandlers;
 
 import framework.Framework;
-import framework.PlayerType;
+import framework.MoveResult;
 
 public class TurnHandler extends EventHandler {
     public TurnHandler(Framework framework) {
@@ -15,6 +15,6 @@ public class TurnHandler extends EventHandler {
 
     @Override
     public void handle(String[] message) {
-        framework.notifyTurn(PlayerType.Local);
+        framework.notifyState(MoveResult.LocalTurn);
     }
 }

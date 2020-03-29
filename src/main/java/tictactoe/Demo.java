@@ -3,11 +3,8 @@ package tictactoe;
 import framework.InvalidMoveException;
 import framework.Move;
 import framework.MoveResult;
-import framework.PlayerType;
 
 import java.util.Scanner;
-
-import static framework.PlayerType.*;
 
 public class Demo
 {
@@ -16,7 +13,7 @@ public class Demo
         Game ttt = new Game();
         boolean isGameOver = false;
         boolean draw = false;
-        PlayerType currentTurn = Local;
+        MoveResult currentTurn = MoveResult.LocalTurn;
         ttt.setPrintToCommandLine(true);
         ttt.start();
         ttt.printBoard();
@@ -36,10 +33,10 @@ public class Demo
                     isGameOver = true;
                     break;
                 case LocalTurn:
-                    currentTurn = Local;
+                    currentTurn = MoveResult.LocalTurn;
                     break;
                 case RemoteTurn:
-                    currentTurn = Remote;
+                    currentTurn = MoveResult.RemoteTurn;
                     break;
             }
         }

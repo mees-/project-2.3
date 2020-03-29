@@ -14,7 +14,7 @@ public abstract class EventHandler {
     public abstract void handle(String[] message);
 
     public static boolean validateWords(String[] wanted, String[] input) {
-        if (wanted.length != input.length) {
+        if (wanted.length > input.length) {
             return false;
         }
         for (int i = 0; i < wanted.length; i++) {

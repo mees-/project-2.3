@@ -1,9 +1,9 @@
 package framework;
 
-public abstract class State {
+public class State {
     private String remoteUsername;
     private String localUsername;
-    private PlayerType turn;
+    private MoveResult turn;
     private BoardInterface board;
 
     public String getRemoteUsername() {
@@ -22,11 +22,11 @@ public abstract class State {
         this.localUsername = localUsername;
     }
 
-    public PlayerType getTurn() {
+    public MoveResult getTurn() {
         return turn;
     }
 
-    public void setTurn(PlayerType turn) {
+    public void setTurn(MoveResult turn) {
         this.turn = turn;
     }
 

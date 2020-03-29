@@ -92,29 +92,31 @@ public class Board implements BoardInterface
     }
 
     public void printBoard() {
-        System.out.print("  ");
-        for(int i = 1; i < 4; i++) {
-            System.out.print(" " + i);
-        }
-        System.out.println();
-        for (int row = 0; row < 3; row++) {
-            System.out.print((row + 1) + " |");
-            for (int col = 0; col < 3; col++) {
-                char playerMark;
-                switch(board[row][col]) {
-                    case Local:
-                        playerMark = 'X';
-                        break;
-                    case Remote:
-                        playerMark = 'O';
-                        break;
-                    default:
-                        playerMark = ' ';
+        synchronized (System.out) {
+            System.out.print("  ");
+            for (int i = 1; i < 4; i++) {
+                System.out.print(" " + i);
+            }
+            System.out.println();
+            for (int row = 0; row < 3; row++) {
+                System.out.print((row + 1) + " |");
+                for (int col = 0; col < 3; col++) {
+                    char playerMark;
+                    switch (board[row][col]) {
+                        case Local:
+                            playerMark = 'X';
+                            break;
+                        case Remote:
+                            playerMark = 'O';
+                            break;
+                        default:
+                            playerMark = ' ';
+                    }
+                    System.out.print(ANSI_RED + playerMark + ANSI_RESET + "|");
                 }
-                System.out.print(ANSI_RED + playerMark + ANSI_RESET + "|");
+                System.out.println();
             }
             System.out.println();
         }
-        System.out.println();
     }
 }

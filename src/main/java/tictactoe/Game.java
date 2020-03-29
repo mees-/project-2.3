@@ -6,7 +6,7 @@ public class Game implements GameInterface
 {
     private static final String GAME_NAME = "Tic-Tac-Toe";
     private Board board;
-    private PlayerType lastTurn;
+    private MoveResult lastTurn;
     private Boolean printToCommandLine = true;
 
     public Game() {
@@ -26,7 +26,7 @@ public class Game implements GameInterface
             throw new InvalidMoveException(move.getPlayer() + " took two turns in a row, only one is allowed.");
         }
 
-        CellContent cellContent = move.getPlayer() == PlayerType.Local ? CellContent.Local : CellContent.Remote;
+        CellContent cellContent = move.getPlayer() == MoveResult.LocalTurn ? CellContent.Local : CellContent.Remote;
         board.setCell(move.getX(), move.getY(), cellContent);
 
         setLastTurn(move.getPlayer());
@@ -39,25 +39,25 @@ public class Game implements GameInterface
 
     private MoveResult getResult(Move move) {
         // todo CheckForWin laten controleren welke speler gewonnen heeft.
-        if(board.checkForWin() && move.getPlayer() == PlayerType.Local) {
+        if(board.checkForWin() && move.getPlayer() == MoveResult.LocalTurn) {
             return MoveResult.Win;
         }
-        else if(board.checkForWin() && move.getPlayer() == PlayerType.Remote) {
+        else if(board.checkForWin() && move.getPlayer() == MoveResult.RemoteTurn) {
             return MoveResult.Loss;
         }
         else if(board.boardIsFull()) {
             return MoveResult.Draw;
         }
-        else if(move.getPlayer() == PlayerType.Remote) {
+        else if(move.getPlayer() == MoveResult.RemoteTurn) {
             return MoveResult.LocalTurn;
         }
-        else if(move.getPlayer() == PlayerType.Local) {
+        else if(move.getPlayer() == MoveResult.LocalTurn) {
             return MoveResult.RemoteTurn;
         }
         return null;
     }
 
-    private boolean validCurrentTurn(PlayerType player) {
+    private boolean validCurrentTurn(MoveResult player) {
         if(lastTurn == null) {
             lastTurn = player;
         }
@@ -67,7 +67,7 @@ public class Game implements GameInterface
         return true;
     }
 
-    private void setLastTurn(PlayerType player) {
+    private void setLastTurn(MoveResult player) {
         lastTurn = player;
     }
 

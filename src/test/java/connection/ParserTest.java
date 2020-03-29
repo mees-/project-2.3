@@ -24,7 +24,7 @@ public class ParserTest {
 
     @Test
     public void parseMapMultipleEntries() {
-        String rawMap =  "{Test: \"hello, world\", name: \"parser\", proffesion: \"parsing\"     }";
+        String rawMap =  "{Test: \"hello, world\", name: \"parser\", proffesion: \"parsing\"}";
         HashMap<String, String> result;
         try {
             result = Parser.parseMap(rawMap);
@@ -32,6 +32,19 @@ public class ParserTest {
             assertEquals("hello, world", result.get("Test"));
             assertEquals("parser", result.get("name"));
             assertEquals("parsing", result.get("proffesion"));
+        } catch (ParseException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseMapWhitespace() {
+        String rawMap =  "      {        Test:          \"hello,    w  or ld    \"      }         ";
+        HashMap<String, String> result;
+        try {
+            result = Parser.parseMap(rawMap);
+            assertEquals(1, result.size());
+            assertEquals("hello,    w  or ld    ", result.get("Test"));
         } catch (ParseException e) {
             fail(e.getMessage());
         }

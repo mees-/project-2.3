@@ -70,9 +70,10 @@ public abstract class Connection {
         for (EventHandler handler : eventHandlers) {
             if (handler.isValidMessage(message)) {
                 handler.handle(message);
-                break;
+                return;
             }
         }
+        throw new RuntimeException(String.join(" ", message) + "\ndidn't match the first command in the queue and didn't match any eventHandler");
     }
 
     private <T extends ICommand> void executeCommand(T command) {

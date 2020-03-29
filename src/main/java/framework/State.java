@@ -6,7 +6,6 @@ public abstract class State {
     private PlayerType turn;
     private BoardInterface board;
 
-
     public String getRemoteUsername() {
         return remoteUsername;
     }

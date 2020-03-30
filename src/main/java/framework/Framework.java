@@ -20,7 +20,6 @@ public class Framework {
     }
 
     public GameState move(Move move) throws InvalidMoveException {
-//        BoardInterface board = state.getBoard();
         GameState result = game.doMove(move);
 
         if (move.getPlayer() == GameState.LocalTurn) {
@@ -63,7 +62,7 @@ public class Framework {
         return state;
     }
 
-    public void startGame(GameType gameType) {
+    private void startGame(GameType gameType) {
         switch (gameType) {
             case TicTacToe:
                 game = new Game();
@@ -77,7 +76,7 @@ public class Framework {
         game.start();
     }
 
-    public void requestGame(GameType gameType) {
+    private void requestGame(GameType gameType) {
         connection.subscribe(gameType);
     }
 

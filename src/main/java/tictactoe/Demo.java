@@ -19,7 +19,7 @@ public class Demo
         ttt.printBoard();
 
         do {
-            System.out.println("Player \'" + currentTurnPlayer + "\', enter an empty row and column to place your mark:");
+            System.out.println("Player \'" + currentTurn.toString() + "\', enter an empty row and column to place your mark:");
             System.out.print("> ");
             int row = input.nextInt()-1;
             int col = input.nextInt()-1;
@@ -51,7 +51,7 @@ public class Demo
             System.out.println("The game is a tie!");
         }
         else {
-            System.out.println("Player \'" + currentTurnPlayer + "\' has won the game!");
+            System.out.println("Player \'" + currentTurn.toString() + "\' has won the game!");
         }
     }
 }

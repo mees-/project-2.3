@@ -14,19 +14,23 @@ public class Demo
         boolean isGameOver = false;
         boolean draw = false;
         MoveResult currentTurn = MoveResult.LocalTurn;
+        String currentTurnPlayer = "Local";
         ttt.setPrintToCommandLine(true);
         ttt.start();
         ttt.printBoard();
 
         do {
-            System.out.println("Player \'" + currentTurn + "\', enter an empty row and column to place your mark:");
+            System.out.println("Player \'" + currentTurnPlayer + "\', enter an empty row and column to place your mark:");
             System.out.print("> ");
             int row = input.nextInt()-1;
             int col = input.nextInt()-1;
+            System.out.println();
             Move move = new Move(currentTurn, row, col);
             MoveResult moveResult = ttt.doMove(move);
             switch (moveResult) {
                 case Win:
+                    isGameOver = true;
+                    break;
                 case Draw:
                     draw = true;
                 case Loss:
@@ -34,21 +38,23 @@ public class Demo
                     break;
                 case LocalTurn:
                     currentTurn = MoveResult.LocalTurn;
+                    currentTurnPlayer = "Local";
                     break;
                 case RemoteTurn:
                     currentTurn = MoveResult.RemoteTurn;
+                    currentTurnPlayer = "Remote";
                     break;
             }
         }
         while(!isGameOver);
-        System.out.println("Game has ended.");
+        System.out.println("Game has ended...");
         System.out.println();
 
         if(draw) {
             System.out.println("The game is a tie!");
         }
         else {
-            System.out.println("Player \'" + currentTurn + "\' has won the game!");
+            System.out.println("Player \'" + currentTurnPlayer + "\' has won the game!");
         }
     }
 }

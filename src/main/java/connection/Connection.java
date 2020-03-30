@@ -14,7 +14,7 @@ import framework.GameType;
 import framework.Move;
 
 public class Connection {
-    private static String serverIP = System.getenv("env") == "production" ? "" : "localhost";
+    private static String serverIP = System.getenv("env") == "production" ? "145.33.225.170" : "localhost";
     private static int serverPort = 7789;
 
     private Socket socket;

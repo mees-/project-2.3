@@ -28,12 +28,12 @@ public class Demo
             Move move = new Move(currentTurn, row, col);
             GameState gameState = ttt.doMove(move);
             switch (gameState) {
-                case Win:
+                case OneWin:
                     isGameOver = true;
                     break;
                 case Draw:
                     draw = true;
-                case Loss:
+                case TwoWin:
                     isGameOver = true;
                     break;
                 case LocalTurn:

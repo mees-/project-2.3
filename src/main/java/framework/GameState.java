@@ -1,8 +1,8 @@
 package framework;
 
 public enum GameState {
-    Win("win", true),
-    Loss("loss", true),
+    OneWin("win", true),
+    TwoWin("loss", true),
     Draw("draw", true),
     RemoteTurn,
     LocalTurn;

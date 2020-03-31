@@ -3,7 +3,6 @@ package connection;
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import connection.commands.*;
@@ -28,10 +27,9 @@ public class Connection {
 
     private LinkedBlockingQueue<ICommand> commandsWaitingForResponse = new LinkedBlockingQueue<>();
 
-    private boolean keepReading = true;
     private Thread readingThread = new Thread(this::connectionReader);
 
-    public Connection(Framework framework) throws IOException {
+    public Connection() throws IOException {
         try {
             socket = new Socket(serverIP, serverPort);
         } catch (IOException e) {
@@ -41,19 +39,21 @@ public class Connection {
 
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.framework = framework;
         this.player = new ConnectionPlayer();
         checkStartupMessage();
+    }
+
+    public void setFramework(Framework framework) {
+        this.framework = framework;
         eventHandlers.add(new GameEndHandler(framework));
         eventHandlers.add(new MatchOfferHandler(framework));
         eventHandlers.add(new MoveHandler(framework, this.player));
         eventHandlers.add(new TurnHandler(framework));
-
         readingThread.start();
+
     }
 
     public void close() throws IOException {
-        keepReading = false;
         out.close();
         in.close();
         socket.close();
@@ -102,7 +102,7 @@ public class Connection {
     }
 
     private void connectionReader() {
-        while (keepReading) {
+        while (true) {
             try {
                 String message = in.readLine();
                 String[] words = message.split("\\s+");
@@ -116,8 +116,11 @@ public class Connection {
                 } else {
                     handleEventMessage(words);
                 }
+            } catch (SocketException e) {
+                // Socket was *most likely* closed
+                break;
             } catch (IOException e) {
-                System.err.println(Arrays.toString(e.getStackTrace()));
+                throw new RuntimeException(e);
             }
         }
     }

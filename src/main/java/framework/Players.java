@@ -1,6 +1,6 @@
 package framework;
 
 class Players {
-    public Player local;
-    public Player remote;
+    public Player one;
+    public Player two;
 }

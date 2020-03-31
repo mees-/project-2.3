@@ -11,15 +11,12 @@ public class Framework {
     private Connection connection;
     private Players players = new Players();
 
-    public Framework(Player localPlayer) {
+    public Framework(Player localPlayer, Connection connection) {
         state = new State();
-        try {
-            connection = new Connection(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        players.local = localPlayer;
-        players.remote = connection.getPlayer();
+        this.connection = connection;
+        this.connection.setFramework(this);
+        players.one = localPlayer;
+        players.two = connection.getPlayer();
     }
 
     public State getState() {
@@ -48,10 +45,10 @@ public class Framework {
             Player playerToMove;
             switch (state.getGameState()) {
                 case LocalTurn:
-                    playerToMove = players.local;
+                    playerToMove = players.one;
                     break;
                 case RemoteTurn:
-                    playerToMove = players.remote;
+                    playerToMove = players.two;
                     break;
                 default:
                     throw new RuntimeException("Really shouldn't be here!");
@@ -71,24 +68,24 @@ public class Framework {
         }
         System.out.println("Game end: " + state.getGameState().toString());
         switch (state.getGameState()) {
-            case Win:
-                players.local.onWin();
-                players.remote.onLoss();
+            case OneWin:
+                players.one.onEnd(GameResult.Win);
+                players.two.onEnd(GameResult.Loss);
                 break;
-            case Loss:
-                players.local.onLoss();
-                players.remote.onWin();
+            case TwoWin:
+                players.one.onEnd(GameResult.Loss);
+                players.two.onEnd(GameResult.Win);
                 break;
             case Draw:
-                players.local.onDraw();
-                players.remote.onDraw();
+                players.one.onEnd(GameResult.Draw);
+                players.two.onEnd(GameResult.Draw);
                 break;
             default:
                 throw new RuntimeException("Really shoulnd't be here 2");
         }
     }
 
-    public synchronized void requestGameSync(GameType gameType) {
+    public synchronized void runGameSync(GameType gameType) {
         connection.subscribe(gameType);
         try {
             wait();

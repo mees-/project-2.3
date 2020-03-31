@@ -14,8 +14,8 @@ import framework.GameType;
 import framework.Move;
 
 public class Connection {
-    private static String serverIP = System.getenv("env").equals("production") ? "145.33.225.170" : "localhost";
-    private static int serverPort = 7789;
+    private static String serverIP = System.getenv("GAME_HOST");
+    private static int serverPort = Integer.parseInt(System.getenv("GAME_PORT"));
 
     private Socket socket;
     private PrintWriter out;
@@ -32,7 +32,13 @@ public class Connection {
     private Thread readingThread = new Thread(this::connectionReader);
 
     public Connection(Framework framework) throws IOException {
-        socket = new Socket(serverIP, serverPort);
+        try {
+            socket = new Socket(serverIP, serverPort);
+        } catch (IOException e) {
+            System.err.println("Can't connect to server, is the server running on " + serverIP + ":" + serverPort);
+            throw new RuntimeException(e);
+        }
+
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.framework = framework;

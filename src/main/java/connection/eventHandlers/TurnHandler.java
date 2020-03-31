@@ -15,6 +15,6 @@ public class TurnHandler extends EventHandler {
 
     @Override
     public void handle(String[] message) {
-        framework.notifyState(GameState.LocalTurn);
+//        framework.notifyState(GameState.LocalTurn);
     }
 }

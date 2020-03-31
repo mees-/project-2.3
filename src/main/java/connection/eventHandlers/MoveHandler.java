@@ -1,5 +1,6 @@
 package connection.eventHandlers;
 
+import connection.ConnectionPlayer;
 import connection.Parser;
 import framework.*;
 
@@ -7,8 +8,10 @@ import java.text.ParseException;
 import java.util.HashMap;
 
 public class MoveHandler extends EventHandler {
-    public MoveHandler(Framework framework) {
+    private ConnectionPlayer player;
+    public MoveHandler(Framework framework, ConnectionPlayer player) {
         super(framework);
+        this.player = player;
     }
 
     public boolean isValidMessage(String[] message) {
@@ -20,15 +23,10 @@ public class MoveHandler extends EventHandler {
             String rawDetails = Parser.sliceStringFromParts(message, 3, message.length);
             HashMap<String, String> details = Parser.parseMap(rawDetails);
             if (!details.get("PLAYER").equals(framework.getState().getLocalUsername())) {
-                int boardSize = framework.getState().getBoard().getSize();
+                int boardSize = framework.getBoardSize();
                 int rawCell = Integer.parseInt(details.get("MOVE"));
                 Move move = new Move(GameState.RemoteTurn, rawCell % boardSize, rawCell / boardSize);
-                try {
-                    framework.move(move);
-                } catch (InvalidMoveException e) {
-                    System.err.println("Remote did an invalid move!!!!");
-                }
-
+                player.putMove(move);
             }
         } catch (ParseException e) {
             System.err.println(e.toString());

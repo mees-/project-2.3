@@ -3,8 +3,8 @@ package framework;
 public class State {
     private String remoteUsername;
     private String localUsername;
+    private GameType gameType;
     private GameState gameState;
-    private BoardInterface board;
 
     public String getRemoteUsername() {
         return remoteUsername;
@@ -22,19 +22,19 @@ public class State {
         this.localUsername = localUsername;
     }
 
+    public GameType getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
+
     public GameState getGameState() {
         return gameState;
     }
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
-    }
-
-    public BoardInterface getBoard() {
-        return board;
-    }
-
-    public void setBoard(BoardInterface board) {
-        this.board = board;
     }
 }

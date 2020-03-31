@@ -1,6 +1,7 @@
 package tictactoe;
 
 import framework.InvalidMoveException;
+import framework.InvalidTurnException;
 import framework.Move;
 import framework.GameState;
 
@@ -8,18 +9,18 @@ import java.util.Scanner;
 
 public class Demo
 {
-    public static void main(String[] args) throws InvalidMoveException {
+    public static void main(String[] args) throws InvalidMoveException, InvalidTurnException {
         Scanner input = new Scanner(System.in);
         Game ttt = new Game();
         boolean isGameOver = false;
         boolean draw = false;
         GameState currentTurn = GameState.LocalTurn;
         ttt.setPrintToCommandLine(true);
-        ttt.start();
+        ttt.setup();
         ttt.printBoard();
 
         do {
-            System.out.println("Player \'" + currentTurn.toString() + "\', enter an empty row and column to place your mark:");
+            System.out.println("Player '" + currentTurn.toString() + "', enter an empty row and column to place your mark:");
             System.out.print("> ");
             int row = input.nextInt()-1;
             int col = input.nextInt()-1;
@@ -51,7 +52,7 @@ public class Demo
             System.out.println("The game is a tie!");
         }
         else {
-            System.out.println("Player \'" + currentTurn.toString() + "\' has won the game!");
+            System.out.println("Player '" + currentTurn.toString() + "' has won the game!");
         }
     }
 }

@@ -20,10 +20,10 @@ public class Game implements GameInterface
     }
 
     @Override
-    public GameState doMove(Move move) throws InvalidMoveException {
+    public GameState doMove(Move move) throws InvalidMoveException, InvalidTurnException {
 
         if(!validCurrentTurn(move.getPlayer())) {
-            throw new InvalidMoveException(move.getPlayer() + " took two turns in a row, only one is allowed.");
+            throw new InvalidTurnException(move.getPlayer() + " took two turns in a row, only one is allowed.");
         }
 
         CellContent cellContent = move.getPlayer() == GameState.LocalTurn ? CellContent.Local : CellContent.Remote;
@@ -60,11 +60,11 @@ public class Game implements GameInterface
     private boolean validCurrentTurn(GameState player) {
         if(lastTurn == null) {
             lastTurn = player;
+            return true;
         }
-        else if(lastTurn == player) {
-            return false;
+        else {
+            return lastTurn != player;
         }
-        return true;
     }
 
     private void setLastTurn(GameState player) {
@@ -72,7 +72,7 @@ public class Game implements GameInterface
     }
 
     @Override
-    public void start() {
+    public void setup() {
         board.reset();
     }
 

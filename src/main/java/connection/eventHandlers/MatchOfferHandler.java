@@ -2,6 +2,7 @@ package connection.eventHandlers;
 
 import connection.Parser;
 import framework.Framework;
+import framework.GameState;
 import framework.GameType;
 
 import java.text.ParseException;
@@ -22,12 +23,19 @@ public class MatchOfferHandler extends EventHandler {
         String rawMap = Parser.sliceStringFromParts(message, 3, message.length);
         try {
             HashMap<String, String> details = Parser.parseMap(rawMap);
+            GameState startingPlayer;
+            if (details.get("OPPONENT").equals(details.get("PLAYERTOMOVE"))) {
+                startingPlayer = GameState.RemoteTurn;
+            } else {
+                startingPlayer = GameState.LocalTurn;
+            }
             framework.notifyGameOffer(
                     GameType.fromString(details.get("GAMETYPE")),
-                    details.get("OPPONENT")
+                    details.get("OPPONENT"),
+                    startingPlayer
                     );
         } catch (ParseException e) {
-            System.err.println(e.toString());
+            throw new RuntimeException(e);
         }
     }
 }

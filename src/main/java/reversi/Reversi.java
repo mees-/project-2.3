@@ -1,8 +1,6 @@
 package reversi;
 import framework.*;
 
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class Reversi implements GameInterface {
 

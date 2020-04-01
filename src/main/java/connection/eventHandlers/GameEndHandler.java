@@ -1,11 +1,11 @@
 package connection.eventHandlers;
 
-import framework.Framework;
+import connection.Connection;
 import framework.GameState;
 
 public class GameEndHandler extends EventHandler {
-    public GameEndHandler(Framework framework) {
-        super(framework);
+    public GameEndHandler(Connection connection) {
+        super(connection);
     }
 
     @Override
@@ -16,10 +16,6 @@ public class GameEndHandler extends EventHandler {
 
     @Override
     public void handle(String[] message) {
-        GameState result = GameState.fromString(message[2]);
-        framework.notifyState(result);
-        if (result == GameState.Win) {
-            System.out.println("You win!");
-        }
+//        GameState result = GameState.fromString(message[2]);
     }
 }

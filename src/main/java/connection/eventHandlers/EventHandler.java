@@ -1,12 +1,12 @@
 package connection.eventHandlers;
 
-import framework.Framework;
+import connection.Connection;
 
 public abstract class EventHandler {
-    protected Framework framework;
+    protected final Connection connection;
 
-    public EventHandler(Framework framework) {
-        this.framework = framework;
+    public EventHandler(Connection connection) {
+        this.connection = connection;
     }
 
     public abstract boolean isValidMessage(String[] message);

@@ -1,110 +1,56 @@
 package framework;
 
 import connection.Connection;
+import framework.player.Player;
 import tictactoe.Game;
 
 import java.io.IOException;
 
 public class Framework {
-    private GameInterface game;
-    private State state;
-    private Connection connection;
+    private Match match;
+    private final Player localPlayer;
+    private final Connection connection;
 
-    public Framework() {
-        state = new State();
+    public Framework(Player localPlayer, Connection connection) {
+        this.localPlayer = localPlayer;
+        this.connection = connection;
+        this.connection.setFramework(this);
+    }
+
+    public int getBoardSize() {
+        return match.getGame().getBoard().getSize();
+    }
+
+    public synchronized void runGameSync(GameType gameType) {
+        connection.subscribe(gameType);
         try {
-            connection = new Connection(this);
-        } catch (IOException e) {
+            wait();
+
+            match.gameLoop();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public GameState move(Move move) throws InvalidMoveException {
-        GameState result = game.doMove(move);
-
-        if (move.getPlayer() == GameState.LocalTurn) {
-            connection.sendMove(move);
-        }
-
-        switch (result) {
-            case LocalTurn:
-                notifyState(GameState.LocalTurn);
-            case RemoteTurn:
-                notifyState(GameState.RemoteTurn);
-                break;
-            case Draw:
-            case Loss:
-            case Win:
-//              board.reset();
-                break;
-            default:
-                System.out.println("Something went wrong");
-        }
-        return result;
+    public void login() {
+        connection.login(localPlayer.getUsername());
     }
-
-    public synchronized void waitTurn() {
-        while (state.getGameState() == GameState.RemoteTurn || state.getGameState() == null) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public GameState moveSync(Move move) throws InvalidMoveException {
-        waitTurn();
-        return move(move);
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    private void startGame(GameType gameType) {
+  
+    public synchronized void notifyGameOffer(GameType gameType, Player remotePlayer, GameState startingPlayer) {
+        GameInterface game = null;
+      
         switch (gameType) {
             case TicTacToe:
                 game = new Game();
                 break;
-            case Reversi:
+//            case Reversi:
 //                game = new Reversi();
-                break;
+//                break;
         }
-
-        state.setBoard(game.getBoard());
-        game.start();
-    }
-
-    private void requestGame(GameType gameType) {
-        connection.subscribe(gameType);
-    }
-
-    public synchronized void requestGameSync(GameType gameType) {
-        requestGame(gameType);
-        while (state.getRemoteUsername() == null) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void login(String username) {
-        connection.login(username);
-        state.setLocalUsername(username);
-    }
-
-    public synchronized void notifyGameOffer(GameType gameType, String remoteUsername) {
-        state.setRemoteUsername(remoteUsername);
-        startGame(gameType);
-        notifyAll();
-    }
-
-    public synchronized void notifyState(GameState playerType) {
-        state.setGameState(playerType);
-        notifyAll();
+        match = new Match(game, localPlayer, remotePlayer);
+        match.setGameState(startingPlayer);
+        match.setupGame();
+        notify();
     }
 
     public void close() throws IOException {

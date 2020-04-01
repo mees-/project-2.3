@@ -1,11 +1,10 @@
 package connection.eventHandlers;
 
-import framework.Framework;
-import framework.GameState;
+import connection.Connection;
 
 public class TurnHandler extends EventHandler {
-    public TurnHandler(Framework framework) {
-        super(framework);
+    public TurnHandler(Connection connection) {
+        super(connection);
     }
 
     @Override
@@ -15,6 +14,6 @@ public class TurnHandler extends EventHandler {
 
     @Override
     public void handle(String[] message) {
-        framework.notifyState(GameState.LocalTurn);
+//        framework.notifyState(GameState.LocalTurn);
     }
 }

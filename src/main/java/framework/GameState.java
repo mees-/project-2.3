@@ -1,19 +1,26 @@
 package framework;
 
 public enum GameState {
-    Win("win"),
-    Loss("loss"),
-    Draw("draw"),
+    OneWin("win", true),
+    TwoWin("loss", true),
+    Draw("draw", true),
     RemoteTurn,
     LocalTurn;
 
-    private String token;
+    private final String token;
+    private final boolean end;
 
-    GameState(String token) {
+    GameState(String token, boolean end) {
         this.token = token;
+        this.end = end;
     }
     GameState() {
+        this.token = null;
+        this.end = false;
+    }
 
+    public boolean isEnd() {
+        return this.end;
     }
 
     public static GameState fromString(String token) {

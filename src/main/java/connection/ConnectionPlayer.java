@@ -3,7 +3,7 @@ package connection;
 import framework.BoardInterface;
 import framework.GameResult;
 import framework.Move;
-import framework.Player;
+import framework.player.Player;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

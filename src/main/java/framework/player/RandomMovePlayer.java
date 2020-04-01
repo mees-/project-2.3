@@ -1,8 +1,8 @@
-package tictactoe.ai;
+package framework.player;
 
 import framework.*;
+import framework.player.Player;
 
-import java.io.IOException;
 import java.util.Random;
 
 public class RandomMovePlayer implements Player {
@@ -10,9 +10,13 @@ public class RandomMovePlayer implements Player {
 
     @Override
     public Move getNextMove(BoardInterface board) {
+        int boardSize = 3;
+//        synchronized (board) {
+//            boardSize = board.getSize();
+//        }
         Move move;
         do {
-            move = new Move(GameState.LocalTurn,rand.nextInt(3), rand.nextInt(3));
+            move = new Move(GameState.LocalTurn,rand.nextInt(boardSize), rand.nextInt(boardSize));
         } while (board.getCell(move.getX(), move.getY()) != CellContent.Empty);
         return move;
     }

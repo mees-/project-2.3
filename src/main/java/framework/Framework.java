@@ -2,6 +2,7 @@ package framework;
 
 import connection.Connection;
 import tictactoe.Game;
+import framework.player.*;
 
 import java.io.IOException;
 

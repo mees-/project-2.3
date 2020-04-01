@@ -38,7 +38,6 @@ public class Framework {
                 break;
         }
         game.setup();
-        gameLoop();
     }
 
     private void gameLoop() {
@@ -55,6 +54,9 @@ public class Framework {
                     throw new RuntimeException("Really shouldn't be here!");
             }
             Move move = playerToMove.getNextMove(game.getBoard());
+            if (move.getPlayer() == GameState.LocalTurn) {
+                connection.sendMove(move);
+            }
             try {
                 GameState newState = game.doMove(move);
                 state.setGameState(newState);
@@ -62,9 +64,6 @@ public class Framework {
                 continue;
             } catch (InvalidTurnException e) {
                 throw new RuntimeException(e);
-            }
-            if (move.getPlayer() == GameState.LocalTurn) {
-                connection.sendMove(move);
             }
         }
         System.out.println("Game end: " + state.getGameState().toString());
@@ -90,7 +89,8 @@ public class Framework {
         connection.subscribe(gameType);
         try {
             wait();
-            startGame(state.getGameType());
+
+            gameLoop();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -105,6 +105,7 @@ public class Framework {
         state.setRemoteUsername(remoteUsername);
         state.setGameState(startingPlayer);
         state.setGameType(gameType);
+        startGame(state.getGameType());
         notify();
     }
 

@@ -35,9 +35,10 @@ public class Framework {
     public void login() {
         connection.login(localPlayer.getUsername());
     }
-
+  
     public synchronized void notifyGameOffer(GameType gameType, Player remotePlayer, GameState startingPlayer) {
         GameInterface game = null;
+      
         switch (gameType) {
             case TicTacToe:
                 game = new Game();

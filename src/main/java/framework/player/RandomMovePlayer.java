@@ -5,15 +5,21 @@ import framework.player.Player;
 
 import java.util.Random;
 
-public class RandomMovePlayer implements Player {
+public class RandomMovePlayer extends Player {
+    private static Random usernameRand = new Random();
     private Random rand = new Random();
+
+    public RandomMovePlayer(String username) {
+        super(username);
+    }
+
+    public RandomMovePlayer() {
+        this("randomUsername " + usernameRand.nextInt(200));
+    }
 
     @Override
     public Move getNextMove(BoardInterface board) {
-        int boardSize = 3;
-//        synchronized (board) {
-//            boardSize = board.getSize();
-//        }
+        int boardSize = board.getSize();
         Move move;
         do {
             move = new Move(GameState.LocalTurn,rand.nextInt(boardSize), rand.nextInt(boardSize));

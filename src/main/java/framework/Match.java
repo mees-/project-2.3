@@ -5,37 +5,10 @@ import framework.player.Players;
 import tictactoe.Game;
 
 public class Match {
-    private String remoteUsername;
-    private String localUsername;
-    private GameType gameType;
     private GameState gameState;
     private GameInterface game;
 
     private Players players = new Players();
-
-    public String getRemoteUsername() {
-        return remoteUsername;
-    }
-
-    public void setRemoteUsername(String remoteUsername) {
-        this.remoteUsername = remoteUsername;
-    }
-
-    public String getLocalUsername() {
-        return localUsername;
-    }
-
-    public void setLocalUsername(String localUsername) {
-        this.localUsername = localUsername;
-    }
-
-    public GameType getGameType() {
-        return gameType;
-    }
-
-    public void setGameType(GameType gameType) {
-        this.gameType = gameType;
-    }
 
     public GameState getGameState() {
         return gameState;
@@ -53,20 +26,14 @@ public class Match {
         this.game = game;
     }
 
-    public Match(Player one, Player two) {
+    public Match(GameInterface game, Player one, Player two) {
+        this.game = game;
         players.one = one;
         players.two = two;
     }
 
-    public void setupGame(GameType gameType) {
-        switch (gameType) {
-            case TicTacToe:
-                game = new Game();
-                break;
-            case Reversi:
-//                game = new Reversi();
-                break;
-        }
+    public void setupGame() {
+
         game.setup();
     }
 

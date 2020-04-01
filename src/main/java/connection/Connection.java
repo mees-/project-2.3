@@ -11,6 +11,7 @@ import connection.eventHandlers.*;
 import framework.Framework;
 import framework.GameType;
 import framework.Move;
+import framework.player.BlockingPlayer;
 
 public class Connection {
     private static String serverIP = System.getenv("GAME_HOST");
@@ -21,13 +22,13 @@ public class Connection {
     private BufferedReader in;
 
     private Framework framework;
-    private ConnectionPlayer player;
 
     private ArrayList<EventHandler> eventHandlers = new ArrayList<>();
 
     private LinkedBlockingQueue<ICommand> commandsWaitingForResponse = new LinkedBlockingQueue<>();
 
     private Thread readingThread = new Thread(this::connectionReader);
+    private MoveHandler moveHandler;
 
     public Connection() throws IOException {
         try {
@@ -39,16 +40,20 @@ public class Connection {
 
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.player = new ConnectionPlayer();
         checkStartupMessage();
+    }
+
+    public Framework getFramework() {
+        return framework;
     }
 
     public void setFramework(Framework framework) {
         this.framework = framework;
-        eventHandlers.add(new GameEndHandler(framework));
-        eventHandlers.add(new MatchOfferHandler(framework));
-        eventHandlers.add(new MoveHandler(framework, this.player));
-        eventHandlers.add(new TurnHandler(framework));
+        moveHandler = new MoveHandler(this);
+        eventHandlers.add(new GameEndHandler(this));
+        eventHandlers.add(new MatchOfferHandler(this));
+        eventHandlers.add(moveHandler);
+        eventHandlers.add(new TurnHandler(this));
         readingThread.start();
 
     }
@@ -97,10 +102,6 @@ public class Connection {
         executeCommand(new LoginCommand(username));
     }
 
-    public ConnectionPlayer getPlayer() {
-        return player;
-    }
-
     private void connectionReader() {
         while (true) {
             try {
@@ -123,5 +124,9 @@ public class Connection {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public void setPlayer(BlockingPlayer remotePlayer) {
+        this.moveHandler.setPlayer(remotePlayer);
     }
 }

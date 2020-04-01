@@ -4,8 +4,21 @@ import framework.BoardInterface;
 import framework.GameResult;
 import framework.Move;
 
-public interface Player {
-    Move getNextMove(BoardInterface board);
+public abstract class Player {
+    private String username;
 
-    void onEnd(GameResult state);
+    public Player(String username) {
+        if (username == null) {
+            throw new RuntimeException("Username can't be null");
+        }
+        this.username = username;
+    }
+
+    public abstract Move getNextMove(BoardInterface board);
+
+    public abstract void onEnd(GameResult state);
+
+    public String getUsername() {
+        return username;
+    };
 }

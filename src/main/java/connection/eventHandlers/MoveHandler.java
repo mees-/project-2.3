@@ -1,6 +1,7 @@
 package connection.eventHandlers;
 
-import connection.ConnectionPlayer;
+import connection.Connection;
+import framework.player.BlockingPlayer;
 import connection.Parser;
 import framework.*;
 
@@ -8,9 +9,12 @@ import java.text.ParseException;
 import java.util.HashMap;
 
 public class MoveHandler extends EventHandler {
-    private ConnectionPlayer player;
-    public MoveHandler(Framework framework, ConnectionPlayer player) {
-        super(framework);
+    private BlockingPlayer player;
+    public MoveHandler(Connection connection) {
+        super(connection);
+    }
+
+    public synchronized void setPlayer(BlockingPlayer player) {
         this.player = player;
     }
 
@@ -22,8 +26,8 @@ public class MoveHandler extends EventHandler {
         try {
             String rawDetails = Parser.sliceStringFromParts(message, 3, message.length);
             HashMap<String, String> details = Parser.parseMap(rawDetails);
-            if (!details.get("PLAYER").equals(framework.getMatch().getLocalUsername())) {
-                int boardSize = framework.getBoardSize();
+            if (details.get("PLAYER").equals(player.getUsername())) {
+                int boardSize = connection.getFramework().getBoardSize();
                 int rawCell = Integer.parseInt(details.get("MOVE"));
                 Move move = new Move(GameState.RemoteTurn, rawCell % boardSize, rawCell / boardSize);
                 player.putMove(move);

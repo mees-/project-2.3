@@ -1,11 +1,11 @@
 package connection.eventHandlers;
 
-import framework.Framework;
+import connection.Connection;
 import framework.GameState;
 
 public class GameEndHandler extends EventHandler {
-    public GameEndHandler(Framework framework) {
-        super(framework);
+    public GameEndHandler(Connection connection) {
+        super(connection);
     }
 
     @Override

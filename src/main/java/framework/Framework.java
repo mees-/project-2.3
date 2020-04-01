@@ -2,15 +2,17 @@ package framework;
 
 import connection.Connection;
 import framework.player.Player;
+import tictactoe.Game;
 
 import java.io.IOException;
 
 public class Framework {
     private Match match;
+    private Player localPlayer;
     private Connection connection;
 
     public Framework(Player localPlayer, Connection connection) {
-        match = new Match(localPlayer, connection.getPlayer());
+        this.localPlayer = localPlayer;
         this.connection = connection;
         this.connection.setFramework(this);
     }
@@ -34,16 +36,23 @@ public class Framework {
         }
     }
 
-    public void login(String username) {
-        match.setLocalUsername(username);
-        connection.login(username);
+    public void login() {
+        connection.login(localPlayer.getUsername());
     }
 
-    public synchronized void notifyGameOffer(GameType gameType, String remoteUsername, GameState startingPlayer) {
-        match.setRemoteUsername(remoteUsername);
+    public synchronized void notifyGameOffer(GameType gameType, Player remotePlayer, GameState startingPlayer) {
+        GameInterface game = null;
+        switch (gameType) {
+            case TicTacToe:
+                game = new Game();
+                break;
+//            case Reversi:
+//                game = new Reversi();
+//                break;
+        }
+        match = new Match(game, localPlayer, remotePlayer);
         match.setGameState(startingPlayer);
-        match.setGameType(gameType);
-        match.setupGame(match.getGameType());
+        match.setupGame();
         notify();
     }
 

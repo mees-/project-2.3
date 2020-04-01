@@ -1,16 +1,19 @@
-package connection;
+package framework.player;
 
 import framework.BoardInterface;
 import framework.GameResult;
 import framework.Move;
-import framework.player.Player;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public class ConnectionPlayer implements Player {
+public class BlockingPlayer extends Player {
 
     BlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
+
+    public BlockingPlayer(String username) {
+        super(username);
+    }
 
     public synchronized void putMove(Move move){
         try {

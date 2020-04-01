@@ -6,24 +6,18 @@ import framework.GameResult;
 import framework.Move;
 import framework.player.Player;
 
-public class LocalConnectedPlayer implements Player {
-    private Player original;
+public class LocalConnectedPlayer extends HigherOrderPlayer {
     private Connection connection;
 
     public LocalConnectedPlayer(Player original, Connection connection) {
-        this.original = original;
+        super(original);
         this.connection = connection;
     }
 
     @Override
     public Move getNextMove(BoardInterface board) {
-        Move nextMove = original.getNextMove(board);
+        Move nextMove = super.getNextMove(board);
         connection.sendMove(nextMove);
         return nextMove;
-    }
-
-    @Override
-    public void onEnd(GameResult state) {
-        original.onEnd(state);
     }
 }

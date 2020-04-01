@@ -14,7 +14,7 @@ public class Main {
         Connection connection = new Connection();
         Player player = new LocalConnectedPlayer(new RandomMovePlayer(), connection);
         framework = new Framework(player, connection);
-        framework.login("test" + (new Random()).nextInt(100));
+        framework.login();
         framework.runGameSync(GameType.TicTacToe);
         framework.close();
     }

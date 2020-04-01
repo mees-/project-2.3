@@ -2,13 +2,12 @@ package framework;
 
 import framework.player.Player;
 import framework.player.Players;
-import tictactoe.Game;
 
 public class Match {
     private GameState gameState;
     private GameInterface game;
 
-    private Players players = new Players();
+    private final Players players = new Players();
 
     public GameState getGameState() {
         return gameState;
@@ -20,10 +19,6 @@ public class Match {
 
     public GameInterface getGame() {
         return game;
-    }
-
-    public void setGame(GameInterface game) {
-        this.game = game;
     }
 
     public Match(GameInterface game, Player one, Player two) {
@@ -55,7 +50,6 @@ public class Match {
                 GameState newState = game.doMove(move);
                 setGameState(newState);
             } catch (InvalidMoveException e) {
-                continue;
             } catch (InvalidTurnException e) {
                 throw new RuntimeException(e);
             }

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class Parser {
     private Parser() {}
 
@@ -14,7 +15,7 @@ public class Parser {
         if (chars[0] != '{') {
             throw new ParseException("Map must begin with '{'.\n string: " + raw, 0);
         }
-        String token = "";
+        StringBuilder token = new StringBuilder();
         ParseState state = ParseState.Key;
         String currentKey = "";
         for (int i = 1; i < chars.length; i++) {
@@ -24,11 +25,11 @@ public class Parser {
             switch (state) {
                 case Key: {
                     if (chars[i] == ':') {
-                        currentKey = token;
-                        token = "";
+                        currentKey = token.toString();
+                        token = new StringBuilder();
                         state = ParseState.BeforeValue;
                     } else {
-                        token = token + chars[i];
+                        token.append(chars[i]);
                     }
                     break;
                 }
@@ -41,12 +42,12 @@ public class Parser {
                 }
                 case Value: {
                     if (chars[i] == '"') {
-                        result.put(currentKey, token);
+                        result.put(currentKey, token.toString());
                         currentKey = "";
-                        token = "";
+                        token = new StringBuilder();
                         state = ParseState.AfterValue;
                     } else {
-                        token = token + chars[i];
+                        token.append(chars[i]);
                     }
                     break;
                 }
@@ -73,7 +74,7 @@ public class Parser {
         AfterValue,
     }
 
-    public static String sliceStringFromParts(String[] strs, int start, int end) {
-        return String.join(" ", Arrays.copyOfRange(strs, start, end));
+    public static String sliceStringFromParts(String[] parts, int start, int end) {
+        return String.join(" ", Arrays.copyOfRange(parts, start, end));
     }
 }

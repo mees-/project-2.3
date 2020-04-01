@@ -4,8 +4,8 @@ public enum GameType {
 //    Reversi("Reversi"),
     TicTacToe("Tic-tac-toe");
 
-    private String token;
-    private GameType(String token) {
+    private final String token;
+    GameType(String token) {
         this.token = token;
     }
 

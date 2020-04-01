@@ -1,7 +1,7 @@
 package connection.commands;
 
 public class MoveCommand implements ICommand {
-    private int cell;
+    private final int cell;
 
 
     public MoveCommand(int cellTopLeftToBottomRight) {

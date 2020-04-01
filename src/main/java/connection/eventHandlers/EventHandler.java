@@ -3,7 +3,7 @@ package connection.eventHandlers;
 import connection.Connection;
 
 public abstract class EventHandler {
-    protected Connection connection;
+    protected final Connection connection;
 
     public EventHandler(Connection connection) {
         this.connection = connection;

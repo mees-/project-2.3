@@ -10,7 +10,7 @@ public interface ICommand {
     <R extends CommandResponse> R parseResponse(String[] response);
 
     class CommandResponse {
-        private boolean success;
+        private final boolean success;
         private String errorMessage;
 
         public CommandResponse(boolean success) {

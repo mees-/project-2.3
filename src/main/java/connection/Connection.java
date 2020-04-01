@@ -14,8 +14,8 @@ import framework.Move;
 import framework.player.BlockingPlayer;
 
 public class Connection {
-    private static String serverIP = System.getenv("GAME_HOST");
-    private static int serverPort = Integer.parseInt(System.getenv("GAME_PORT"));
+    private static final String serverIP = System.getenv("GAME_HOST");
+    private static final int serverPort = Integer.parseInt(System.getenv("GAME_PORT"));
 
     private Socket socket;
     private PrintWriter out;
@@ -23,11 +23,11 @@ public class Connection {
 
     private Framework framework;
 
-    private ArrayList<EventHandler> eventHandlers = new ArrayList<>();
+    private final ArrayList<EventHandler> eventHandlers = new ArrayList<>();
 
-    private LinkedBlockingQueue<ICommand> commandsWaitingForResponse = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<ICommand> commandsWaitingForResponse = new LinkedBlockingQueue<>();
 
-    private Thread readingThread = new Thread(this::connectionReader);
+    private final Thread readingThread = new Thread(this::connectionReader);
     private MoveHandler moveHandler;
 
     public Connection() throws IOException {

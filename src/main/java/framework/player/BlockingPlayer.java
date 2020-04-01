@@ -9,7 +9,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class BlockingPlayer extends Player {
 
-    BlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
+    final BlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
 
     public BlockingPlayer(String username) {
         super(username);

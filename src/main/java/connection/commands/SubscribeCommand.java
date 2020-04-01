@@ -3,7 +3,7 @@ package connection.commands;
 import framework.GameType;
 
 public class SubscribeCommand implements ICommand {
-    private GameType gameType;
+    private final GameType gameType;
 
     public SubscribeCommand(GameType gameType) {
         this.gameType = gameType;

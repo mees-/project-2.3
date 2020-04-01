@@ -5,7 +5,6 @@ import framework.*;
 import framework.player.*;
 
 import java.io.IOException;
-import java.util.Random;
 
 public class Main {
     static Framework framework;

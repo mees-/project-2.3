@@ -7,8 +7,8 @@ public enum GameState {
     RemoteTurn,
     LocalTurn;
 
-    private String token;
-    private boolean end;
+    private final String token;
+    private final boolean end;
 
     GameState(String token, boolean end) {
         this.token = token;

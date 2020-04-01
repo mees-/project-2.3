@@ -8,17 +8,13 @@ import java.io.IOException;
 
 public class Framework {
     private Match match;
-    private Player localPlayer;
-    private Connection connection;
+    private final Player localPlayer;
+    private final Connection connection;
 
     public Framework(Player localPlayer, Connection connection) {
         this.localPlayer = localPlayer;
         this.connection = connection;
         this.connection.setFramework(this);
-    }
-
-    public Match getMatch() {
-        return match;
     }
 
     public int getBoardSize() {

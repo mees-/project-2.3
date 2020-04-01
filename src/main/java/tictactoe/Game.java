@@ -5,7 +5,7 @@ import framework.*;
 public class Game implements GameInterface
 {
     private static final String GAME_NAME = "Tic-Tac-Toe";
-    private Board board;
+    private final Board board;
     private GameState lastTurn;
     private Boolean printToCommandLine = true;
 

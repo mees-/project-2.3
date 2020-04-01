@@ -5,7 +5,7 @@ import framework.GameResult;
 import framework.Move;
 
 public class HigherOrderPlayer extends Player {
-    private Player original;
+    private final Player original;
 
     public HigherOrderPlayer(Player original) {
         super(original.getUsername());

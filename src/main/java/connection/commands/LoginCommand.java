@@ -1,9 +1,7 @@
 package connection.commands;
 
-import java.util.Arrays;
-
 public class LoginCommand implements ICommand {
-    private String username;
+    private final String username;
 
     public LoginCommand(String username) {
         this.username = username;

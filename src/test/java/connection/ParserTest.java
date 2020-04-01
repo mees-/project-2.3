@@ -23,14 +23,14 @@ public class ParserTest {
 
     @Test
     public void parseMapMultipleEntries() {
-        String rawMap =  "{Test: \"hello, world\", name: \"parser\", proffesion: \"parsing\"}";
+        String rawMap =  "{Test: \"hello, world\", name: \"parser\", profesion: \"parsing\"}";
         HashMap<String, String> result;
         try {
             result = Parser.parseMap(rawMap);
             assertEquals(3, result.size());
             assertEquals("hello, world", result.get("Test"));
             assertEquals("parser", result.get("name"));
-            assertEquals("parsing", result.get("proffesion"));
+            assertEquals("parsing", result.get("profesion"));
         } catch (ParseException e) {
             fail(e.getMessage());
         }

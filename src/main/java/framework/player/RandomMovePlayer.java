@@ -6,8 +6,8 @@ import framework.player.Player;
 import java.util.Random;
 
 public class RandomMovePlayer extends Player {
-    private static Random usernameRand = new Random();
-    private Random rand = new Random();
+    private static final Random usernameRand = new Random();
+    private final Random rand = new Random();
 
     public RandomMovePlayer(String username) {
         super(username);

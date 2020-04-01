@@ -10,7 +10,7 @@ public class Board implements BoardInterface
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
 
-    private CellContent[][] board;
+    private final CellContent[][] board;
 
     public Board() {
         board = new CellContent[3][3];
@@ -53,8 +53,9 @@ public class Board implements BoardInterface
         boolean isFull = true;
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                if(board[row][col] == CellContent.Empty) {
+                if (board[row][col] == CellContent.Empty) {
                     isFull = false;
+                    break;
                 }
             }
         }

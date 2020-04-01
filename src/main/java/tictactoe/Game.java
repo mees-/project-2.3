@@ -5,7 +5,7 @@ import framework.*;
 public class Game implements GameInterface
 {
     private static final String GAME_NAME = "Tic-Tac-Toe";
-    private Board board;
+    private final Board board;
     private GameState lastTurn;
     private Boolean printToCommandLine = true;
 
@@ -40,10 +40,10 @@ public class Game implements GameInterface
     private GameState getResult(Move move) {
         // todo CheckForWin laten controleren welke speler gewonnen heeft.
         if(board.checkForWin() && move.getPlayer() == GameState.LocalTurn) {
-            return GameState.Win;
+            return GameState.OneWin;
         }
         else if(board.checkForWin() && move.getPlayer() == GameState.RemoteTurn) {
-            return GameState.Loss;
+            return GameState.TwoWin;
         }
         else if(board.boardIsFull()) {
             return GameState.Draw;

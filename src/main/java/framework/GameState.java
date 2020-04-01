@@ -1,14 +1,14 @@
 package framework;
 
 public enum GameState {
-    Win("win", true),
-    Loss("loss", true),
+    OneWin("win", true),
+    TwoWin("loss", true),
     Draw("draw", true),
     RemoteTurn,
     LocalTurn;
 
-    private String token;
-    private boolean end;
+    private final String token;
+    private final boolean end;
 
     GameState(String token, boolean end) {
         this.token = token;

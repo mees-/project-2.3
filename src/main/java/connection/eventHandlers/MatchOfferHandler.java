@@ -1,7 +1,8 @@
 package connection.eventHandlers;
 
+import connection.Connection;
+import framework.player.BlockingPlayer;
 import connection.Parser;
-import framework.Framework;
 import framework.GameState;
 import framework.GameType;
 
@@ -9,8 +10,8 @@ import java.text.ParseException;
 import java.util.HashMap;
 
 public class MatchOfferHandler extends EventHandler {
-    public MatchOfferHandler(Framework framework) {
-        super(framework);
+    public MatchOfferHandler(Connection connection) {
+        super(connection);
     }
 
     @Override
@@ -23,16 +24,18 @@ public class MatchOfferHandler extends EventHandler {
         String rawMap = Parser.sliceStringFromParts(message, 3, message.length);
         try {
             HashMap<String, String> details = Parser.parseMap(rawMap);
-            GameState startingPlayer;
+            BlockingPlayer remotePlayer = new BlockingPlayer(details.get("OPPONENT"));
+            connection.setPlayer(remotePlayer);
+            GameState startingState;
             if (details.get("OPPONENT").equals(details.get("PLAYERTOMOVE"))) {
-                startingPlayer = GameState.RemoteTurn;
+                startingState = GameState.RemoteTurn;
             } else {
-                startingPlayer = GameState.LocalTurn;
+                startingState = GameState.LocalTurn;
             }
-            framework.notifyGameOffer(
+            connection.getFramework().notifyGameOffer(
                     GameType.fromString(details.get("GAMETYPE")),
-                    details.get("OPPONENT"),
-                    startingPlayer
+                    remotePlayer,
+                    startingState
                     );
         } catch (ParseException e) {
             throw new RuntimeException(e);

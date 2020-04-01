@@ -1,15 +1,19 @@
-package connection;
+package framework.player;
 
 import framework.BoardInterface;
+import framework.GameResult;
 import framework.Move;
-import framework.Player;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public class ConnectionPlayer extends Player {
+public class BlockingPlayer extends Player {
 
-    BlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
+    final BlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
+
+    public BlockingPlayer(String username) {
+        super(username);
+    }
 
     public synchronized void putMove(Move move){
         try {
@@ -29,17 +33,7 @@ public class ConnectionPlayer extends Player {
     }
 
     @Override
-    public void onLoss() {
+    public void onEnd(GameResult state) {}
 
-    }
 
-    @Override
-    public void onWin() {
-
-    }
-
-    @Override
-    public void onDraw() {
-
-    }
 }

@@ -149,8 +149,21 @@ public class Reversi implements GameInterface {
         int remoteScore = 0;
         int emptyCells = board.getSize() * board.getSize();
 
+        int countSuggest = 0;
         CellContent player = playerTypeToCellContent(move.player);
-        if (validMovesOverview(player)[move.x][move.y] == SUGGEST_DISC) {
+
+        validMovesOverview(player);
+        for (int i = 0; i < board.getSize(); i++) {
+            for (int j = 0; j < board.getSize(); j++) {
+                if (suggestions[i][j] == SUGGEST_DISC) {
+                    countSuggest += 1;
+                }
+            }
+        }
+        if (countSuggest == 0) {
+            throw new InvalidMoveException("Can't make a valid move this turn.");
+        }
+        if (suggestions[move.x][move.y] == SUGGEST_DISC) {
             board.setCell(move.x, move.y, player);
             flipDiscs(move, player);
             for (int i = 0; i < board.getSize(); i++) {
@@ -181,7 +194,7 @@ public class Reversi implements GameInterface {
             }
 
         } else {
-            throw new InvalidMoveException("Invalid move");
+            throw new InvalidMoveException("Invalid move.");
         }
         return moveResult;
     }

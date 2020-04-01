@@ -12,7 +12,7 @@ public class Main {
     public static final String ANSI_BLACK = "\u001B[37m";
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Reversi reversi = new Reversi();
         boolean turn = true;
         BoardInterface board = reversi.getBoard();
@@ -29,7 +29,7 @@ public class Main {
             }
 
             System.out.println(a.player+"'s turn: ");
-            reversi.printBoard(reversi.validMovesOverview(reversi.playerTypeToCellContent(a.player)));
+//            reversi.printBoard(reversi.validMovesOverview(reversi.playerTypeToCellContent(a.player)));
 
             if (inputCommand) {
                 Scanner input = new Scanner(System.in);
@@ -41,20 +41,29 @@ public class Main {
                 Random random = new Random();
                 a.x = random.nextInt(8);
                 a.y = random.nextInt(8);
+                Thread.sleep(1000);
             }
 
-
+            boolean success = true;
             try {
                 reversi.doMove(a);
             } catch (InvalidMoveException e) {
                 e.printStackTrace();
+                success = false;
 
                 // We don't want to switch turn if move is invalid
-                turn = !turn;
+                if (e.getMessage().equals("Invalid move.")) {
+                    turn = !turn;
+                }
             }
 
             board = reversi.getBoard();
             printBoard(board);
+            if (success) {
+                System.out.println(a.player+" successfully made move ("+a.x+", "+a.y+").");
+            } else {
+                System.out.println(a.player+" tried making move ("+a.x+", "+a.y+").");
+            }
 
             turn = !turn;
         }

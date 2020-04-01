@@ -54,9 +54,6 @@ public class Framework {
                     throw new RuntimeException("Really shouldn't be here!");
             }
             Move move = playerToMove.getNextMove(game.getBoard());
-            if (move.getPlayer() == GameState.LocalTurn) {
-                connection.sendMove(move);
-            }
             try {
                 GameState newState = game.doMove(move);
                 state.setGameState(newState);

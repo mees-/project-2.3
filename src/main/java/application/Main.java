@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] argv) throws IOException {
         System.out.println("Hello, world!");
         Connection connection = new Connection();
-        Player player = new RandomMovePlayer();
+        Player player = new LocalConnectedPlayer(new RandomMovePlayer(), connection);
         framework = new Framework(player, connection);
         framework.login("test" + (new Random()).nextInt(100));
         framework.runGameSync(GameType.TicTacToe);

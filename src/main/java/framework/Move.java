@@ -11,6 +11,10 @@ public class Move {
         this.y = y;
     }
 
+    public static Move fromSimplePosition(GameState player, int boardSize, int position) {
+        return new Move(player, position % boardSize, position / boardSize);
+    }
+
     public GameState getPlayer() {
         return player;
     }

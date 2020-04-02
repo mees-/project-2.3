@@ -30,7 +30,7 @@ class GameTest {
         InvalidMoveException e = assertThrows(
                 InvalidMoveException.class,
                 () -> game.doMove(new Move(GameState.RemoteTurn, 0, 0)));
-        assertEquals("The move to set xPos: 1 and yPos: 1 to Remote is invalid.", e.getMessage());
+        assertEquals("The move to set xPos: 1 and yPos: 1 to " + CellContent.Remote + " is invalid.", e.getMessage());
 
         game.doMove(new Move(GameState.RemoteTurn, 0, 1));
         assertEquals(CellContent.Remote, game.getBoard().getCell(0,1));
@@ -38,12 +38,12 @@ class GameTest {
         InvalidTurnException e2 = assertThrows(
                 InvalidTurnException.class,
                 () -> game.doMove(new Move(GameState.RemoteTurn, 0, 0)));
-        assertEquals("RemoteTurn took two turns in a row, only one is allowed.", e2.getMessage());
+        assertEquals(GameState.RemoteTurn + " took two turns in a row, only one is allowed.", e2.getMessage());
 
         InvalidMoveException e3 = assertThrows(
                 InvalidMoveException.class,
                 () -> game.doMove(new Move(GameState.LocalTurn, 3, 3)));
-        assertEquals("The move to set xPos: 4 and yPos: 4 to Local is invalid.", e3.getMessage());
+        assertEquals("The move to set xPos: 4 and yPos: 4 to " + CellContent.Local + " is invalid.", e3.getMessage());
     }
 
     @Test

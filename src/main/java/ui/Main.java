@@ -25,7 +25,8 @@ public class Main extends Application {
         pane.setCenter(new Home());
         pane.setBottom(createBottom());
 
-        Scene scene = new Scene(pane, 500, 500);
+        Scene scene = new Scene(pane, 1000, 600);
+        scene.getStylesheets().add("Styles.css");
 
         primaryStage.setTitle("Tha Koel GameBox");
         primaryStage.setScene(scene);

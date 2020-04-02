@@ -7,7 +7,7 @@ public class Game implements GameInterface
     private static final String GAME_NAME = "Tic-Tac-Toe";
     private final Board board;
     private GameState lastTurn;
-    private Boolean printToCommandLine = true;
+    private Boolean printToCommandLine = false;
 
     public Game() {
         board = new Board();

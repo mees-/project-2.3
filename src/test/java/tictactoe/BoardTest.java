@@ -51,7 +51,7 @@ class BoardTest {
         InvalidMoveException e = assertThrows(
                 InvalidMoveException.class,
                 () -> board.setCell(0, 0, CellContent.Empty));
-        assertEquals("The move to set xPos: 1 and yPos: 1 to Empty is invalid.", e.getMessage());
+        assertEquals("The move to set xPos: 1 and yPos: 1 to " + CellContent.Empty + " is invalid.", e.getMessage());
 
         board.setCell(0, 0, CellContent.Local);
         board.setCell(0, 1, CellContent.Remote);
@@ -74,12 +74,12 @@ class BoardTest {
         InvalidMoveException e2 = assertThrows(
                 InvalidMoveException.class,
                 () -> board.setCell(0, 0, CellContent.Local));
-        assertEquals("The move to set xPos: 1 and yPos: 1 to Local is invalid.", e2.getMessage());
+        assertEquals("The move to set xPos: 1 and yPos: 1 to " + CellContent.Local + " is invalid.", e2.getMessage());
 
         InvalidMoveException e3 = assertThrows(
                 InvalidMoveException.class,
                 () -> board.setCell(3, 3, CellContent.Local));
-        assertEquals("The move to set xPos: 4 and yPos: 4 to Local is invalid.", e3.getMessage());
+        assertEquals("The move to set xPos: 4 and yPos: 4 to " + CellContent.Local + " is invalid.", e3.getMessage());
     }
 
     @Test
@@ -121,13 +121,19 @@ class BoardTest {
     }
 
     @Test
-    @Order(8)
-    void checkRowForWin() {
+    @Order(9)
+    void checkRowForWin() throws InvalidMoveException {
+        board.reset();
+
+        board.setCell(0, 0, CellContent.Local);
+        board.setCell(0, 1, CellContent.Local);
+        board.setCell(0, 2, CellContent.Local);
+
         assertTrue(board.checkForWin());
     }
 
     @Test
-    @Order(9)
+    @Order(8)
     void checkColForWin() {
         assertTrue(board.checkForWin());
     }

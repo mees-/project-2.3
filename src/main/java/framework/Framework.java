@@ -1,15 +1,59 @@
 package framework;
 
-public abstract class Framework {
-    public abstract void Move(Move move);
+import connection.Connection;
+import framework.player.Player;
+import tictactoe.Game;
 
-    public abstract State getState();
+import java.io.IOException;
 
-    public abstract void startGame(GameType gameType);
+public class Framework {
+    private Match match;
+    private final Player localPlayer;
+    private final Connection connection;
 
-    public abstract void notifyMove(Move move);
+    public Framework(Player localPlayer, Connection connection) {
+        this.localPlayer = localPlayer;
+        this.connection = connection;
+        this.connection.setFramework(this);
+    }
 
-    public abstract void notifyGameOffer(GameType gameType);
+    public int getBoardSize() {
+        return match.getGame().getBoard().getSize();
+    }
 
-    public abstract void notifyTurn(PlayerType playerType);
+    public synchronized void runGameSync(GameType gameType) {
+        connection.subscribe(gameType);
+        try {
+            wait();
+
+            match.gameLoop();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void login() {
+        connection.login(localPlayer.getUsername());
+    }
+  
+    public synchronized void notifyGameOffer(GameType gameType, Player remotePlayer, GameState startingPlayer) {
+        GameInterface game = null;
+      
+        switch (gameType) {
+            case TicTacToe:
+                game = new Game();
+                break;
+//            case Reversi:
+//                game = new Reversi();
+//                break;
+        }
+        match = new Match(game, localPlayer, remotePlayer);
+        match.setGameState(startingPlayer);
+        match.setupGame();
+        notify();
+    }
+
+    public void close() throws IOException {
+        connection.close();
+    }
 }

@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CLI" type="Application" factoryName="Application" singleton="false">
+    <envs>
+      <env name="GAME_HOST" value="localhost" />
+      <env name="GAME_PORT" value="7789" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="cli.Main" />
+    <module name="project-2.3" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

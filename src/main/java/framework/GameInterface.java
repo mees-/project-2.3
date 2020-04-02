@@ -2,11 +2,11 @@ package framework;
 
 public interface GameInterface {
 
-    public BoardInterface getBoard();
+    BoardInterface getBoard();
 
-    public MoveResult doMove(Move move) throws InvalidMoveException;
+    GameState doMove(Move move) throws InvalidMoveException, InvalidTurnException;
 
-    public void start();
+    void setup();
 
-    public GameType getType();
+    GameType getType();
 }

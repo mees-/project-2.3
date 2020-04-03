@@ -1,8 +1,7 @@
 package reversi;
 import framework.*;
 
-
-public class Reversi implements GameInterface {
+public class Game implements GameInterface {
 
     private static final int BOARD_SIZE = 8;
     private static final char BLACK_DISC = '#';
@@ -17,18 +16,20 @@ public class Reversi implements GameInterface {
 
     private boolean AI = false;
 
-    private BoardInterface board;
+    private Board board;
     private char[][] suggestions;
     private char[][] charBoard;
 
-    private MoveResult moveResult;
+    private GameState lastTurn;
+
+    private GameState gameState;
 
 
-    public Reversi() {
+    public Game() {
         init();
 
-        // If player one
-        if (moveResult != MoveResult.RemoteMove) {
+        // If player one; black; first
+        if (gameState == GameState.LocalTurn) {
             board.setCell(3, 3, CellContent.Remote);
             board.setCell(4, 4, CellContent.Remote);
             board.setCell(3, 4, CellContent.Local);
@@ -36,7 +37,7 @@ public class Reversi implements GameInterface {
             playerColour = BLACK_DISC;
             opponentColour = WHITE_DISC;
 
-        // If player two
+        // If player two; white; second
         } else {
             board.setCell(3, 3, CellContent.Local);
             board.setCell(4, 4, CellContent.Local);
@@ -137,70 +138,119 @@ public class Reversi implements GameInterface {
         return check_line_match(playerCell, checkX, checkY, checkX + nextX, checkY + nextY);
     }
 
+    @Override
     public BoardInterface getBoard() {
         return board;
     }
 
     @Override
-    public MoveResult doMove(Move move) throws InvalidMoveException {
-        int localScore = 0;
-        int remoteScore = 0;
-        int emptyCells = board.getSize() * board.getSize();
-
-        int countSuggest = 0;
-        CellContent player = playerTypeToCellContent(move.player);
-
-        validMovesOverview(player);
-        for (int i = 0; i < board.getSize(); i++) {
-            for (int j = 0; j < board.getSize(); j++) {
-                if (suggestions[i][j] == SUGGEST_DISC) {
-                    countSuggest += 1;
-                }
-            }
+    public GameState doMove(Move move) throws InvalidMoveException, InvalidTurnException {
+//        int localScore = 0;
+//        int remoteScore = 0;
+//        int emptyCells = board.getSize() * board.getSize();
+        if(!validCurrentTurn(move.getPlayer())) {
+            throw new InvalidTurnException(move.getPlayer() + " took two turns in a row, only one is allowed.");
         }
-        if (countSuggest == 0) {
-            throw new InvalidMoveException("Can't make a valid move this turn.");
-        }
-        if (suggestions[move.x][move.y] == SUGGEST_DISC) {
-            board.setCell(move.x, move.y, player);
+
+        CellContent player = moveToCellContent(move);
+
+        if (validMovesOverview(player)[move.getX()][move.getY()] == SUGGEST_DISC) {
+            board.setCell(move.getX(), move.getY(), player);
             flipDiscs(move, player);
-            for (int i = 0; i < board.getSize(); i++) {
-                for (int j = 0; j < board.getSize(); j++) {
-                    if (board.getCell(i, j) == CellContent.Local) {
-                        localScore += 1;
-                    } else if (board.getCell(i, j) == CellContent.Remote) {
-                        remoteScore += 1;
-                    } else if (board.getCell(i, j) == CellContent.Empty) {
-                        emptyCells -= 1;
-                        if (emptyCells == 0) {
-                            if (localScore > remoteScore) {
-                                moveResult = MoveResult.Win;
-                            } else if (localScore < remoteScore) {
-                                moveResult = MoveResult.Loss;
-                            } else {
-                                moveResult = MoveResult.Draw;
-                            }
-                        } else {
-                            if (move.player == PlayerType.Local) {
-                                moveResult = MoveResult.LocalMove;
-                            } else if (move.player == PlayerType.Remote) {
-                                moveResult = MoveResult.RemoteMove;
-                            }
-                        }
-                    }
-                }
-            }
-
         } else {
-            throw new InvalidMoveException("Invalid move.");
+            throw new InvalidMoveException(move.getPlayer() + " can not place a disc here.");
         }
-        return moveResult;
+
+        if (!canMakeTurn(getOpposite(player))) {
+            setLastTurn(move.getPlayer());
+        }
+        return getResult(move);
     }
 
-    public CellContent playerTypeToCellContent(PlayerType playerType) {
-        if (playerType == PlayerType.Local) {
+
+//        if(printToCommandLine) {
+//            board.printBoard();
+//        }
+//        if (validMovesOverview(player)[move.getX()][move.getY()] == SUGGEST_DISC) {
+//            board.setCell(move.getX(), move.getY(), player);
+//            flipDiscs(move, player);
+//            for (int i = 0; i < board.getSize(); i++) {
+//                for (int j = 0; j < board.getSize(); j++) {
+//                    if (board.getCell(i, j) == CellContent.Local) {
+//                        localScore += 1;
+//                    } else if (board.getCell(i, j) == CellContent.Remote) {
+//                        remoteScore += 1;
+//                    } else if (board.getCell(i, j) == CellContent.Empty) {
+//                        emptyCells -= 1;
+//                        if (emptyCells == 0) {
+//                            if (localScore > remoteScore) {
+//                                moveResult = MoveResult.Win;
+//                            } else if (localScore < remoteScore) {
+//                                moveResult = MoveResult.Loss;
+//                            } else {
+//                                moveResult = MoveResult.Draw;
+//                            }
+//                        } else {
+//                            if (move.player == PlayerType.Local) {
+//                                moveResult = MoveResult.LocalMove;
+//                            } else if (move.player == PlayerType.Remote) {
+//                                moveResult = MoveResult.RemoteMove;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//        } else {
+//            throw new InvalidMoveException("Invalid move");
+//        }
+
+
+    private GameState getResult(Move move) {
+        CellContent player = moveToCellContent(move);
+        int[] pieces = board.countPieces();
+        if(pieces[0] > pieces[1] && !canMakeTurn(player)
+                && !canMakeTurn(getOpposite(player))) {
+            return GameState.OneWin;
+        }
+        else if(pieces[0] < pieces[1] && !canMakeTurn(player)
+                && !canMakeTurn(getOpposite(player))) {
+            return GameState.TwoWin;
+        }
+        else if(pieces[0] == pieces[1] && !canMakeTurn(player)
+                && !canMakeTurn(getOpposite(player))) {
+            return GameState.Draw;
+        }
+        else if(move.getPlayer() == GameState.RemoteTurn) {
+            return GameState.LocalTurn;
+        }
+        else if(move.getPlayer() == GameState.LocalTurn) {
+            return GameState.RemoteTurn;
+        }
+        return null;
+    }
+
+    private boolean canMakeTurn(CellContent player) {
+        int count = 0;
+        for (int i = 0; i < board.getSize(); i ++) {
+            for (int j = 0; j < board.getSize(); j++) {
+                if (validMovesOverview(player)[i][j] == SUGGEST_DISC) {
+                    count++;
+                }
+            }
+        }
+        return (count > 0);
+    }
+
+    @Override
+    public void setup() {
+        board.reset();
+    }
+
+    public CellContent moveToCellContent(Move move) {
+        if (move.getPlayer() == GameState.LocalTurn) {
             playerCell = CellContent.Local;
-        } else if (playerType == PlayerType.Remote) {
+        } else if (move.getPlayer() == GameState.RemoteTurn) {
             playerCell = CellContent.Remote;
         }
         return playerCell;
@@ -218,8 +268,8 @@ public class Reversi implements GameInterface {
 
     public void flipDiscs(Move move, CellContent player) {
 
-        int x = move.x;
-        int y = move.y;
+        int x = move.getX();
+        int y = move.getY();
         flipLine(player, x, y, 0, -1); //nn
         flipLine(player, x, y, 1, -1); //ne
         flipLine(player, x, y, 1, 0); //ee
@@ -254,11 +304,6 @@ public class Reversi implements GameInterface {
     }
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
     public GameType getType() {
         return GameType.Reversi;
     }
@@ -289,13 +334,21 @@ public class Reversi implements GameInterface {
         return charBoard;
     }
 
-    public void printBoard(char[][] boardType) {
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                System.out.print(boardType[i][j]);
-            }
-            System.out.println();
+    public void printBoard() {
+        board.printBoard();
+    }
+
+    private boolean validCurrentTurn(GameState player) {
+        if(lastTurn == null) {
+            lastTurn = player;
+            return true;
         }
-        System.out.println();
+        else {
+            return lastTurn != player;
+        }
+    }
+
+    private void setLastTurn(GameState player) {
+        lastTurn = player;
     }
 }

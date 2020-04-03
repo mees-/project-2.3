@@ -24,11 +24,11 @@ public class Demo {
 //        reversi.setup();
 //        reversi.printBoard();
 
-        boolean turn = true;
-        BoardInterface board = reversi.getBoard();
+//        boolean turn = true;
+//        BoardInterface board = reversi.getBoard();
 //        reversi.printBoard();
 
-        boolean inputCommand = false;
+//        boolean inputCommand = false;
 
         do {
             reversi.printBoard();

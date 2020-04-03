@@ -30,6 +30,7 @@ public class Game implements GameInterface {
 
         // If player one; black; first
         if (gameState == GameState.LocalTurn) {
+            System.out.println(gameState.toString()+" is black.");
             board.setCell(3, 3, CellContent.Remote);
             board.setCell(4, 4, CellContent.Remote);
             board.setCell(3, 4, CellContent.Local);
@@ -39,6 +40,7 @@ public class Game implements GameInterface {
 
         // If player two; white; second
         } else {
+            System.out.println(gameState.toString()+" is white.");
             board.setCell(3, 3, CellContent.Local);
             board.setCell(4, 4, CellContent.Local);
             board.setCell(3, 4, CellContent.Remote);

@@ -43,9 +43,9 @@ public class Framework {
             case TicTacToe:
                 game = new Game();
                 break;
-//            case Reversi:
-//                game = new Reversi();
-//                break;
+            case Reversi:
+                game = new Game();
+                break;
         }
         match = new Match(game, localPlayer, remotePlayer);
         match.setGameState(startingPlayer);

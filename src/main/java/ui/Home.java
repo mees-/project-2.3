@@ -1,6 +1,8 @@
 package ui;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -38,6 +40,10 @@ public class Home extends BorderPane {
 
         Button local = new Button("Local");
         Button online = new Button("Online");
+
+        local.setOnAction(new ButtonLocal());
+
+        online.setOnAction(new ButtonOnline());
 
         left.getChildren().addAll(type, local, online);
         VBox.setMargin(local, new Insets(5,0,5,0));
@@ -84,5 +90,21 @@ public class Home extends BorderPane {
         line.endXProperty().bind(pane.widthProperty().subtract(40));
 
         return line;
+    }
+
+    public class ButtonOnline implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            Main.changePane(2);
+        }
+    }
+
+    public class ButtonLocal implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            Main.changePane(1);
+        }
     }
 }

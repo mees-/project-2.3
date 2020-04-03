@@ -1,0 +1,24 @@
+#id {
+    -fx-background-color: #A9A9A9;
+}
+
+#line {
+    -fx-padding: 0 0 0 20;
+}
+
+.font-style {
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+
+#leftColor {
+    -fx-background-color: #3c2da9;
+}
+
+#rightColor {
+    -fx-background-color: #a94a37;
+}
+
+#centerColor {
+    -fx-background-color: #59a940;
+}

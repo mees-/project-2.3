@@ -13,20 +13,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class Main extends Application {
+    BorderPane pane = new BorderPane();
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        BorderPane pane = new BorderPane();
-
         pane.setCenter(new Home());
         pane.setBottom(createBottom());
 
         Scene scene = new Scene(pane, 1000, 600);
-        scene.getStylesheets().add("Styles.css");
+        scene.getStylesheets().add("file:///" + new File("src/Styles/stylesheet.css").getAbsolutePath().replace("\\", "/"));
 
         primaryStage.setTitle("Tha Koel GameBox");
         primaryStage.setScene(scene);
@@ -40,7 +42,7 @@ public class Main extends Application {
 
         // Create new BorderPane and background color
         BorderPane bottomPane = new BorderPane();
-        bottomPane.setStyle("-fx-background-color: #A9A9A9");
+        bottomPane.setId("id");
 
         // Create two HBox's
         HBox left = new HBox();
@@ -53,13 +55,9 @@ public class Main extends Application {
         left.setAlignment(Pos.BOTTOM_LEFT);
         right.setAlignment(Pos.BOTTOM_RIGHT);
 
-        // Getting the nodes from the HBox's
-        ObservableList<Node> listLeft = left.getChildren();
-        ObservableList<Node> listRight = right.getChildren();
-
         // Setting the new nodes on the HBox's
-        listLeft.add(madeBy);
-        listRight.add(group);
+        left.getChildren().add(madeBy);
+        right.getChildren().add(group);
 
         // Set the HBox's on the new pane
         bottomPane.setLeft(left);

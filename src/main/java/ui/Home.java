@@ -10,19 +10,15 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 
 public class Home extends BorderPane {
+    BorderPane pane;
+
     public Home() {
+        pane = new BorderPane();
         pane();
     }
 
     private void pane() {
-        BorderPane pane = new BorderPane();
         pane.prefWidthProperty().bind(this.widthProperty().divide(3));
-
-        Line line = new Line();
-        line.setStartX(0);
-        line.setStartY(20);
-        line.setEndY(20);
-        line.endXProperty().bind(pane.widthProperty().subtract(40));
 
         VBox left = new VBox();
         VBox center = new VBox();
@@ -62,9 +58,15 @@ public class Home extends BorderPane {
         pane.getRight().setId("rightColor");
         BorderPane.setMargin(right, new Insets(10, 20, 0,0));
 
-        pane.setTop(line);
+        Line lineTop = createLine();
+        pane.setTop(lineTop);
         pane.getTop().prefHeight(50);
-        BorderPane.setMargin(line, new Insets(10, 0, 0,20));
+        BorderPane.setMargin(lineTop, new Insets(10, 0, 0,20));
+
+        Line lineBottom = createLine();
+        pane.setBottom(lineBottom);
+        pane.getBottom().prefHeight(50);
+        BorderPane.setMargin(lineBottom, new Insets(10, 0, 10,20));
 
         this.setCenter(pane);
 
@@ -72,5 +74,15 @@ public class Home extends BorderPane {
         b.prefWidthProperty().bind(this.widthProperty());
         b.setPrefHeight(200);
         this.setTop(b);
+    }
+
+    private Line createLine() {
+        Line line = new Line();
+        line.setStartX(0);
+        line.setStartY(20);
+        line.setEndY(20);
+        line.endXProperty().bind(pane.widthProperty().subtract(40));
+
+        return line;
     }
 }

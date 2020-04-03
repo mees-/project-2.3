@@ -161,7 +161,7 @@ public class Game implements GameInterface {
             throw new InvalidMoveException(move.getPlayer() + " can not place a disc here.");
         }
 
-        if (!canMakeTurn(getOpposite(player))) {
+        if (canMakeTurn(getOpposite(player))) {
             setLastTurn(move.getPlayer());
         }
         return getResult(move);

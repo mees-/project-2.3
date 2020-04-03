@@ -48,6 +48,8 @@ public class Main extends Application {
 
         Scene scene = new Scene(pane, 1000, 600);
         scene.getStylesheets().add("file:///" + new File("src/Styles/stylesheet.css").getAbsolutePath().replace("\\", "/"));
+        scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css"); //(3)
+
 
         primaryStage.setTitle("Tha Koel GameBox");
         primaryStage.setScene(scene);
@@ -57,7 +59,7 @@ public class Main extends Application {
     private Pane createBottom() {
         // Create labels
         Label group = new Label("Groep D3");
-        Label madeBy = new Label("Ivo, Jeroen, Joeri, Mees");
+        Label madeBy = new Label("Made by: Ivo, Jeroen, Joeri, Mees");
 
         // Create new BorderPane and background color
         BorderPane bottomPane = new BorderPane();

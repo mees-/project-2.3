@@ -1,0 +1,12 @@
+#bottom {
+    -fx-background-color: #A9A9A9;
+}
+
+#line {
+    -fx-padding: 0 0 0 20;
+}
+
+.font-style {
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}

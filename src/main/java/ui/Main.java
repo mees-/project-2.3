@@ -1,16 +1,13 @@
 package ui;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import ui.bottom.Bottom;
+import javafx.fxml.FXMLLoader;
 
-import java.io.File;
+import java.io.IOException;
 
 public class Main extends Application {
     private static BorderPane pane = new BorderPane();
@@ -20,18 +17,21 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        pane.setCenter(new Home());
-        pane.setBottom(new Bottom());
+    public void start(Stage primaryStage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/templates/template.fxml"));
 
-        Scene scene = new Scene(pane, 1000, 600);
-        scene.getStylesheets().add("file:///" + new File("src/Styles/stylesheet.css").getAbsolutePath().replace("\\", "/"));
+//        pane.setCenter(new Home());
+//        pane.setBottom(new Bottom());
+
+        Scene scene = new Scene(root, 1000, 600);
+        scene.getStylesheets().add("/css/stylesheet.css");
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css"); //(3)
 
         primaryStage.setTitle("Tha Koel GameBox");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
     public static void changePane(int i) {
         switch (i) {
             case 1:

@@ -38,10 +38,10 @@ public class Match {
         while (!getGameState().isEnd()) {
             Player playerToMove;
             switch (getGameState()) {
-                case LocalTurn:
+                case TurnOne:
                     playerToMove = players.one;
                     break;
-                case RemoteTurn:
+                case TurnTwo:
                     playerToMove = players.two;
                     break;
                 default:

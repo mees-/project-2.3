@@ -4,8 +4,8 @@ public enum GameState {
     OneWin("win", true),
     TwoWin("loss", true),
     Draw("draw", true),
-    RemoteTurn,
-    LocalTurn;
+    TurnTwo,
+    TurnOne;
 
     private final String token;
     private final boolean end;

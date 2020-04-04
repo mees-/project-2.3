@@ -47,7 +47,7 @@ public class Main {
             System.out.print("Enter (simple) move: ");
             try {
                 int position = Integer.parseInt(reader.readLine());
-                Move move = Move.fromSimplePosition(GameState.LocalTurn, 3, position);
+                Move move = Move.fromSimplePosition(GameState.TurnOne, 3, position);
                 return move;
             } catch (IOException e) {
                 throw new RuntimeException(e);

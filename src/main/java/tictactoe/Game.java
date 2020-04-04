@@ -7,7 +7,7 @@ public class Game implements GameInterface
     private static final String GAME_NAME = "Tic-Tac-Toe";
     private final Board board;
     private GameState lastTurn;
-    private Boolean printToCommandLine = false;
+    private Boolean printToCommandLine = true;
 
     public Game() {
         board = new Board();
@@ -26,7 +26,7 @@ public class Game implements GameInterface
             throw new InvalidTurnException(move.getPlayer() + " took two turns in a row, only one is allowed.");
         }
 
-        CellContent cellContent = move.getPlayer() == GameState.LocalTurn ? CellContent.Local : CellContent.Remote;
+        CellContent cellContent = move.getPlayer() == GameState.TurnOne ? CellContent.Local : CellContent.Remote;
         board.setCell(move.getX(), move.getY(), cellContent);
 
         setLastTurn(move.getPlayer());
@@ -39,20 +39,20 @@ public class Game implements GameInterface
 
     private GameState getResult(Move move) {
         // todo CheckForWin laten controleren welke speler gewonnen heeft.
-        if(board.checkForWin() && move.getPlayer() == GameState.LocalTurn) {
+        if(board.checkForWin() && move.getPlayer() == GameState.TurnOne) {
             return GameState.OneWin;
         }
-        else if(board.checkForWin() && move.getPlayer() == GameState.RemoteTurn) {
+        else if(board.checkForWin() && move.getPlayer() == GameState.TurnTwo) {
             return GameState.TwoWin;
         }
         else if(board.boardIsFull()) {
             return GameState.Draw;
         }
-        else if(move.getPlayer() == GameState.RemoteTurn) {
-            return GameState.LocalTurn;
+        else if(move.getPlayer() == GameState.TurnTwo) {
+            return GameState.TurnOne;
         }
-        else if(move.getPlayer() == GameState.LocalTurn) {
-            return GameState.RemoteTurn;
+        else if(move.getPlayer() == GameState.TurnOne) {
+            return GameState.TurnTwo;
         }
         return null;
     }

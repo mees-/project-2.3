@@ -1,7 +1,7 @@
 package framework;
 
 public enum GameType {
-//    Reversi("Reversi"),
+    Reversi("Reversi"),
     TicTacToe("Tic-tac-toe");
 
     private final String token;

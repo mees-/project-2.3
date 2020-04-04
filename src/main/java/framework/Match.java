@@ -3,6 +3,8 @@ package framework;
 import framework.player.Player;
 import framework.player.Players;
 
+import java.util.Set;
+
 public class Match {
     private GameState gameState;
     private GameInterface game;
@@ -45,7 +47,8 @@ public class Match {
                 default:
                     throw new RuntimeException("Really shouldn't be here!");
             }
-            Move move = playerToMove.getNextMove(game.getBoard());
+            Set<Move> possibleMoves = game.getBoard().getValidMoves(gameState);
+            Move move = playerToMove.getNextMove(game.getBoard(), possibleMoves);
             try {
                 GameState newState = game.doMove(move);
                 setGameState(newState);

@@ -1,9 +1,8 @@
 package framework.player;
 
 import framework.*;
-import framework.player.Player;
-
 import java.util.Random;
+import java.util.Set;
 
 public class RandomMovePlayer extends Player {
     private static final Random usernameRand = new Random();
@@ -18,13 +17,16 @@ public class RandomMovePlayer extends Player {
     }
 
     @Override
-    public Move getNextMove(BoardInterface board) {
-        int boardSize = board.getSize();
-        Move move;
-        do {
-            move = new Move(GameState.LocalTurn,rand.nextInt(boardSize), rand.nextInt(boardSize));
-        } while (board.getCell(move.getX(), move.getY()) != CellContent.Empty);
-        return move;
+    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
+        int index = rand.nextInt(possibleMoves.size());
+        for (Move move : possibleMoves) {
+            if (index == 0) {
+                return move;
+            } else {
+                index--;
+            }
+        }
+        return null;
     }
 
     @Override

@@ -2,7 +2,8 @@ package tictactoe;
 
 import framework.*;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Board implements BoardInterface
     {
@@ -121,8 +122,8 @@ public class Board implements BoardInterface
         }
     }
 
-        public ArrayList<Move> getValidMoves(GameState state) {
-            ArrayList<Move> result = new ArrayList<>();
+        public Set<Move> getValidMoves(GameState state) {
+            HashSet<Move> result = new HashSet<>();
             for (int x = 0; x < 3; x++) {
                 for (int y = 0; y < 3; y++) {
                     if (getCell(x, y) == CellContent.Empty) {

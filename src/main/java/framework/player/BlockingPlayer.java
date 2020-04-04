@@ -4,6 +4,7 @@ import framework.BoardInterface;
 import framework.GameResult;
 import framework.Move;
 
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -24,7 +25,7 @@ public class BlockingPlayer extends Player {
     }
 
     @Override
-    public Move getNextMove(BoardInterface board) {
+    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
         try {
             return move.take();
         } catch (InterruptedException e) {

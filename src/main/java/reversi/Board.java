@@ -2,6 +2,10 @@ package reversi;
 
 import framework.BoardInterface;
 import framework.CellContent;
+import framework.GameState;
+import framework.Move;
+
+import java.util.Set;
 
 public class Board implements BoardInterface {
     private CellContent[][] board;
@@ -35,5 +39,10 @@ public class Board implements BoardInterface {
 
     public int getSize() {
         return size;
+    }
+
+    @Override
+    public Set<Move> getValidMoves(GameState state) {
+        return null;
     }
 }

@@ -1,5 +1,7 @@
 package framework;
 
+import java.util.Collection;
+
 public interface BoardInterface {
 
     CellContent getCell(int x, int y);
@@ -10,4 +12,6 @@ public interface BoardInterface {
 
     int getSize();
 
+
+    Collection<Move> getValidMoves(GameState state);
 }

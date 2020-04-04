@@ -2,6 +2,10 @@ package reversi;
 
 import framework.BoardInterface;
 import framework.CellContent;
+import framework.GameState;
+import framework.Move;
+
+import java.util.Collection;
 
 public class Board implements BoardInterface {
     public static final String ANSI_RED = "\u001B[31m";
@@ -39,6 +43,11 @@ public class Board implements BoardInterface {
 
     public int getSize() {
         return size;
+    }
+
+    @Override
+    public Collection<Move> getValidMoves(GameState state) {
+        return null;
     }
 
     public int[] countPieces() {

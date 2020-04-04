@@ -4,6 +4,8 @@ import framework.BoardInterface;
 import framework.GameResult;
 import framework.Move;
 
+import java.util.Set;
+
 public class HigherOrderPlayer extends Player {
     private final Player original;
 
@@ -14,8 +16,8 @@ public class HigherOrderPlayer extends Player {
     }
 
     @Override
-    public Move getNextMove(BoardInterface board) {
-        return original.getNextMove(board);
+    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
+        return original.getNextMove(board, possibleMoves);
     }
 
     @Override

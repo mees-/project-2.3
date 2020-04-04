@@ -1,6 +1,6 @@
 package framework;
 
-import java.util.Collection;
+import java.util.Set;
 
 public interface BoardInterface {
 
@@ -13,5 +13,5 @@ public interface BoardInterface {
     int getSize();
 
 
-    Collection<Move> getValidMoves(GameState state);
+    Set<Move> getValidMoves(GameState state);
 }

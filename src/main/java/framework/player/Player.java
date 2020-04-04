@@ -4,6 +4,8 @@ import framework.BoardInterface;
 import framework.GameResult;
 import framework.Move;
 
+import java.util.Set;
+
 public abstract class Player {
     private String username;
 
@@ -14,7 +16,7 @@ public abstract class Player {
         this.username = username;
     }
 
-    public abstract Move getNextMove(BoardInterface board);
+    public abstract Move getNextMove(BoardInterface board, Set<Move> possibleMoves);
 
     public abstract void onEnd(GameResult state);
 

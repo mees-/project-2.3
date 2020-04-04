@@ -14,7 +14,7 @@ public class Demo
         Game ttt = new Game();
         boolean isGameOver = false;
         boolean draw = false;
-        GameState currentTurn = GameState.LocalTurn;
+        GameState currentTurn = GameState.TurnOne;
         ttt.setPrintToCommandLine(true);
         ttt.setup();
         ttt.printBoard();
@@ -36,11 +36,11 @@ public class Demo
                 case TwoWin:
                     isGameOver = true;
                     break;
-                case LocalTurn:
-                    currentTurn = GameState.LocalTurn;
+                case TurnOne:
+                    currentTurn = GameState.TurnOne;
                     break;
-                case RemoteTurn:
-                    currentTurn = GameState.RemoteTurn;
+                case TurnTwo:
+                    currentTurn = GameState.TurnTwo;
                     break;
             }
         }

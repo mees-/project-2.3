@@ -3,6 +3,9 @@ package framework;
 import framework.player.Player;
 import framework.player.Players;
 
+import java.util.Collections;
+import java.util.Set;
+
 public class Match {
     private GameState gameState;
     private GameInterface game;
@@ -36,20 +39,33 @@ public class Match {
         while (!getGameState().isEnd()) {
             Player playerToMove;
             switch (getGameState()) {
-                case LocalTurn:
+                case TurnOne:
                     playerToMove = players.one;
                     break;
-                case RemoteTurn:
+                case TurnTwo:
                     playerToMove = players.two;
                     break;
                 default:
                     throw new RuntimeException("Really shouldn't be here!");
             }
-            Move move = playerToMove.getNextMove(game.getBoard());
+            Set<Move> possibleMoves = game.getBoard().getValidMoves(gameState);
+            Move move = playerToMove.getNextMove(game.getBoard(), Collections.unmodifiableSet(possibleMoves));
+            if (!possibleMoves.contains(move)) {
+                switch (getGameState()) {
+                    case TurnOne:
+                        setGameState(GameState.TwoWin);
+                        break;
+                    case TurnTwo:
+                        setGameState(GameState.OneWin);
+                        break;
+                }
+                continue;
+            }
             try {
                 GameState newState = game.doMove(move);
                 setGameState(newState);
             } catch (InvalidMoveException e) {
+                throw new RuntimeException(e);
             } catch (InvalidTurnException e) {
                 throw new RuntimeException(e);
             }

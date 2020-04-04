@@ -29,7 +29,7 @@ public class MoveHandler extends EventHandler {
             if (details.get("PLAYER").equals(player.getUsername())) {
                 int boardSize = connection.getFramework().getBoardSize();
                 int rawCell = Integer.parseInt(details.get("MOVE"));
-                Move move = new Move(GameState.RemoteTurn, rawCell % boardSize, rawCell / boardSize);
+                Move move = new Move(GameState.TurnTwo, rawCell % boardSize, rawCell / boardSize);
                 player.putMove(move);
             }
         } catch (ParseException e) {

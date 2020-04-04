@@ -5,7 +5,7 @@ import framework.CellContent;
 import framework.GameState;
 import framework.Move;
 
-import java.util.Collection;
+import java.util.Set;
 
 public class Board implements BoardInterface {
     public static final String ANSI_RED = "\u001B[31m";
@@ -45,10 +45,6 @@ public class Board implements BoardInterface {
         return size;
     }
 
-    @Override
-    public Collection<Move> getValidMoves(GameState state) {
-        return null;
-    }
 
     public int[] countPieces() {
         int[] pieces;
@@ -86,5 +82,10 @@ public class Board implements BoardInterface {
         }
         System.out.println("");
 //        System.out.println(board.getCell(3,3));
+    }
+
+    @Override
+    public Set<Move> getValidMoves(GameState state) {
+        return null;
     }
 }

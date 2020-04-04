@@ -3,6 +3,7 @@ package framework;
 import framework.player.Player;
 import framework.player.Players;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class Match {
@@ -48,11 +49,23 @@ public class Match {
                     throw new RuntimeException("Really shouldn't be here!");
             }
             Set<Move> possibleMoves = game.getBoard().getValidMoves(gameState);
-            Move move = playerToMove.getNextMove(game.getBoard(), possibleMoves);
+            Move move = playerToMove.getNextMove(game.getBoard(), Collections.unmodifiableSet(possibleMoves));
+            if (!possibleMoves.contains(move)) {
+                switch (getGameState()) {
+                    case TurnOne:
+                        setGameState(GameState.TwoWin);
+                        break;
+                    case TurnTwo:
+                        setGameState(GameState.OneWin);
+                        break;
+                }
+                continue;
+            }
             try {
                 GameState newState = game.doMove(move);
                 setGameState(newState);
             } catch (InvalidMoveException e) {
+                throw new RuntimeException(e);
             } catch (InvalidTurnException e) {
                 throw new RuntimeException(e);
             }

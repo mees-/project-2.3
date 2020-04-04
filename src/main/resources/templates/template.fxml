@@ -6,12 +6,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <BorderPane id="bottom" prefHeight="28.0" prefWidth="600.0" stylesheets="@../css/stylesheet.css" BorderPane.alignment="CENTER">
          <left>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Made By: Jeroen, Joeri, Mees, Ivo" wrappingWidth="187.330078125" BorderPane.alignment="CENTER">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Made By: Jeroen, Joeri, Mees, Ivo" wrappingWidth="197.330078125" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="5.0" />
                </BorderPane.margin>

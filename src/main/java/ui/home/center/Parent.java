@@ -1,4 +1,4 @@
-package ui.home;
+package ui.home.center;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;

@@ -10,6 +10,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -21,6 +24,7 @@ public class Root extends Application
     public void start(Stage stage) throws IOException {
         this.stage = stage;
         stage.setTitle("Tha Koel Gamebox");
+        //stage.getIcons().add(new Image("/img/tictactoe.png"));
         initUI(stage);
         stage.show();
     }
@@ -32,7 +36,7 @@ public class Root extends Application
         root.getChildren().add(home);
 
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());
-        Collections.swap(workingCollection, 1, 2);
+        Collections.swap(workingCollection,0,1);
         root.getChildren().setAll(workingCollection);
 
         Scene scene = new Scene(root);

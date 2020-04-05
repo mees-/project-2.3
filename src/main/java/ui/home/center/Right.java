@@ -8,7 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import ui.Home;
+import ui.Home_oud;
 import ui.settings.OnlineOption;
 
 public class Right extends Parent {
@@ -48,7 +48,7 @@ public class Right extends Parent {
 
         @Override
         public void handle(ActionEvent actionEvent) {
-            Home.option = option;
+            Home_oud.option = option;
             settings((Button) actionEvent.getSource(), btn);
         }
 

@@ -1,63 +1,40 @@
 package ui;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.layout.*;
-import ui.home.center.*;
-import ui.settings.GameType;
-import ui.settings.OnlineOption;
-import ui.settings.PlayerType;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class Home extends BorderPane {
-    public static BorderPane pane;
-    public static GameType gameType;
-    public static OnlineOption option;
-    public static PlayerType playerType;
+import java.io.IOException;
+import java.util.Collections;
 
-    public Home() {
-        pane = new BorderPane();
-        pane.prefWidthProperty().bind(widthProperty().divide(3));
+public class Home extends Application {
 
-        settings();
+    @Override
+    public void start(Stage stage) throws IOException {
+        stage.setTitle("Tha Koel Gamebox");
+        //stage.getIcons().add(new Image("/img/tictactoe.png"));
+        initUI(stage);
+        stage.show();
     }
 
-    private void settings() {
-        VBox right = new Right();
-        pane.setRight(right);
-        pane.getRight().setId("rightColor");
-        BorderPane.setMargin(right, new Insets(10, 20, 0,0));
-        right.prefWidthProperty().bind(widthProperty().divide(3));
+    private void initUI(Stage stage) throws IOException {
+        VBox root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
+        Pane home = FXMLLoader.load(getClass().getResource("/view/home.fxml"));
+        root.getChildren().add(home);
 
-        VBox center = new Center();
-        center.prefWidthProperty().bind(widthProperty().divide(3));
-        pane.setCenter(center);
-        pane.getCenter().setId("centerColor");
-        BorderPane.setMargin(center, new Insets(10, 0, 0,0));
+        ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());
+        Collections.swap(workingCollection,0,1);
+        root.getChildren().setAll(workingCollection);
 
-        VBox left = new Left(pane);
-        left.prefWidthProperty().bind(widthProperty().divide(3));
-        pane.setLeft(left);
-        pane.getLeft().setId("leftColor");
-        BorderPane.setMargin(left, new Insets(10, 0, 0,20));
-
-        VBox top = new Top();
-        pane.setTop(top);
-        pane.getTop().prefHeight(50);
-        BorderPane.setMargin(top, new Insets(10, 0, 0,20));
-
-        VBox bottom = new Bottom();
-        pane.setBottom(bottom);
-        pane.getBottom().prefHeight(50);
-        bottom.setAlignment(Pos.BOTTOM_CENTER);
-        BorderPane.setMargin(bottom, new Insets(10, 10, 10, 10));
-
-        setCenter(pane);
-
-        // Opvulling
-        Button b = new Button("Opvulling");
-        b.prefWidthProperty().bind(this.widthProperty());
-        b.setPrefHeight(200);
-        setTop(b);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setMaximized(true);
     }
+
 }

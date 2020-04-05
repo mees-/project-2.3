@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ui.Home;
+import ui.Home_oud;
 import ui.settings.PlayerType;
 
 import java.util.ArrayList;
@@ -84,10 +84,10 @@ public class Center extends Parent {
         public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
             switch (hashMap.get(t1)) {
                 case 0:
-                    Home.playerType = PlayerType.HUMAN;
+                    Home_oud.playerType = PlayerType.HUMAN;
                     break;
                 case 1:
-                    Home.playerType = PlayerType.AI;
+                    Home_oud.playerType = PlayerType.AI;
                     break;
                 default:
                     System.out.println("Something went wrong!");

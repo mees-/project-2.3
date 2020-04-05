@@ -16,7 +16,7 @@
             <Region prefHeight="40.0" HBox.hgrow="ALWAYS" />
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hanze" HBox.hgrow="ALWAYS" />
             <Region prefHeight="200.0" prefWidth="210.0" HBox.hgrow="ALWAYS" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Groep D3" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Group D3" />
          </children>
          <padding>
             <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -29,7 +29,7 @@
       </HBox>
    </children>
    <stylesheets>
-      <URL value="@../css/app.css" />
       <URL value="@../css/bootstrapfx.css" />
+      <URL value="@../css/app.css" />
    </stylesheets>
 </VBox>

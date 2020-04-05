@@ -10,6 +10,8 @@
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 * {
     -fx-font-family: 'sans-serif';
+    -fx-primary-color: #337ab7;
+    -fx-primary-color-shade: #286090;
 }
 
 .b,
@@ -135,14 +137,14 @@
 }
 
 .text-primary {
-    -fx-text-fill: #337ab7;
-    -fx-fill: #337ab7;
+    -fx-text-fill: -fx-primary-color;
+    -fx-fill: -fx-primary-color;
 }
 
 a.text-primary:hover,
 a.text-primary:focused {
-    -fx-text-fill: #286090;
-    -fx-fill: #286090;
+    -fx-text-fill: -fx-primary-color-shade;
+    -fx-fill: -fx-primary-color-shade;
 }
 
 .text-success {
@@ -195,12 +197,12 @@ a.text-danger:focused {
 }
 
 .bg-primary {
-    -fx-background-color: #337ab7;
+    -fx-background-color: -fx-primary-color;
 }
 
 a.bg-primary:hover,
 a.bg-primary:focused {
-    --fxbackground-color: #286090;
+    --fxbackground-color: -fx-primary-color-shade;
 }
 
 .bg-success {
@@ -323,25 +325,25 @@ a.bg-danger:focused {
 .btn-primary {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #337ab7;
+    -fx-background-color: -fx-primary-color;
     -fx-border-color: #2e6da4;
 }
 .btn-primary:focused, .btn-primary.focused {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #286090;
+    -fx-background-color: -fx-primary-color-shade;
     -fx-border-color: #122b40;
 }
 .btn-primary:hover {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #286090;
+    -fx-background-color: -fx-primary-color-shade;
     -fx-border-color: #204d74;
 }
 .btn-primary:pressed, .btn-primary.pressed, .open > .btn-primary.dropdown-toggle {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #286090;
+    -fx-background-color: -fx-primary-color-shade;
     -fx-border-color: #204d74;
 }
 .btn-primary:pressed:hover, .btn-primary:pressed:focused, .btn-primary:pressed.focused, .btn-primary.pressed:hover, .btn-primary.pressed:focused, .btn-primary.pressed.focused, .open > .btn-primary.dropdown-toggle:hover, .open > .btn-primary.dropdown-toggle:focused, .open > .btn-primary.dropdown-toggle.focused {
@@ -353,7 +355,7 @@ a.bg-danger:focused {
 .btn-primary:selected, .btn-primary.selected {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #286090;
+    -fx-background-color: -fx-primary-color-shade;
     -fx-border-color: #204d74;
 }
 .btn-primary:selected:hover, .btn-primary:selected:focused, .btn-primary:selected.focused, .btn-primary.selected:hover, .btn-primary.selected:focused, .btn-primary.selected.focused {
@@ -366,12 +368,12 @@ a.bg-danger:focused {
     background-image: none;
 }
 .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focused, .btn-primary.disabled.focused, .btn-primary.disabled:pressed, .btn-primary.disabled.pressed, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focused, .btn-primary[disabled].focused, .btn-primary[disabled]:pressed, .btn-primary[disabled].pressed, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focused, fieldset[disabled] .btn-primary.focused, fieldset[disabled] .btn-primary:pressed, fieldset[disabled] .btn-primary.pressed {
-    -fx-background-color: #337ab7;
+    -fx-background-color: -fx-primary-color;
     -fx-border-color: #2e6da4;
 }
 .btn-primary .badge {
-    -fx-text-fill: #337ab7;
-    -fx-fill: #337ab7;
+    -fx-text-fill: -fx-primary-color;
+    -fx-fill: -fx-primary-color;
     -fx-background-color: #fff;
 }
 
@@ -718,25 +720,25 @@ a.bg-danger:focused {
 .split-menu-btn-primary > .label, .split-menu-btn-primary > .arrow-button {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #337ab7;
-    -fx-border-color: #337ab7;
+    -fx-background-color: -fx-primary-color;
+    -fx-border-color: -fx-primary-color;
 }
 .split-menu-btn-primary:focused > .label, .split-menu-btn-primary:focused > .arrow-button, .split-menu-btn-primary.focused > .label, .split-menu-btn-primary.focused > .arrow-button {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #286090;
+    -fx-background-color: -fx-primary-color-shade;
     -fx-border-color: #122b40;
 }
 .split-menu-btn-primary:hover > .label, .split-menu-btn-primary:hover > .arrow-button {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #286090;
+    -fx-background-color: -fx-primary-color-shade;
     -fx-border-color: #204d74;
 }
 .split-menu-btn-primary:pressed > .label, .split-menu-btn-primary:pressed > .arrow-button, .split-menu-btn-primary.pressed > .label, .split-menu-btn-primary.pressed > .arrow-button, .open > .split-menu-btn-primary.dropdown-toggle > .label, .open > .split-menu-btn-primary.dropdown-toggle > .arrow-button {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #286090;
+    -fx-background-color: -fx-primary-color-shade;
     -fx-border-color: #204d74;
 }
 .split-menu-btn-primary:pressed:hover > .label, .split-menu-btn-primary:pressed:hover > .arrow-button, .split-menu-btn-primary:pressed:focused > .label, .split-menu-btn-primary:pressed:focused > .arrow-button, .split-menu-btn-primary:pressed.focused > .label, .split-menu-btn-primary:pressed.focused > .arrow-button, .split-menu-btn-primary.pressed:hover > .label, .split-menu-btn-primary.pressed:hover > .arrow-button, .split-menu-btn-primary.pressed:focused > .label, .split-menu-btn-primary.pressed:focused > .arrow-button, .split-menu-btn-primary.pressed.focused > .label, .split-menu-btn-primary.pressed.focused > .arrow-button, .open > .split-menu-btn-primary.dropdown-toggle:hover > .label, .open > .split-menu-btn-primary.dropdown-toggle:hover > .arrow-button, .open > .split-menu-btn-primary.dropdown-toggle:focused > .label, .open > .split-menu-btn-primary.dropdown-toggle:focused > .arrow-button, .open > .split-menu-btn-primary.dropdown-toggle.focused > .label, .open > .split-menu-btn-primary.dropdown-toggle.focused > .arrow-button {
@@ -748,7 +750,7 @@ a.bg-danger:focused {
 .split-menu-btn-primary:selected > .label, .split-menu-btn-primary:selected > .arrow-button, .split-menu-btn-primary.selected > .label, .split-menu-btn-primary.selected > .arrow-button {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: #286090;
+    -fx-background-color: -fx-primary-color-shade;
     -fx-border-color: #204d74;
 }
 .split-menu-btn-primary:selected:hover > .label, .split-menu-btn-primary:selected:hover > .arrow-button, .split-menu-btn-primary:selected:focused > .label, .split-menu-btn-primary:selected:focused > .arrow-button, .split-menu-btn-primary:selected.focused > .label, .split-menu-btn-primary:selected.focused > .arrow-button, .split-menu-btn-primary.selected:hover > .label, .split-menu-btn-primary.selected:hover > .arrow-button, .split-menu-btn-primary.selected:focused > .label, .split-menu-btn-primary.selected:focused > .arrow-button, .split-menu-btn-primary.selected.focused > .label, .split-menu-btn-primary.selected.focused > .arrow-button {
@@ -761,7 +763,7 @@ a.bg-danger:focused {
     background-image: none;
 }
 .split-menu-btn-primary.disabled > .label, .split-menu-btn-primary.disabled > .arrow-button, .split-menu-btn-primary.disabled:hover > .label, .split-menu-btn-primary.disabled:hover > .arrow-button, .split-menu-btn-primary.disabled:focused > .label, .split-menu-btn-primary.disabled:focused > .arrow-button, .split-menu-btn-primary.disabled.focused > .label, .split-menu-btn-primary.disabled.focused > .arrow-button, .split-menu-btn-primary.disabled:pressed > .label, .split-menu-btn-primary.disabled:pressed > .arrow-button, .split-menu-btn-primary.disabled.pressed > .label, .split-menu-btn-primary.disabled.pressed > .arrow-button, .split-menu-btn-primary[disabled] > .label, .split-menu-btn-primary[disabled] > .arrow-button, .split-menu-btn-primary[disabled]:hover > .label, .split-menu-btn-primary[disabled]:hover > .arrow-button, .split-menu-btn-primary[disabled]:focused > .label, .split-menu-btn-primary[disabled]:focused > .arrow-button, .split-menu-btn-primary[disabled].focused > .label, .split-menu-btn-primary[disabled].focused > .arrow-button, .split-menu-btn-primary[disabled]:pressed > .label, .split-menu-btn-primary[disabled]:pressed > .arrow-button, .split-menu-btn-primary[disabled].pressed > .label, .split-menu-btn-primary[disabled].pressed > .arrow-button, fieldset[disabled] .split-menu-btn-primary > .label, fieldset[disabled] .split-menu-btn-primary > .arrow-button, fieldset[disabled] .split-menu-btn-primary:hover > .label, fieldset[disabled] .split-menu-btn-primary:hover > .arrow-button, fieldset[disabled] .split-menu-btn-primary:focused > .label, fieldset[disabled] .split-menu-btn-primary:focused > .arrow-button, fieldset[disabled] .split-menu-btn-primary.focused > .label, fieldset[disabled] .split-menu-btn-primary.focused > .arrow-button, fieldset[disabled] .split-menu-btn-primary:pressed > .label, fieldset[disabled] .split-menu-btn-primary:pressed > .arrow-button, fieldset[disabled] .split-menu-btn-primary.pressed > .label, fieldset[disabled] .split-menu-btn-primary.pressed > .arrow-button {
-    -fx-background-color: #337ab7;
+    -fx-background-color: -fx-primary-color;
     -fx-border-color: #2e6da4;
 }
 
@@ -1053,10 +1055,10 @@ a.bg-danger:focused {
 }
 
 .lbl-primary {
-    -fx-background-color: #337ab7;
+    -fx-background-color: -fx-primary-color;
 }
 .lbl-primary[href]:hover, .lbl-primary[href]:focused {
-    -fx-background-color: #286090;
+    -fx-background-color: -fx-primary-color-shade;
 }
 
 .lbl-success {
@@ -1104,8 +1106,8 @@ a.bg-danger:focused {
     -fx-padding: 1px 5px 1px 5px;
 }
 .list-group-item.active > .badge, .nav-pills > .active > a > .badge {
-    -fx-text-fill: #337ab7;
-    -fx-fill: #337ab7;
+    -fx-text-fill: -fx-primary-color;
+    -fx-fill: -fx-primary-color;
     -fx-background-color: #fff;
 }
 
@@ -1174,8 +1176,8 @@ a.badge:hover, a.badge:focused {
 
 .progress-bar-primary > .bar {
     -fx-background-insets: 0;
-    -fx-background-color: #337ab7;
-    -fx-progress-color: #337ab7;
+    -fx-background-color: -fx-primary-color;
+    -fx-progress-color: -fx-primary-color;
     -fx-text-fill: #fff;
     -fx-text-alignment: center;
     -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.15), -1px, 0, 0, 0);
@@ -1248,8 +1250,8 @@ a.badge:hover, a.badge:focused {
 }
 
 .tooltip-primary {
-    -fx-background: #337ab7;
-    -fx-background-color: #337ab7;
+    -fx-background: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
     -fx-text-fill: #fff;
     -fx-border-color: #3175af;
     -fx-background-radius: 4px;
@@ -1371,21 +1373,21 @@ a.badge:hover, a.badge:focused {
 }
 
 .panel-primary {
-    -fx-border-color: #337ab7;
+    -fx-border-color: -fx-primary-color;
 }
 .panel-primary > .panel-heading {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-    -fx-background-color: linear-gradient(to bottom, #337ab7 0px, #2b669a 100%);
-    -fx-border-color: #337ab7;
+    -fx-background-color: linear-gradient(to bottom, -fx-primary-color 0px, #2b669a 100%);
+    -fx-border-color: -fx-primary-color;
 }
 .panel-primary > .panel-heading * {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
 }
 .panel-primary > .panel-heading .badge {
-    -fx-text-fill: #337ab7;
-    -fx-fill: #337ab7;
+    -fx-text-fill: -fx-primary-color;
+    -fx-fill: -fx-primary-color;
     -fx-background-color: #fff;
 }
 

@@ -12,9 +12,10 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.FXmlControllerTest">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.HomeController">
    <bottom>
       <VBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -62,12 +63,12 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <Button mnemonicParsing="false" text="Local">
+            <Button fx:id="btnLocal" mnemonicParsing="false" text="Local" onAction="#typeButtonEvent" styleClass="btn-default, btn-lg">
                <VBox.margin>
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Online">
+            <Button fx:id="btnOnline" mnemonicParsing="false" text="Online" onAction="#typeButtonEvent" styleClass="btn-default, btn-sm">
                <VBox.margin>
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
@@ -76,19 +77,19 @@
       </VBox>
    </left>
    <right>
-      <VBox alignment="TOP_CENTER" prefHeight="172.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbOnlineOption" visible="false" alignment="TOP_CENTER" prefHeight="172.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Online Option" textAlignment="CENTER" wrappingWidth="143.3874080882353">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <Button fx:id="btnChallenge" mnemonicParsing="false" text="Challenge" onAction="#btnChange" styleClass="btn-default, btn-sm">
+            <Button fx:id="btnChallenge" mnemonicParsing="false" text="Challenge" onAction="#optionButtonEvent" styleClass="btn-default, btn-sm">
                <VBox.margin>
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnSubscribe" mnemonicParsing="false" text="Subscribe" onAction="#btnChange" styleClass="btn-default, btn-sm">
+            <Button fx:id="btnSubscribe" mnemonicParsing="false" text="Subscribe" onAction="#optionButtonEvent" styleClass="btn-default, btn-lg">
                <VBox.margin>
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
@@ -111,8 +112,37 @@
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1" />
                         <HBox prefHeight="84.0" prefWidth="128.0">
                            <children>
-                              <TextField prefHeight="26.0" prefWidth="85.0" text="Playername" />
-                              <ChoiceBox prefHeight="28.0" prefWidth="66.0" />
+                              <TextField prefHeight="26.0" prefWidth="85.0" />
+                              <ChoiceBox value="HUMAN" fx:id="cbPlayerOneType" prefHeight="28.0" prefWidth="66.0" onAction="#playerTypeEvent">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="AI" />
+                                       <String fx:value="HUMAN" />
+                                    </FXCollections>
+                                 </items>
+                              </ChoiceBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox fx:id="hbPlayerTwo" visible="false" alignment="CENTER" prefHeight="100.0" prefWidth="236.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2" />
+                        <HBox prefHeight="84.0" prefWidth="128.0">
+                           <children>
+                              <TextField prefHeight="26.0" prefWidth="85.0" />
+                              <ChoiceBox value="HUMAN" prefHeight="28.0" prefWidth="66.0" onAction="#playerTypeEvent">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="AI" />
+                                       <String fx:value="HUMAN" />
+                                    </FXCollections>
+                                 </items>
+                              </ChoiceBox>
                            </children>
                         </HBox>
                      </children>

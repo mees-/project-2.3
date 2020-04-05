@@ -8,10 +8,8 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <VBox alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Region VBox.vgrow="ALWAYS" />
       <HBox alignment="CENTER" prefHeight="40.0" prefWidth="1314.0">
          <children>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Made by: Mees, Ivo, Joeri &amp; Jeroen" />
@@ -21,7 +19,7 @@
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Groep D3" />
          </children>
          <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
          </padding>
          <styleClass>
             <String fx:value="bg-primary" />

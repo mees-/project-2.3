@@ -10,6 +10,10 @@
 /**
  * General
  */
+.title-lg {
+    -fx-font-size: 4em;
+}
+
 .text-white {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
@@ -31,7 +35,7 @@
 /**
  * Home
  */
-.title-home {
+.title-xl {
     -fx-font-size: 8em;
 }
 
@@ -64,9 +68,6 @@
 /**
  * Game
  */
-.title-game {
-    -fx-font-size: 4em;
-}
 
 .text-gold {
     -fx-text-fill: #ffcf40;
@@ -109,10 +110,4 @@
 .piece-reversi-white {
     -fx-text-fill: #fff;
     -fx-fill: #fff;
-}
-
-.piece-reversi-transparent {
-    -fx-text-fill: transparent;
-    -fx-fill: transparent;
-    -fx-stroke: transparent;
 }

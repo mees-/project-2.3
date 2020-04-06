@@ -15,7 +15,7 @@
          <children>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Reversi" HBox.hgrow="ALWAYS">
                <styleClass>
-                  <String fx:value="title-game" />
+                  <String fx:value="title-lg" />
                   <String fx:value="b" />
                </styleClass>
             </Text>

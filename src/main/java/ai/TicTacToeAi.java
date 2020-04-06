@@ -27,7 +27,7 @@ public class TicTacToeAi extends Ai {
     }
 
     @Override
-    public int analyzeMove(Move move, BoardInterface board) {
+    public int analyzeMove(Move lastMove, BoardInterface board) {
         int score = 0;
         for (Board.Cell cell : ((Board)board).getCellList()) {
             if (cell.content != CellContent.Empty) {

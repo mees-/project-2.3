@@ -14,7 +14,7 @@ public abstract class Ai extends Player {
 
     public abstract void applyMoveToBoard(Move move, BoardInterface board) throws InvalidMoveException;
 
-    public abstract int analyzeMove(Move move, BoardInterface board);
+    public abstract int analyzeMove(Move lastMove, BoardInterface board);
 
     public abstract Set<Move> getValidMoves(GameState state, BoardInterface board);
 

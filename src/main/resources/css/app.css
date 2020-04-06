@@ -32,6 +32,10 @@
     -fx-background-color: #efefef;
 }
 
+.invisible {
+    opacity: 0;
+}
+
 /**
  * Home
  */

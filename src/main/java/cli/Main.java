@@ -44,15 +44,22 @@ public class Main {
 
         @Override
         public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
-            System.out.print("Enter (simple) move: ");
             try {
-                int position = Integer.parseInt(reader.readLine());
-                Move move = Move.fromSimplePosition(GameState.TurnOne, 3, position);
-                return move;
+                System.out.print("Enter x: ");
+                int x = Integer.parseInt(reader.readLine());
+                System.out.print("Enter y: ");
+                int y = Integer.parseInt(reader.readLine());
+                for (Move move : possibleMoves) {
+                    if (move.getY() == y && move.getX() == x) {
+                        return move;
+                    }
+                }
+                System.out.println("Not a valid move, try again");
+                return getNextMove(board, possibleMoves);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (NumberFormatException e) {
-                System.out.println("That's not a number");
+                System.out.println("That's not a number, try again");
                 return getNextMove(board, possibleMoves);
             }
         }

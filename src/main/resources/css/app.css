@@ -7,13 +7,29 @@
 }
 
 /**
- * Style classes
+ * General
  */
 .text-white {
-    -fx-text-fill: #ffffff;
-    -fx-fill: #ffffff;
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
 }
 
+.text-dark {
+    -fx-text-fill: #494949;
+    -fx-fill: #494949;
+}
+
+.bg-dark {
+    -fx-background-color: #bdbdbd;
+}
+
+.bg-light {
+    -fx-background-color: #efefef;
+}
+
+/**
+ * Home
+ */
 .title-home {
     -fx-font-size: 8em;
 }
@@ -42,3 +58,7 @@
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
 }
+
+/**
+ * Game
+ */

@@ -18,7 +18,7 @@ public class Demo {
 
         boolean isGameOver = false;
         boolean draw = false;
-        GameState currentTurn = GameState.LocalTurn;
+        GameState currentTurn = GameState.TurnOne;
 
 //        reversi.setPrintToCommandLine(true);
 //        reversi.setup();
@@ -49,11 +49,11 @@ public class Demo {
                 case TwoWin:
                     isGameOver = true;
                     break;
-                case LocalTurn:
-                    currentTurn = GameState.LocalTurn;
+                case TurnOne:
+                    currentTurn = GameState.TurnOne;
                     break;
-                case RemoteTurn:
-                    currentTurn = GameState.RemoteTurn;
+                case TurnTwo:
+                    currentTurn = GameState.TurnTwo;
                     break;
             }
         }
@@ -74,9 +74,9 @@ public class Demo {
 //        while (true) {
 //            Move a = new Move();
 //            if (turn) {
-//                a.player = GameState.LocalTurn;
+//                a.player = GameState.TurnOne;
 //            } else {
-//                a.player = GameState.RemoteTurn;
+//                a.player = GameState.TurnTwo;
 //            }
 //
 //            System.out.println(a.player+"'s turn: ");

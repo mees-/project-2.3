@@ -28,6 +28,9 @@ public class Match {
         this.game = game;
         players.one = one;
         players.two = two;
+
+        players.one.setTurn(GameState.TurnOne);
+        players.two.setTurn(GameState.TurnTwo);
     }
 
     public void setupGame() {
@@ -51,6 +54,7 @@ public class Match {
             Set<Move> possibleMoves = game.getBoard().getValidMoves(gameState);
             Move move = playerToMove.getNextMove(game.getBoard(), Collections.unmodifiableSet(possibleMoves));
             if (!possibleMoves.contains(move)) {
+                System.err.println("Returned move is not in set of valid moves");
                 switch (getGameState()) {
                     case TurnOne:
                         setGameState(GameState.TwoWin);

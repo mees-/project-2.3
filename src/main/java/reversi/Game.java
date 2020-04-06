@@ -29,7 +29,7 @@ public class Game implements GameInterface {
         init();
 
         // If player one; black; first
-        if (gameState == GameState.LocalTurn) {
+        if (gameState == GameState.TurnOne) {
             board.setCell(3, 3, CellContent.Remote);
             board.setCell(4, 4, CellContent.Remote);
             board.setCell(3, 4, CellContent.Local);
@@ -221,11 +221,11 @@ public class Game implements GameInterface {
                 && !canMakeTurn(getOpposite(player))) {
             return GameState.Draw;
         }
-        else if(move.getPlayer() == GameState.RemoteTurn) {
-            return GameState.LocalTurn;
+        else if(move.getPlayer() == GameState.TurnTwo) {
+            return GameState.TurnOne;
         }
-        else if(move.getPlayer() == GameState.LocalTurn) {
-            return GameState.RemoteTurn;
+        else if(move.getPlayer() == GameState.TurnOne) {
+            return GameState.TurnTwo;
         }
         return null;
     }
@@ -248,9 +248,9 @@ public class Game implements GameInterface {
     }
 
     public CellContent moveToCellContent(Move move) {
-        if (move.getPlayer() == GameState.LocalTurn) {
+        if (move.getPlayer() == GameState.TurnOne) {
             playerCell = CellContent.Local;
-        } else if (move.getPlayer() == GameState.RemoteTurn) {
+        } else if (move.getPlayer() == GameState.TurnTwo) {
             playerCell = CellContent.Remote;
         }
         return playerCell;

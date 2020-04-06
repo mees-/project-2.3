@@ -7,7 +7,7 @@ import framework.Move;
 
 import java.util.Set;
 
-public class Board implements BoardInterface {
+public class Board extends BoardInterface {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_WHITE = "\u001B[37m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -87,5 +87,12 @@ public class Board implements BoardInterface {
     @Override
     public Set<Move> getValidMoves(GameState state) {
         return null;
+    }
+
+    @Override
+    public Board clone() {
+        Board clone = new Board(this.size);
+        clone.board = this.board.clone();
+        return clone;
     }
 }

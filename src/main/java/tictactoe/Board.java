@@ -2,25 +2,27 @@ package tictactoe;
 
 import framework.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class Board implements BoardInterface
-    {
+public class Board extends BoardInterface {
     // Colored text for command line
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
+    public static final int SIZE = 3;
 
-    private final CellContent[][] board;
+        private final CellContent[][] board;
 
     public Board() {
-        board = new CellContent[3][3];
+        board = new CellContent[SIZE][SIZE];
         reset();
     }
 
     @Override
     public CellContent getCell(int x, int y) {
-        if((x >= 0 && x < 3) && (y >= 0 && y < 3)) {
+        if((x >= 0 && x < SIZE) && (y >= 0 && y < SIZE)) {
             return board[x][y];
         }
         return null;
@@ -28,13 +30,26 @@ public class Board implements BoardInterface
 
     @Override
     public int getSize() {
-        return 3;
+        return SIZE;
+    }
+
+    @Override
+    public Set<Move> getValidMoves(GameState state) {
+        HashSet<Move> result = new HashSet<>();
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                if (getCell(x, y) == CellContent.Empty) {
+                    result.add(new Move(state, x, y));
+                }
+            }
+        }
+        return result;
     }
 
     @Override
     public void reset() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
                 board[row][col] = CellContent.Empty;
             }
         }
@@ -42,7 +57,7 @@ public class Board implements BoardInterface
 
     @Override
     public void setCell(int x, int y, CellContent cellContent) throws InvalidMoveException {
-        if((x >= 0 && x < 3) && (y >= 0 && y < 3) && (board[x][y] == CellContent.Empty) && cellContent != CellContent.Empty) {
+        if((x >= 0 && x < SIZE) && (y >= 0 && y < SIZE) && (board[x][y] == CellContent.Empty) && cellContent != CellContent.Empty) {
             board[x][y] = cellContent;
         }
         else {
@@ -52,8 +67,8 @@ public class Board implements BoardInterface
 
     public boolean boardIsFull() {
         boolean isFull = true;
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
                 if (board[row][col] == CellContent.Empty) {
                     isFull = false;
                     break;
@@ -68,7 +83,7 @@ public class Board implements BoardInterface
     }
 
     private boolean checkColForWin() {
-        for(int col = 0; col < 3; col++) {
+        for(int col = 0; col < SIZE; col++) {
             if(checkMarks(board[col][0], board[col][1], board[col][2])) {
                 return true;
             }
@@ -77,7 +92,7 @@ public class Board implements BoardInterface
     }
 
     private boolean checkRowForWin() {
-        for(int row = 0; row < 3; row++) {
+        for(int row = 0; row < SIZE; row++) {
             if(checkMarks(board[0][row], board[1][row], board[2][row])) {
                 return true;
             }
@@ -100,9 +115,9 @@ public class Board implements BoardInterface
                 System.out.print(" " + i);
             }
             System.out.println();
-            for (int row = 0; row < 3; row++) {
+            for (int row = 0; row < SIZE; row++) {
                 System.out.print((row + 1) + " |");
-                for (int col = 0; col < 3; col++) {
+                for (int col = 0; col < SIZE; col++) {
                     char playerMark;
                     switch (board[row][col]) {
                         case Local:
@@ -122,15 +137,35 @@ public class Board implements BoardInterface
         }
     }
 
-        public Set<Move> getValidMoves(GameState state) {
-            HashSet<Move> result = new HashSet<>();
-            for (int x = 0; x < 3; x++) {
-                for (int y = 0; y < 3; y++) {
-                    if (getCell(x, y) == CellContent.Empty) {
-                        result.add(new Move(state, x, y));
-                    }
+        public class Cell {
+            public CellContent content;
+            public int x;
+            public int y;
+
+            public Cell(int x, int y, CellContent content) {
+                this.x = x;
+                this.y = y;
+                this.content = content;
+            }
+        }
+
+        public List<Cell> getCellList() {
+            ArrayList<Cell> result = new ArrayList<>();
+            for (int x = 0; x < SIZE; x++) {
+                for (int y = 0; y < SIZE; y++) {
+                    result.add(new Cell(x, y, getCell(x, y)));
                 }
             }
             return result;
+        }
+
+        public Board clone() {
+            Board clone = new Board();
+            for (int x = 0; x < SIZE; x++) {
+                for (int y = 0; y<SIZE; y++) {
+                    clone.board[x][y] = this.board[x][y];
+                }
+            }
+            return clone;
         }
     }

@@ -4,6 +4,7 @@
 * {
     -fx-primary-color: #337653;
     -fx-primary-color-shade: #23523a;
+    -fx-dark-color: #494949;
 }
 
 /**
@@ -15,12 +16,12 @@
 }
 
 .text-dark {
-    -fx-text-fill: #494949;
-    -fx-fill: #494949;
+    -fx-text-fill: -fx-dark-color;
+    -fx-fill: -fx-dark-color;
 }
 
 .bg-dark {
-    -fx-background-color: #bdbdbd;
+    -fx-background-color: -fx-dark-color;
 }
 
 .bg-light {
@@ -57,8 +58,61 @@
     -fx-font-size: 18px;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
+    -fx-cursor: HAND;
 }
 
 /**
  * Game
  */
+.title-game {
+    -fx-font-size: 4em;
+}
+
+.text-gold {
+    -fx-text-fill: #ffcf40;
+    -fx-fill: #ffcf40;
+}
+
+/**
+ * Reversi
+ */
+.tile-reversi {
+    -fx-border-color: -fx-dark-color;
+    -fx-border-width: 1px;
+    -fx-background-color: #2eae52;
+    -fx-min-height: 90px;
+    -fx-min-width: 90px;
+}
+
+.tile-reversi-available {
+    -fx-cursor: HAND;
+}
+
+.tile-reversi-available:hover {
+    -fx-opacity: 0.7;
+}
+
+.tile-reversi-occupied {
+}
+
+.piece-reversi {
+    -fx-stroke-width: 0.06;
+    -fx-scale-x: 38;
+    -fx-scale-y: 38;
+}
+
+.piece-reversi-black {
+    -fx-text-fill: #000;
+    -fx-fill: #000;
+}
+
+.piece-reversi-white {
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}
+
+.piece-reversi-transparent {
+    -fx-text-fill: transparent;
+    -fx-fill: transparent;
+    -fx-stroke: transparent;
+}

@@ -27,9 +27,8 @@ public class Root extends Application
     }
 
     private void initUI(Stage stage) throws IOException {
-
         VBox root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
-        Pane home = (Pane) FXMLLoader.load(getClass().getResource("/view/home.fxml"));
+        Pane home = FXMLLoader.load(getClass().getResource("/view/home.fxml"));
         root.getChildren().add(home);
 
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());

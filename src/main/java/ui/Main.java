@@ -1,10 +1,8 @@
 package ui;
 
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 
@@ -49,7 +47,7 @@ public class Main extends Application {
 //                pane.setCenter(new Online());
                 break;
             default:
-                pane.setCenter(new Home());
+                pane.setCenter(new Home_oud());
         }
     }
 }

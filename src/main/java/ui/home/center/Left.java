@@ -10,7 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import ui.Home;
+import ui.Home_oud;
 import ui.settings.GameType;
 
 public class Left extends Parent {
@@ -64,7 +64,7 @@ public class Left extends Parent {
 
         @Override
         public void handle(ActionEvent actionEvent) {
-            Home.gameType = type;
+            Home_oud.gameType = type;
             settings((Button)actionEvent.getSource(), btn);
         }
 

@@ -82,6 +82,45 @@ public class Board extends BoardInterface {
         return checkRowForWin() || checkColForWin() || checkDiaForWin();
     }
 
+    public CellContent checkForWinBetter() {
+        CellContent result = null;
+        result = checkXForWin();
+        if (result != null) {
+            return result;
+        }
+        result = checkYForWin();
+        if (result != null) {
+            return result;
+        }
+        result = checkDiagonalForWin();
+        return result;
+    }
+    private CellContent checkXForWin() {
+        for(int x = 0; x < SIZE; x++) {
+            if(checkMarks(board[x][0], board[x][1], board[x][2])) {
+                return getCell(x, 0);
+            }
+        }
+        return null;
+    }
+
+    private CellContent checkYForWin() {
+        for(int y = 0; y < SIZE; y++) {
+            if(checkMarks(board[0][y], board[1][y], board[2][y])) {
+                return getCell(0, y);
+            }
+        }
+        return null;
+    }
+
+    private CellContent checkDiagonalForWin() {
+        if (checkDiaForWin()) {
+            return getCell(1,1);
+        } else {
+            return null;
+        }
+    }
+
     private boolean checkColForWin() {
         for(int col = 0; col < SIZE; col++) {
             if(checkMarks(board[col][0], board[col][1], board[col][2])) {
@@ -111,15 +150,15 @@ public class Board extends BoardInterface {
     public void printBoard() {
         synchronized (System.out) {
             System.out.print("  ");
-            for (int i = 1; i < 4; i++) {
+            for (int i = 0; i < SIZE; i++) {
                 System.out.print(" " + i);
             }
             System.out.println();
-            for (int row = 0; row < SIZE; row++) {
-                System.out.print((row + 1) + " |");
-                for (int col = 0; col < SIZE; col++) {
+            for (int y = 0; y < SIZE; y++) {
+                System.out.print(y + " |");
+                for (int x = 0; x < SIZE; x++) {
                     char playerMark;
-                    switch (board[row][col]) {
+                    switch (board[x][y]) {
                         case Local:
                             playerMark = 'X';
                             break;
@@ -137,7 +176,7 @@ public class Board extends BoardInterface {
         }
     }
 
-        public class Cell {
+        public static class Cell {
             public CellContent content;
             public int x;
             public int y;

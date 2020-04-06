@@ -27,9 +27,8 @@ public class TicTacToeAi extends Ai {
 
     @Override
     public int analyzeMove(Move lastMove, BoardInterface board) {
-        int score = 0;
-        // if last move created a win opportunity, increase score.
-        // if last move created two win opportunities, we will win. Score is integer.Max
+        // this method was found on
+        // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-2-evaluation-function/
         try {
             CellContent gameWin = ((Board)board).checkForWinBetter();
             if (gameWin == turn.toCellContent()) {

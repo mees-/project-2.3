@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.collections.FXCollections?>
 
-<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.HomeController" >
    <children>
       <HBox alignment="CENTER" prefHeight="40.0" prefWidth="1314.0" styleClass="bg-primary">
          <children>
@@ -31,7 +31,7 @@
       <Region prefHeight="63.0" prefWidth="1225.0" />
       <HBox alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" styleClass="panel-game">
+            <VBox alignment="CENTER" styleClass="panel-game" fx:id="vbTicTacToe" onMouseClicked="#chosenGameEvent">
                <children>
                   <ImageView fitHeight="200.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                      <image>
@@ -54,7 +54,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </VBox>
-            <VBox alignment="CENTER">
+            <VBox alignment="CENTER" fx:id="vbReversi" onMouseClicked="#chosenGameEvent">
                <children>
                   <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -99,7 +99,7 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </VBox.margin>
                   </Text>
-                  <Button mnemonicParsing="false" text="Local">
+                  <Button mnemonicParsing="false" text="Local" fx:id="btnLocal" onAction="#typeButtonEvent">
                      <padding>
                         <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
                      </padding>
@@ -114,7 +114,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" text="Online">
+                  <Button mnemonicParsing="false" text="Online" fx:id="btnOnline" onAction="#typeButtonEvent">
                      <padding>
                         <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
                      </padding>
@@ -158,25 +158,25 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Text>
-                        <TextField promptText="Name">
+                        <TextField fx:id="txtPlayerOneName" promptText="Name">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </TextField>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <RadioButton mnemonicParsing="false" text="Human">
+                              <RadioButton fx:id="rbPlayerOneHuman" mnemonicParsing="false" text="Human" onAction="#playerTypeEvent">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                                  <toggleGroup>
-                                    <ToggleGroup fx:id="player1" />
+                                    <ToggleGroup fx:id="tgPlayerOne" />
                                  </toggleGroup>
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="AI" toggleGroup="$player1">
+                              <RadioButton fx:id="rbPlayerOneAI" mnemonicParsing="false" text="AI" toggleGroup="$tgPlayerOne" onAction="#playerTypeEvent">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor></RadioButton>
@@ -184,7 +184,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0" fx:id="vbPlayerTwo">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
                            <styleClass>
@@ -195,25 +195,25 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Text>
-                        <TextField promptText="Name">
+                        <TextField fx:id="txtPlayerTwoName" promptText="Name">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </TextField>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <RadioButton mnemonicParsing="false" text="Human">
+                              <RadioButton fx:id="rbPlayerTwoHuman" mnemonicParsing="false" text="Human" onAction="#playerTypeEvent">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                                  <toggleGroup>
-                                    <ToggleGroup fx:id="player2" />
+                                    <ToggleGroup fx:id="tgPlayerTwo" />
                                  </toggleGroup>
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="AI" toggleGroup="$player2">
+                              <RadioButton fx:id="rbPlayerTwoAI" mnemonicParsing="false" text="AI" toggleGroup="$tgPlayerTwo" onAction="#playerTypeEvent">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor></RadioButton>
@@ -230,7 +230,7 @@
                </children>
             </VBox>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <VBox alignment="TOP_CENTER">
+            <VBox alignment="TOP_CENTER" fx:id="vbOnlineOption">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Online Options">
                      <styleClass>
@@ -241,7 +241,7 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </VBox.margin>
                   </Text>
-                  <Button mnemonicParsing="false" text="Subscribe">
+                  <Button mnemonicParsing="false" text="Subscribe" fx:id="btnSubscribe" onAction="#optionButtonEvent">
                      <padding>
                         <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
                      </padding>
@@ -257,7 +257,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" text="Challenge">
+                  <Button mnemonicParsing="false" text="Challenge" fx:id="btnChallenge" onAction="#optionButtonEvent">
                      <padding>
                         <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
                      </padding>

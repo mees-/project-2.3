@@ -13,13 +13,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Collections;
 
-public class Root extends Application
-{
-    private Stage stage;
+public class Root extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        this.stage = stage;
         stage.setTitle("Tha Koel Gamebox");
         //stage.getIcons().add(new Image("/img/tictactoe.png"));
         initUI(stage);

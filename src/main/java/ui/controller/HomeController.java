@@ -1,16 +1,22 @@
 package ui.controller;
 
+import connection.Connection;
+import framework.Framework;
+import framework.player.LocalConnectedPlayer;
+import framework.player.Player;
+import framework.player.RandomMovePlayer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ui.settings.ChosenGame;
-import ui.settings.GameType;
-import ui.settings.OnlineOption;
-import ui.settings.PlayerType;
+import ui.Main;
+import ui.settings.*;
 
 import javafx.scene.input.MouseEvent;
+
+import java.io.IOException;
 
 public class HomeController {
     @FXML
@@ -68,11 +74,11 @@ public class HomeController {
     private ChosenGame chosenGameEnum;
 
     public HomeController() {
-        gameTypeEnum = GameType.LOCAL;
-        onlineOptionEnum = OnlineOption.SUBSCRIBE;
-        playerOneTypeEnum = PlayerType.HUMAN;
-        playerTwoTypeEnum = PlayerType.HUMAN;
-        chosenGameEnum = ChosenGame.REVERSI;
+        gameTypeEnum = Main.gameTypeEnum;
+        onlineOptionEnum = Main.onlineOptionEnum;
+        playerOneTypeEnum = Main.playerOneTypeEnum;
+        playerTwoTypeEnum = Main.playerTwoTypeEnum;
+        chosenGameEnum = Main.chosenGameEnum;
     }
 
     @FXML
@@ -99,11 +105,11 @@ public class HomeController {
             btnOne = btnOnline;
             btnTwo = btnLocal;
             gameTypeEnum = GameType.ONLINE;
-            vbPlayerTwo.setVisible(true);
+            vbPlayerTwo.setVisible(false);
             vbOnlineOption.setVisible(true);
         } else {
             gameTypeEnum = GameType.LOCAL;
-            vbPlayerTwo.setVisible(false);
+            vbPlayerTwo.setVisible(true);
             vbOnlineOption.setVisible(false);
         }
 
@@ -155,5 +161,20 @@ public class HomeController {
     private void gameChange(VBox vbOne, VBox vbTwo) {
         vbOne.getStyleClass().add("panel-game-active");
         vbTwo.getStyleClass().remove("panel-game-active");
+    }
+
+    @FXML
+    private void playButtonEvent(ActionEvent event) throws IOException {
+        if (chosenGameEnum != null && gameTypeEnum != null ) {
+            if (gameTypeEnum == GameType.LOCAL) {
+                if (playerOneTypeEnum != null && playerTwoTypeEnum != null) {
+
+                }
+            }
+            if (onlineOptionEnum != null) {
+//                Main.screenActive = ScreenActive.REVERSI;
+                Main.changePane();
+            }
+        }
     }
 }

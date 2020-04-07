@@ -1,8 +1,8 @@
 package tictactoe;
 
-import framework.BoardInterface;
-import framework.InvalidMoveException;
-import framework.CellContent;
+import framework.*;
+
+import java.util.ArrayList;
 
 public class Board implements BoardInterface
     {
@@ -18,9 +18,9 @@ public class Board implements BoardInterface
     }
 
     @Override
-    public CellContent getCell(int row, int col) {
-        if((row >= 0 && row < 3) && (col >= 0 && col < 3)) {
-            return board[row][col];
+    public CellContent getCell(int x, int y) {
+        if((x >= 0 && x < 3) && (y >= 0 && y < 3)) {
+            return board[x][y];
         }
         return null;
     }
@@ -40,12 +40,12 @@ public class Board implements BoardInterface
     }
 
     @Override
-    public void setCell(int row, int col, CellContent cellContent) throws InvalidMoveException {
-        if((row >= 0 && row < 3) && (col >= 0 && col < 3) && (board[row][col] == CellContent.Empty) && cellContent != CellContent.Empty) {
-            board[row][col] = cellContent;
+    public void setCell(int x, int y, CellContent cellContent) throws InvalidMoveException {
+        if((x >= 0 && x < 3) && (y >= 0 && y < 3) && (board[x][y] == CellContent.Empty) && cellContent != CellContent.Empty) {
+            board[x][y] = cellContent;
         }
         else {
-            throw new InvalidMoveException("The move to set xPos: " + (row + 1) + " and yPos: " + (col + 1) + " to " + cellContent + " is invalid.");
+            throw new InvalidMoveException("The move to set yPos: " + (y + 1) + " and xPos: " + (x + 1) + " to " + cellContent + " is invalid.");
         }
     }
 
@@ -66,18 +66,18 @@ public class Board implements BoardInterface
         return checkRowForWin() || checkColForWin() || checkDiaForWin();
     }
 
-    private boolean checkRowForWin() {
-        for(int row = 0; row < 3; row++) {
-            if(checkMarks(board[row][0], board[row][1], board[row][2])) {
+    private boolean checkColForWin() {
+        for(int col = 0; col < 3; col++) {
+            if(checkMarks(board[col][0], board[col][1], board[col][2])) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean checkColForWin() {
-        for(int col = 0; col < 3; col++) {
-            if(checkMarks(board[0][col], board[1][col], board[2][col])) {
+    private boolean checkRowForWin() {
+        for(int row = 0; row < 3; row++) {
+            if(checkMarks(board[0][row], board[1][row], board[2][row])) {
                 return true;
             }
         }
@@ -120,4 +120,16 @@ public class Board implements BoardInterface
             System.out.println();
         }
     }
-}
+
+        public ArrayList<Move> getValidMoves(GameState state) {
+            ArrayList<Move> result = new ArrayList<>();
+            for (int x = 0; x < 3; x++) {
+                for (int y = 0; y < 3; y++) {
+                    if (getCell(x, y) == CellContent.Empty) {
+                        result.add(new Move(state, x, y));
+                    }
+                }
+            }
+            return result;
+        }
+    }

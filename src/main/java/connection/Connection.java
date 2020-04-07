@@ -112,7 +112,7 @@ public class Connection {
                     commandsWaitingForResponse.poll();
                     ICommand.CommandResponse response = command.parseResponse(words);
                     if (!response.isSuccess()) {
-                        throw new RuntimeException("failed executing command: " + command.getCommandString());
+                        throw new RuntimeException("failed executing command: " + command.getCommandString() + "\nerror: " + response.getErrorMessage());
                     }
                 } else {
                     handleEventMessage(words);

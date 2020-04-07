@@ -72,13 +72,15 @@ public class HomeController {
     private PlayerType playerOneTypeEnum;
     private PlayerType playerTwoTypeEnum;
     private ChosenGame chosenGameEnum;
+    private Main main;
 
-    public HomeController() {
-        gameTypeEnum = Main.gameTypeEnum;
-        onlineOptionEnum = Main.onlineOptionEnum;
-        playerOneTypeEnum = Main.playerOneTypeEnum;
-        playerTwoTypeEnum = Main.playerTwoTypeEnum;
-        chosenGameEnum = Main.chosenGameEnum;
+    public HomeController(Main main, GameType gameTypeEnum, OnlineOption onlineOptionEnum, PlayerType playerOneTypeEnum, PlayerType playerTwoTypeEnum, ChosenGame chosenGameEnum) {
+        this.main = main;
+        this.gameTypeEnum = gameTypeEnum;
+        this.onlineOptionEnum = onlineOptionEnum;
+        this.playerOneTypeEnum = playerOneTypeEnum;
+        this.playerTwoTypeEnum = playerTwoTypeEnum;
+        this.chosenGameEnum = chosenGameEnum;
     }
 
     @FXML
@@ -172,8 +174,7 @@ public class HomeController {
                 }
             }
             if (onlineOptionEnum != null) {
-//                Main.screenActive = ScreenActive.REVERSI;
-                Main.changePane();
+                main.changePane(chosenGameEnum, txtPlayerOneName.getText());
             }
         }
     }

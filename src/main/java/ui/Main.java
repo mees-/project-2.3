@@ -4,6 +4,7 @@ import connection.Connection;
 import framework.Framework;
 import framework.GameType;
 import framework.player.LocalConnectedPlayer;
+import framework.player.LocalPlayer;
 import framework.player.Player;
 import framework.player.RandomMovePlayer;
 import javafx.application.Application;
@@ -23,23 +24,17 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class Main extends Application {
-    private static Pane currentPane;
-    private static Pane root;
-    private static Framework framework;
+    private Pane currentPane;
+    private Pane root;
+    private Framework framework;
 
-    public static ui.settings.GameType gameTypeEnum;
-    public static OnlineOption onlineOptionEnum;
-    public static PlayerType playerOneTypeEnum;
-    public static PlayerType playerTwoTypeEnum;
-    public static ChosenGame chosenGameEnum;
+    private ui.settings.GameType gameTypeEnum = ui.settings.GameType.LOCAL;
+    private OnlineOption onlineOptionEnum = OnlineOption.SUBSCRIBE;
+    private PlayerType playerOneTypeEnum = PlayerType.HUMAN;
+    private PlayerType playerTwoTypeEnum = PlayerType.HUMAN;
+    private ChosenGame chosenGameEnum = ChosenGame.REVERSI;
 
     public static void main(String[] args) {
-        gameTypeEnum = ui.settings.GameType.LOCAL;
-        onlineOptionEnum = OnlineOption.SUBSCRIBE;
-        playerOneTypeEnum = PlayerType.HUMAN;
-        playerTwoTypeEnum = PlayerType.HUMAN;
-        chosenGameEnum = ChosenGame.REVERSI;
-
         launch(args);
     }
 
@@ -52,7 +47,9 @@ public class Main extends Application {
 
     private void initUI(Stage stage) throws IOException {
         root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
-        currentPane = FXMLLoader.load(getClass().getResource("/view/home.fxml"));
+        FXMLLoader fxmlHome = new FXMLLoader(getClass().getResource("/view/home.fxml"));
+        fxmlHome.setController(new HomeController(this, gameTypeEnum, onlineOptionEnum, playerOneTypeEnum, playerTwoTypeEnum, chosenGameEnum));
+        currentPane = fxmlHome.load();
         root.getChildren().add(currentPane);
 
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());
@@ -64,12 +61,12 @@ public class Main extends Application {
         stage.setMaximized(true);
     }
 
-    public static void changePane() throws IOException {
-        switch (chosenGameEnum) {
+    public void changePane(ChosenGame chosenGame, String playerName) throws IOException {
+        switch (chosenGame) {
             case REVERSI:
                 root.getChildren().remove(currentPane);
                 root.getChildren().add(FXMLLoader.load(Main.class.getResource("/view/reversi.fxml")));
-                startFramework();
+                startFramework(playerName);
                 break;
             case TICTACTOE:
                 break;
@@ -78,9 +75,9 @@ public class Main extends Application {
         }
     }
 
-    public static void startFramework() throws IOException {
+    public void startFramework(String playerName) throws IOException {
         Connection connection = new Connection();
-        Player player = new LocalConnectedPlayer(new RandomMovePlayer(), connection);
+        Player player = new LocalConnectedPlayer(new LocalPlayer(playerName), connection);
         framework = new Framework(player, connection);
         framework.login();
 
@@ -89,7 +86,7 @@ public class Main extends Application {
         });
     }
 
-    public static void stopFramework() throws IOException {
+    public void stopFramework() throws IOException {
         framework.close();
     }
 

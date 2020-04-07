@@ -52,6 +52,8 @@ public class Board implements BoardInterface {
 
     public int[] countPieces() {
         int[] pieces;
+        // [0] = Local pieces
+        // [1] = Remote pieces
         pieces = new int[2];
 
         for (int i = 0; i < getSize(); i++) {
@@ -68,14 +70,15 @@ public class Board implements BoardInterface {
 
     public void printBoard() {
 
-        for (int i = 0; i < getSize(); i++) {
-            for (int j = 0; j < getSize(); j++) {
-                System.out.print(ANSI_RED+ "("+i+", "+j+") ");
-                CellContent a = getCell(i, j);
+
+        for (int row = 0; row < getSize(); row++) {
+            for (int col = 0; col < getSize(); col++) {
+                System.out.print(ANSI_RED + "("+row+", "+col+") ");
+                CellContent a = getCell(row, col);
                 if (a == CellContent.Local) {
-                    System.out.print(ANSI_BLACK + a + ANSI_RED + " | ");
-                } else if (a == CellContent.Remote) {
                     System.out.print(ANSI_WHITE + a + ANSI_RED + " | ");
+                } else if (a == CellContent.Remote) {
+                    System.out.print(ANSI_BLACK + a + ANSI_RED + " | ");
                 } else {
                     System.out.print(ANSI_RED + a + ANSI_RED + " | ");
                 }

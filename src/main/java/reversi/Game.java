@@ -1,6 +1,11 @@
 package reversi;
 import framework.*;
 
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Game implements GameInterface {
 
     private static final int BOARD_SIZE = 8;
@@ -20,17 +25,18 @@ public class Game implements GameInterface {
     private char[][] suggestions;
     private char[][] charBoard;
 
+    ArrayList<Point> coordinates = new ArrayList<Point>();
+
     private GameState lastTurn;
 
-    private GameState gameState;
 
 
     public Game() {
         init();
 
         // If player one; black; first
-        if (gameState == GameState.LocalTurn) {
-            System.out.println(gameState.toString()+" is black.");
+        if (lastTurn == null) {
+//            System.out.println(gameState.toString()+" is black.");
             board.setCell(3, 3, CellContent.Remote);
             board.setCell(4, 4, CellContent.Remote);
             board.setCell(3, 4, CellContent.Local);
@@ -40,7 +46,7 @@ public class Game implements GameInterface {
 
         // If player two; white; second
         } else {
-            System.out.println(gameState.toString()+" is white.");
+//            System.out.println(gameState.toString()+" is white.");
             board.setCell(3, 3, CellContent.Local);
             board.setCell(4, 4, CellContent.Local);
             board.setCell(3, 4, CellContent.Remote);
@@ -64,6 +70,7 @@ public class Game implements GameInterface {
     public char[][] validMovesOverview(CellContent playerCell) {
         toCharBoard();
         initSuggestions();
+        resetSuggestionsList();
 
         for (int i = 0; i < board.getSize(); i++) {
             for (int j = 0; j < board.getSize(); j++) {
@@ -78,12 +85,22 @@ public class Game implements GameInterface {
                     boolean nw = validMove(playerCell, i, j, -1, -1);
 
                     if (nn || ne || ee || se || ss || sw || ww || nw) {
+                        addSuggestionsList(i, j);
                         suggestions[i][j] = SUGGEST_DISC;
                     }
                 }
             }
         }
         return suggestions;
+    }
+
+    private void addSuggestionsList(int x, int y) {
+
+        coordinates.add(new Point(x, y));
+    }
+
+    private void resetSuggestionsList() {
+        coordinates.clear();
     }
 
     /**
@@ -147,9 +164,6 @@ public class Game implements GameInterface {
 
     @Override
     public GameState doMove(Move move) throws InvalidMoveException, InvalidTurnException {
-//        int localScore = 0;
-//        int remoteScore = 0;
-//        int emptyCells = board.getSize() * board.getSize();
         if(!validCurrentTurn(move.getPlayer())) {
             throw new InvalidTurnException(move.getPlayer() + " took two turns in a row, only one is allowed.");
         }
@@ -168,45 +182,6 @@ public class Game implements GameInterface {
         }
         return getResult(move);
     }
-
-
-//        if(printToCommandLine) {
-//            board.printBoard();
-//        }
-//        if (validMovesOverview(player)[move.getX()][move.getY()] == SUGGEST_DISC) {
-//            board.setCell(move.getX(), move.getY(), player);
-//            flipDiscs(move, player);
-//            for (int i = 0; i < board.getSize(); i++) {
-//                for (int j = 0; j < board.getSize(); j++) {
-//                    if (board.getCell(i, j) == CellContent.Local) {
-//                        localScore += 1;
-//                    } else if (board.getCell(i, j) == CellContent.Remote) {
-//                        remoteScore += 1;
-//                    } else if (board.getCell(i, j) == CellContent.Empty) {
-//                        emptyCells -= 1;
-//                        if (emptyCells == 0) {
-//                            if (localScore > remoteScore) {
-//                                moveResult = MoveResult.Win;
-//                            } else if (localScore < remoteScore) {
-//                                moveResult = MoveResult.Loss;
-//                            } else {
-//                                moveResult = MoveResult.Draw;
-//                            }
-//                        } else {
-//                            if (move.player == PlayerType.Local) {
-//                                moveResult = MoveResult.LocalMove;
-//                            } else if (move.player == PlayerType.Remote) {
-//                                moveResult = MoveResult.RemoteMove;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//        } else {
-//            throw new InvalidMoveException("Invalid move");
-//        }
-
 
     private GameState getResult(Move move) {
         CellContent player = moveToCellContent(move);
@@ -269,16 +244,16 @@ public class Game implements GameInterface {
     }
 
     public void flipDiscs(Move move, CellContent player) {
-
         int x = move.getX();
         int y = move.getY();
-        flipLine(player, x, y, 0, -1); //nn
-        flipLine(player, x, y, 1, -1); //ne
-        flipLine(player, x, y, 1, 0); //ee
+
+        flipLine(player, x, y, 0, -1); //ww
+        flipLine(player, x, y, 1, -1); //sw
+        flipLine(player, x, y, 1, 0); //ss
         flipLine(player, x, y, 1, 1); //se
-        flipLine(player, x, y, 0, 1); //ss
-        flipLine(player, x, y, -1, 1); //sw
-        flipLine(player, x, y, -1, 0); //ww
+        flipLine(player, x, y, 0, 1); //ee
+        flipLine(player, x, y, -1, 1); //ne
+        flipLine(player, x, y, -1, 0); //nn
         flipLine(player, x, y, -1, -1); //nw
     }
 
@@ -296,7 +271,7 @@ public class Game implements GameInterface {
         if (board.getCell(currentX + checkX, currentY + checkY) == player) {
             return true;
         } else {
-            if (flipLine(player, checkX, checkY, currentX + checkX, currentY + checkY)) {
+            if (flipLine(player, currentX + checkX, currentY + checkY, checkX, checkY)) {
                 board.setCell(currentX + checkX, currentY + checkY, player);
                 return true;
             } else {
@@ -310,7 +285,7 @@ public class Game implements GameInterface {
         return GameType.Reversi;
     }
 
-    public void toCharBoard() {
+    private void toCharBoard() {
         for (int i = 0; i < board.getSize(); i++) {
             for (int j = 0; j < board.getSize(); j++) {
                 switch (board.getCell(i, j)) {
@@ -328,11 +303,11 @@ public class Game implements GameInterface {
         }
     }
 
-    public void initSuggestions() {
+    private void initSuggestions() {
         suggestions = getCharBoard();
     }
 
-    public char[][] getCharBoard() {
+    private char[][] getCharBoard() {
         return charBoard;
     }
 

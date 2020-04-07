@@ -10,12 +10,14 @@ import framework.player.RandomMovePlayer;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import ui.controller.HomeController;
+import ui.controller.ReversiController;
 import ui.settings.ChosenGame;
 import ui.settings.OnlineOption;
 import ui.settings.PlayerType;
@@ -24,7 +26,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class Main extends Application {
-    private Pane currentPane;
+    private Pane paneHome, paneReversi, paneTicTacToe;
     private Pane root;
     private Framework framework;
 
@@ -33,6 +35,8 @@ public class Main extends Application {
     private PlayerType playerOneTypeEnum = PlayerType.HUMAN;
     private PlayerType playerTwoTypeEnum = PlayerType.HUMAN;
     private ChosenGame chosenGameEnum = ChosenGame.REVERSI;
+
+    private FXMLLoader loader;
 
     public static void main(String[] args) {
         launch(args);
@@ -47,10 +51,10 @@ public class Main extends Application {
 
     private void initUI(Stage stage) throws IOException {
         root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
-        FXMLLoader fxmlHome = new FXMLLoader(getClass().getResource("/view/home.fxml"));
-        fxmlHome.setController(new HomeController(this, gameTypeEnum, onlineOptionEnum, playerOneTypeEnum, playerTwoTypeEnum, chosenGameEnum));
-        currentPane = fxmlHome.load();
-        root.getChildren().add(currentPane);
+        loader = new FXMLLoader(getClass().getResource("/view/home.fxml"));
+        loader.setController(new HomeController(this, gameTypeEnum, onlineOptionEnum, playerOneTypeEnum, playerTwoTypeEnum, chosenGameEnum));
+        paneHome = loader.load();
+        root.getChildren().add(paneHome);
 
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());
         Collections.swap(workingCollection, 0, 1);
@@ -62,11 +66,15 @@ public class Main extends Application {
     }
 
     public void changePane(ChosenGame chosenGame, String playerName) throws IOException {
+        startFramework(playerName);
+        root.getChildren().remove(paneHome);
         switch (chosenGame) {
             case REVERSI:
-                root.getChildren().remove(currentPane);
-                root.getChildren().add(FXMLLoader.load(Main.class.getResource("/view/reversi.fxml")));
-                startFramework(playerName);
+                loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
+                loader.setController(new ReversiController(this, framework));
+                paneReversi = loader.load();
+                root.getChildren().add(paneReversi);
+                startReversi();
                 break;
             case TICTACTOE:
                 break;
@@ -80,7 +88,9 @@ public class Main extends Application {
         Player player = new LocalConnectedPlayer(new LocalPlayer(playerName), connection);
         framework = new Framework(player, connection);
         framework.login();
+    }
 
+    private void startReversi() {
         new Thread ( () -> {
             framework.runGameSync(GameType.Reversi);
         });

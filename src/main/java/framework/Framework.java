@@ -56,4 +56,8 @@ public class Framework {
     public void close() throws IOException {
         connection.close();
     }
+
+    public Player getLocalPlayer() {
+        return localPlayer;
+    }
 }

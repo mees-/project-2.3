@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="883.0" prefWidth="1552.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.ReversiController">
+   <children>
+      <HBox alignment="CENTER" styleClass="bg-primary">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Reversi" HBox.hgrow="ALWAYS">
+               <styleClass>
+                  <String fx:value="title-lg" />
+                  <String fx:value="b" />
+               </styleClass>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </HBox>
+      <Region VBox.vgrow="ALWAYS" />
+      <HBox VBox.vgrow="ALWAYS">
+         <children>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+            <VBox prefHeight="100.0" prefWidth="560.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />
+               </HBox.margin>
+               <children>
+                  <GridPane alignment="CENTER" prefHeight="201.0" prefWidth="496.0">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="50.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="108.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="108.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="108.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="104.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="108.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="108.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="108.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="108.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="50.0" prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1" GridPane.rowIndex="1">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="A" GridPane.columnIndex="1">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="B" GridPane.columnIndex="2">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="C" GridPane.columnIndex="3">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="D" GridPane.columnIndex="4">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="E" GridPane.columnIndex="5">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="F" GridPane.columnIndex="6">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="G" GridPane.columnIndex="7">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="H" GridPane.columnIndex="8">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="5" GridPane.rowIndex="5">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="6" GridPane.rowIndex="6">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="7" GridPane.rowIndex="7">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="8" GridPane.rowIndex="8">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4" GridPane.rowIndex="4">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2" GridPane.rowIndex="2">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3" GridPane.rowIndex="3">
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="b" />
+                              <String fx:value="h2" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="8" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="7" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="6" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="6" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="7" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="8" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="tile-reversi" />
+                              <String fx:value="tile-reversi-available" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="6" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="7" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="8" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                           <children>
+                              <Circle radius="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5">
+                                 <styleClass>
+                                    <String fx:value="piece-reversi" />
+                                    <String fx:value="piece-reversi-white" />
+                                 </styleClass>
+                              </Circle>
+                           </children>
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="tile-reversi" />
+                              <String fx:value="tile-reversi-occupied" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4">
+                           <children>
+                              <Circle radius="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5">
+                                 <styleClass>
+                                    <String fx:value="piece-reversi" />
+                                    <String fx:value="piece-reversi-black" />
+                                 </styleClass>
+                              </Circle>
+                           </children>
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="tile-reversi" />
+                              <String fx:value="tile-reversi-occupied" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="tile-reversi" />
+                              <String fx:value="tile-reversi-available" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="7" GridPane.rowIndex="4">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="8" GridPane.rowIndex="4">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="tile-reversi" />
+                              <String fx:value="tile-reversi-available" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                           <children>
+                              <Circle radius="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5">
+                                 <styleClass>
+                                    <String fx:value="piece-reversi" />
+                                    <String fx:value="piece-reversi-black" />
+                                 </styleClass>
+                              </Circle>
+                           </children>
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="tile-reversi" />
+                              <String fx:value="tile-reversi-occupied" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5">
+                           <children>
+                              <Circle radius="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5">
+                                 <styleClass>
+                                    <String fx:value="piece-reversi" />
+                                    <String fx:value="piece-reversi-white" />
+                                 </styleClass>
+                              </Circle>
+                           </children>
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="tile-reversi" />
+                              <String fx:value="tile-reversi-occupied" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="6" GridPane.rowIndex="5">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="7" GridPane.rowIndex="5">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="8" GridPane.rowIndex="5">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="tile-reversi" />
+                              <String fx:value="tile-reversi-available" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="5" GridPane.rowIndex="6">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="6" GridPane.rowIndex="6">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="7" GridPane.rowIndex="6">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="8" GridPane.rowIndex="6">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="5" GridPane.rowIndex="7">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="6" GridPane.rowIndex="7">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="7" GridPane.rowIndex="7">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="8" GridPane.rowIndex="7">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="3" GridPane.rowIndex="8">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="4" GridPane.rowIndex="8">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="5" GridPane.rowIndex="8">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="6" GridPane.rowIndex="8">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="7" GridPane.rowIndex="8">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="8" GridPane.rowIndex="8">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </GridPane>
+               </children>
+            </VBox>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+            <VBox prefHeight="100.0" prefWidth="442.0">
+               <HBox.margin>
+                  <Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />
+               </HBox.margin>
+               <children>
+                  <Region prefHeight="70.0" prefWidth="200.0" />
+                  <HBox alignment="CENTER" styleClass="bg-primary">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Players">
+                           <styleClass>
+                              <String fx:value="h2" />
+                              <String fx:value="text-white" />
+                              <String fx:value="b" />
+                           </styleClass>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" styleClass="bg-light">
+                     <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="237.0" prefWidth="610.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefWidth="30.0">
+                                 <children>
+                                    <SVGPath content="M 21.082031 19.46875 L 4.472656 19.46875 C 4.121094 19.46875 3.832031 19.78125 3.832031 20.164062 L 3.832031 21.554688 C 3.832031 21.9375 4.121094 22.253906 4.472656 22.253906 L 21.082031 22.253906 C 21.4375 22.253906 21.726562 21.9375 21.726562 21.554688 L 21.726562 20.164062 C 21.726562 19.78125 21.4375 19.46875 21.082031 19.46875 Z M 23.644531 5.5625 C 22.582031 5.5625 21.726562 6.496094 21.726562 7.648438 C 21.726562 7.960938 21.789062 8.242188 21.902344 8.507812 L 19.011719 10.394531 C 18.394531 10.796875 17.597656 10.570312 17.246094 9.894531 L 13.992188 3.691406 C 14.417969 3.308594 14.699219 2.734375 14.699219 2.085938 C 14.699219 0.929688 13.839844 0 12.78125 0 C 11.722656 0 10.863281 0.929688 10.863281 2.085938 C 10.863281 2.734375 11.144531 3.308594 11.570312 3.691406 L 8.316406 9.894531 C 7.957031 10.570312 7.160156 10.796875 6.550781 10.394531 L 3.660156 8.507812 C 3.773438 8.246094 3.839844 7.960938 3.839844 7.648438 C 3.839844 6.496094 2.980469 5.5625 1.921875 5.5625 C 0.863281 5.5625 0 6.496094 0 7.648438 C 0 8.800781 0.855469 9.734375 1.914062 9.734375 C 2.019531 9.734375 2.125 9.714844 2.226562 9.699219 L 5.109375 18.082031 L 20.445312 18.082031 L 23.335938 9.699219 C 23.4375 9.714844 23.539062 9.734375 23.644531 9.734375 C 24.699219 9.734375 25.558594 8.800781 25.558594 7.648438 C 25.558594 6.496094 24.699219 5.5625 23.644531 5.5625 Z M 23.644531 5.5625" styleClass="text-gold" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="210.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                                       <styleClass>
+                                          <String fx:value="h3" />
+                                          <String fx:value="text-dark" />
+                                          <String fx:value="b" />
+                                       </styleClass>
+                                       <HBox.margin>
+                                          <Insets left="20.0" right="20.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefWidth="54.0">
+                                 <children>
+                                    <Circle radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="piece-reversi-black" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                       <styleClass>
+                                          <String fx:value="italic" />
+                                          <String fx:value="h4" />
+                                       </styleClass>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="237.0" prefWidth="610.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefWidth="30.0">
+                                 <children>
+                                    <SVGPath content="M 9.410156 3.152344 L 10.507812 2.105469 C 10.972656 1.664062 11.726562 1.664062 12.183594 2.105469 L 21.789062 11.265625 C 22.253906 11.707031 22.253906 12.425781 21.789062 12.863281 L 12.183594 22.023438 C 11.71875 22.46875 10.96875 22.46875 10.507812 22.023438 L 9.410156 20.976562 C 8.941406 20.53125 8.953125 19.800781 9.433594 19.363281 L 15.386719 13.949219 L 1.1875 13.949219 C 0.527344 13.949219 0 13.445312 0 12.820312 L 0 11.3125 C 0 10.683594 0.527344 10.179688 1.1875 10.179688 L 15.386719 10.179688 L 9.433594 4.769531 C 8.949219 4.332031 8.9375 3.601562 9.410156 3.152344 Z M 9.410156 3.152344" styleClass="text-danger" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="4.0" prefWidth="210.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2 name">
+                                       <styleClass>
+                                          <String fx:value="h3" />
+                                          <String fx:value="text-dark" />
+                                          <String fx:value="b" />
+                                       </styleClass>
+                                       <HBox.margin>
+                                          <Insets left="20.0" right="20.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefWidth="54.0">
+                                 <children>
+                                    <Circle radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="piece-reversi-white" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                       <styleClass>
+                                          <String fx:value="italic" />
+                                          <String fx:value="h4" />
+                                       </styleClass>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Region VBox.vgrow="ALWAYS" />
+   </children>
+   <stylesheets>
+      <URL value="@../css/bootstrapfx.css" />
+      <URL value="@../css/app.css" />
+   </stylesheets>
+</VBox>

@@ -1,4 +1,4 @@
-package ui;
+package gui;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Collections;
 
-public class Home extends Application {
+public class Root extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -25,8 +25,8 @@ public class Home extends Application {
 
     private void initUI(Stage stage) throws IOException {
         VBox root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
-        Pane home = FXMLLoader.load(getClass().getResource("/view/home.fxml"));
-        root.getChildren().add(home);
+        Pane reversi = FXMLLoader.load(getClass().getResource("/view/reversi.fxml"));
+        root.getChildren().add(reversi);
 
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());
         Collections.swap(workingCollection,0,1);

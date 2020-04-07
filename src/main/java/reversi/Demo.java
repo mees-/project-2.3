@@ -18,7 +18,7 @@ public class Demo {
 
         boolean isGameOver = false;
         boolean draw = false;
-        GameState currentTurn = GameState.RemoteTurn;
+        GameState currentTurn = GameState.LocalTurn;
 
 //        reversi.setPrintToCommandLine(true);
 //        reversi.setup();
@@ -30,37 +30,6 @@ public class Demo {
 
 //        boolean inputCommand = false;
 
-
-        Move move = new Move(GameState.LocalTurn, 5, 4);
-        reversi.doMove(move);
-        move = new Move(GameState.RemoteTurn, 5, 5);
-        reversi.doMove(move);
-        move = new Move(GameState.LocalTurn, 4, 5);
-        reversi.doMove(move);
-        move = new Move(GameState.RemoteTurn, 3, 5);
-        reversi.doMove(move);
-        move = new Move(GameState.LocalTurn, 2, 5);
-        reversi.doMove(move);
-        move = new Move(GameState.RemoteTurn, 1, 5);
-        reversi.doMove(move);
-        move = new Move(GameState.LocalTurn, 3, 2);
-        reversi.doMove(move);
-        move = new Move(GameState.RemoteTurn, 5, 3);
-        reversi.doMove(move);
-        move = new Move(GameState.LocalTurn, 6, 5);
-        reversi.doMove(move);
-        move = new Move(GameState.RemoteTurn, 5, 2);
-        reversi.doMove(move);
-        move = new Move(GameState.LocalTurn, 0, 5);
-        reversi.doMove(move);
-//        move = new Move(GameState.RemoteTurn, 7, 5);
-//        reversi.doMove(move);
-//        move = new Move(GameState.LocalTurn, 7, 6);
-//        reversi.doMove(move);
-//        move = new Move(GameState.RemoteTurn, 3, 1);
-//        reversi.doMove(move);
-
-
         do {
             reversi.printBoard();
             System.out.println("Player '" + currentTurn.toString() + "', enter an empty row and column to place your mark:");
@@ -69,7 +38,7 @@ public class Demo {
             System.out.print("> Column: ");
             int y = input.nextInt();
             System.out.println();
-            move = new Move(currentTurn, x, y);
+            Move move = new Move(currentTurn, x, y);
             GameState gameState = reversi.doMove(move);
             switch (gameState) {
                 case OneWin:

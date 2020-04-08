@@ -67,14 +67,22 @@ public class Main extends Application {
 
     public void changePane(ChosenGame chosenGame, String playerName) throws IOException {
         startFramework(playerName);
-        root.getChildren().remove(paneHome);
         switch (chosenGame) {
             case REVERSI:
-                loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
-                loader.setController(new ReversiController(this, framework));
-                paneReversi = loader.load();
-                root.getChildren().add(paneReversi);
-                startReversi();
+//                try {
+//                    wait();
+                    root.getChildren().remove(paneHome);
+                    ReversiController reversiController = new ReversiController(this, framework);
+                    loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
+                    loader.setController(reversiController);
+                    paneReversi = loader.load();
+                    root.getChildren().add(paneReversi);
+                    startReversi(reversiController);
+                    reversiController.setup();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+
                 break;
             case TICTACTOE:
                 break;
@@ -90,9 +98,10 @@ public class Main extends Application {
         framework.login();
     }
 
-    private void startReversi() {
+    private void startReversi(ReversiController reversiController) {
         new Thread ( () -> {
             framework.runGameSync(GameType.Reversi);
+            reversiController.run();
         });
     }
 

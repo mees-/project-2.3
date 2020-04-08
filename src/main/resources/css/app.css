@@ -89,12 +89,17 @@
     -fx-min-width: 90px;
 }
 
+.tile-reversi-disabled {
+    -fx-background-color: gray;
+}
+
 .tile-reversi-available {
     -fx-cursor: HAND;
 }
 
 .tile-reversi-available:hover {
     -fx-opacity: 0.7;
+    -fx-cursor: hand;
 }
 
 .tile-reversi-occupied {

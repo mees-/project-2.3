@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.*?>
-<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
@@ -36,7 +35,7 @@
                   <Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />
                </HBox.margin>
                <children>
-                  <GridPane alignment="CENTER" prefHeight="201.0" prefWidth="496.0">
+                  <GridPane fx:id="gpReversi" alignment="CENTER" prefHeight="201.0" prefWidth="496.0">
                     <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="50.0" prefWidth="100.0" />
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="108.0" />
@@ -224,9 +223,6 @@
                            <padding>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </padding>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="tile-reversi" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <padding>
@@ -363,14 +359,6 @@
                            </padding>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                           <children>
-                              <Circle radius="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5">
-                                 <styleClass>
-                                    <String fx:value="piece-reversi" />
-                                    <String fx:value="piece-reversi-white" />
-                                 </styleClass>
-                              </Circle>
-                           </children>
                            <padding>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </padding>
@@ -380,14 +368,6 @@
                            </styleClass>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4">
-                           <children>
-                              <Circle radius="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5">
-                                 <styleClass>
-                                    <String fx:value="piece-reversi" />
-                                    <String fx:value="piece-reversi-black" />
-                                 </styleClass>
-                              </Circle>
-                           </children>
                            <padding>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </padding>
@@ -435,14 +415,6 @@
                            </styleClass>
                         </HBox>
                         <HBox alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="5">
-                           <children>
-                              <Circle radius="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5">
-                                 <styleClass>
-                                    <String fx:value="piece-reversi" />
-                                    <String fx:value="piece-reversi-black" />
-                                 </styleClass>
-                              </Circle>
-                           </children>
                            <padding>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </padding>
@@ -452,14 +424,6 @@
                            </styleClass>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5">
-                           <children>
-                              <Circle radius="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5">
-                                 <styleClass>
-                                    <String fx:value="piece-reversi" />
-                                    <String fx:value="piece-reversi-white" />
-                                 </styleClass>
-                              </Circle>
-                           </children>
                            <padding>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </padding>
@@ -644,12 +608,13 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" prefWidth="30.0">
                                  <children>
-                                    <SVGPath content="M 21.082031 19.46875 L 4.472656 19.46875 C 4.121094 19.46875 3.832031 19.78125 3.832031 20.164062 L 3.832031 21.554688 C 3.832031 21.9375 4.121094 22.253906 4.472656 22.253906 L 21.082031 22.253906 C 21.4375 22.253906 21.726562 21.9375 21.726562 21.554688 L 21.726562 20.164062 C 21.726562 19.78125 21.4375 19.46875 21.082031 19.46875 Z M 23.644531 5.5625 C 22.582031 5.5625 21.726562 6.496094 21.726562 7.648438 C 21.726562 7.960938 21.789062 8.242188 21.902344 8.507812 L 19.011719 10.394531 C 18.394531 10.796875 17.597656 10.570312 17.246094 9.894531 L 13.992188 3.691406 C 14.417969 3.308594 14.699219 2.734375 14.699219 2.085938 C 14.699219 0.929688 13.839844 0 12.78125 0 C 11.722656 0 10.863281 0.929688 10.863281 2.085938 C 10.863281 2.734375 11.144531 3.308594 11.570312 3.691406 L 8.316406 9.894531 C 7.957031 10.570312 7.160156 10.796875 6.550781 10.394531 L 3.660156 8.507812 C 3.773438 8.246094 3.839844 7.960938 3.839844 7.648438 C 3.839844 6.496094 2.980469 5.5625 1.921875 5.5625 C 0.863281 5.5625 0 6.496094 0 7.648438 C 0 8.800781 0.855469 9.734375 1.914062 9.734375 C 2.019531 9.734375 2.125 9.714844 2.226562 9.699219 L 5.109375 18.082031 L 20.445312 18.082031 L 23.335938 9.699219 C 23.4375 9.714844 23.539062 9.734375 23.644531 9.734375 C 24.699219 9.734375 25.558594 8.800781 25.558594 7.648438 C 25.558594 6.496094 24.699219 5.5625 23.644531 5.5625 Z M 23.644531 5.5625" styleClass="text-gold" />
+                                    <SVGPath fx:id="wcPlayerOne" visible="false" content="M 21.082031 19.46875 L 4.472656 19.46875 C 4.121094 19.46875 3.832031 19.78125 3.832031 20.164062 L 3.832031 21.554688 C 3.832031 21.9375 4.121094 22.253906 4.472656 22.253906 L 21.082031 22.253906 C 21.4375 22.253906 21.726562 21.9375 21.726562 21.554688 L 21.726562 20.164062 C 21.726562 19.78125 21.4375 19.46875 21.082031 19.46875 Z M 23.644531 5.5625 C 22.582031 5.5625 21.726562 6.496094 21.726562 7.648438 C 21.726562 7.960938 21.789062 8.242188 21.902344 8.507812 L 19.011719 10.394531 C 18.394531 10.796875 17.597656 10.570312 17.246094 9.894531 L 13.992188 3.691406 C 14.417969 3.308594 14.699219 2.734375 14.699219 2.085938 C 14.699219 0.929688 13.839844 0 12.78125 0 C 11.722656 0 10.863281 0.929688 10.863281 2.085938 C 10.863281 2.734375 11.144531 3.308594 11.570312 3.691406 L 8.316406 9.894531 C 7.957031 10.570312 7.160156 10.796875 6.550781 10.394531 L 3.660156 8.507812 C 3.773438 8.246094 3.839844 7.960938 3.839844 7.648438 C 3.839844 6.496094 2.980469 5.5625 1.921875 5.5625 C 0.863281 5.5625 0 6.496094 0 7.648438 C 0 8.800781 0.855469 9.734375 1.914062 9.734375 C 2.019531 9.734375 2.125 9.714844 2.226562 9.699219 L 5.109375 18.082031 L 20.445312 18.082031 L 23.335938 9.699219 C 23.4375 9.714844 23.539062 9.734375 23.644531 9.734375 C 24.699219 9.734375 25.558594 8.800781 25.558594 7.648438 C 25.558594 6.496094 24.699219 5.5625 23.644531 5.5625 Z M 23.644531 5.5625" styleClass="text-gold" />
+                                    <SVGPath fx:id="tPlayerOne" content="M 9.410156 3.152344 L 10.507812 2.105469 C 10.972656 1.664062 11.726562 1.664062 12.183594 2.105469 L 21.789062 11.265625 C 22.253906 11.707031 22.253906 12.425781 21.789062 12.863281 L 12.183594 22.023438 C 11.71875 22.46875 10.96875 22.46875 10.507812 22.023438 L 9.410156 20.976562 C 8.941406 20.53125 8.953125 19.800781 9.433594 19.363281 L 15.386719 13.949219 L 1.1875 13.949219 C 0.527344 13.949219 0 13.445312 0 12.820312 L 0 11.3125 C 0 10.683594 0.527344 10.179688 1.1875 10.179688 L 15.386719 10.179688 L 9.433594 4.769531 C 8.949219 4.332031 8.9375 3.601562 9.410156 3.152344 Z M 9.410156 3.152344" styleClass="text-danger" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="210.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                                    <Text fx:id="txtPlayerOne" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                                        <styleClass>
                                           <String fx:value="h3" />
                                           <String fx:value="text-dark" />
@@ -664,7 +629,7 @@
                               <HBox alignment="CENTER_LEFT" prefWidth="54.0">
                                  <children>
                                     <Circle radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="piece-reversi-black" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+                                    <Text fx:id="sPlayerOne" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
@@ -684,12 +649,13 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" prefWidth="30.0">
                                  <children>
-                                    <SVGPath content="M 9.410156 3.152344 L 10.507812 2.105469 C 10.972656 1.664062 11.726562 1.664062 12.183594 2.105469 L 21.789062 11.265625 C 22.253906 11.707031 22.253906 12.425781 21.789062 12.863281 L 12.183594 22.023438 C 11.71875 22.46875 10.96875 22.46875 10.507812 22.023438 L 9.410156 20.976562 C 8.941406 20.53125 8.953125 19.800781 9.433594 19.363281 L 15.386719 13.949219 L 1.1875 13.949219 C 0.527344 13.949219 0 13.445312 0 12.820312 L 0 11.3125 C 0 10.683594 0.527344 10.179688 1.1875 10.179688 L 15.386719 10.179688 L 9.433594 4.769531 C 8.949219 4.332031 8.9375 3.601562 9.410156 3.152344 Z M 9.410156 3.152344" styleClass="text-danger" />
+                                    <SVGPath fx:id="wcPlayerTwo" visible="false" content="M 21.082031 19.46875 L 4.472656 19.46875 C 4.121094 19.46875 3.832031 19.78125 3.832031 20.164062 L 3.832031 21.554688 C 3.832031 21.9375 4.121094 22.253906 4.472656 22.253906 L 21.082031 22.253906 C 21.4375 22.253906 21.726562 21.9375 21.726562 21.554688 L 21.726562 20.164062 C 21.726562 19.78125 21.4375 19.46875 21.082031 19.46875 Z M 23.644531 5.5625 C 22.582031 5.5625 21.726562 6.496094 21.726562 7.648438 C 21.726562 7.960938 21.789062 8.242188 21.902344 8.507812 L 19.011719 10.394531 C 18.394531 10.796875 17.597656 10.570312 17.246094 9.894531 L 13.992188 3.691406 C 14.417969 3.308594 14.699219 2.734375 14.699219 2.085938 C 14.699219 0.929688 13.839844 0 12.78125 0 C 11.722656 0 10.863281 0.929688 10.863281 2.085938 C 10.863281 2.734375 11.144531 3.308594 11.570312 3.691406 L 8.316406 9.894531 C 7.957031 10.570312 7.160156 10.796875 6.550781 10.394531 L 3.660156 8.507812 C 3.773438 8.246094 3.839844 7.960938 3.839844 7.648438 C 3.839844 6.496094 2.980469 5.5625 1.921875 5.5625 C 0.863281 5.5625 0 6.496094 0 7.648438 C 0 8.800781 0.855469 9.734375 1.914062 9.734375 C 2.019531 9.734375 2.125 9.714844 2.226562 9.699219 L 5.109375 18.082031 L 20.445312 18.082031 L 23.335938 9.699219 C 23.4375 9.714844 23.539062 9.734375 23.644531 9.734375 C 24.699219 9.734375 25.558594 8.800781 25.558594 7.648438 C 25.558594 6.496094 24.699219 5.5625 23.644531 5.5625 Z M 23.644531 5.5625" styleClass="text-gold" />
+                                    <SVGPath fx:id="tPlayerTwo" content="M 9.410156 3.152344 L 10.507812 2.105469 C 10.972656 1.664062 11.726562 1.664062 12.183594 2.105469 L 21.789062 11.265625 C 22.253906 11.707031 22.253906 12.425781 21.789062 12.863281 L 12.183594 22.023438 C 11.71875 22.46875 10.96875 22.46875 10.507812 22.023438 L 9.410156 20.976562 C 8.941406 20.53125 8.953125 19.800781 9.433594 19.363281 L 15.386719 13.949219 L 1.1875 13.949219 C 0.527344 13.949219 0 13.445312 0 12.820312 L 0 11.3125 C 0 10.683594 0.527344 10.179688 1.1875 10.179688 L 15.386719 10.179688 L 9.433594 4.769531 C 8.949219 4.332031 8.9375 3.601562 9.410156 3.152344 Z M 9.410156 3.152344" styleClass="text-danger" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="4.0" prefWidth="210.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2 name">
+                                    <Text fx:id="txtPlayerTwo"  strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
                                        <styleClass>
                                           <String fx:value="h3" />
                                           <String fx:value="text-dark" />
@@ -704,7 +670,7 @@
                               <HBox alignment="CENTER_LEFT" prefWidth="54.0">
                                  <children>
                                     <Circle radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="piece-reversi-white" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+                                    <Text fx:id="sPlayerTwo" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>

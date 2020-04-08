@@ -34,7 +34,6 @@ public class Match {
     }
 
     public void setupGame() {
-
         game.setup();
     }
 
@@ -91,5 +90,9 @@ public class Match {
             default:
                 throw new RuntimeException("Really shoulnd't be here 2");
         }
+    }
+
+    public Players getPlayers() {
+        return players;
     }
 }

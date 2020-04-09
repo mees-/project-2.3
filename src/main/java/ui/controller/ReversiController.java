@@ -152,7 +152,7 @@ public class ReversiController {
                             }
 
                             for (Move move : possibleMoves) {
-                                if (GridPane.getColumnIndex(node) == move.getX() && GridPane.getRowIndex(node) == move.getY()) {
+                                if ((GridPane.getColumnIndex(node) -1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
                                     node.getStyleClass().add("tile-reversi-available");
                                 }
                             }
@@ -188,7 +188,7 @@ public class ReversiController {
         HBox field = ((HBox)event.getSource());
 
         if (field.getStyleClass().contains("tile-reversi-available")) {
-            Move move = new Move(GameState.TurnOne, GridPane.getColumnIndex(field), GridPane.getRowIndex(field));
+            Move move = new Move(GameState.TurnOne, (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
             localPlayer.putMove(move);
         }
     }

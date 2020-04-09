@@ -1,9 +1,13 @@
 package reversi;
 
 import framework.*;
+import tictactoe.Board;
+import tictactoe.Game;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class ReversiBoard extends BoardInterface {
@@ -16,6 +20,7 @@ public class ReversiBoard extends BoardInterface {
     ArrayList<Point> coordinates = new ArrayList<Point>();
 
     private CellContent[][] board;
+    private int[][] valueBoard;
 
     public ReversiBoard() {
         init();
@@ -23,11 +28,67 @@ public class ReversiBoard extends BoardInterface {
 
     private void init(){
         board = new CellContent[BOARD_SIZE][BOARD_SIZE];
+        valueBoard = new int[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 setCell(i, j, CellContent.Empty);
+                valueBoard[i][j] = 0;
             }
         }
+        //These values were found in a Stanford paper that is no longer available,
+        //but can be viewed at https://www.youtube.com/watch?v=y7AKtWGOPAE&t=16m6s at 16 minutes and 6 seconds.
+        //CORNERS
+        valueBoard[0][0] = 161;
+        valueBoard[0][7] = 161;
+        valueBoard[7][0] = 161;
+        valueBoard[7][7] = 161;
+        //BUFFERS
+        valueBoard[0][1] = -40;
+        valueBoard[1][0] = -40;
+        valueBoard[0][6] = -40;
+        valueBoard[6][0] = -40;
+        valueBoard[1][7] = -40;
+        valueBoard[7][1] = -40;
+        valueBoard[6][7] = -40;
+        valueBoard[7][6] = -40;
+        valueBoard[1][1] = -20;
+        valueBoard[6][1] = -20;
+        valueBoard[1][6] = -20;
+        valueBoard[6][6] = -20;
+        //EDGES
+        valueBoard[0][2] = 10;
+        valueBoard[0][3] = 5;
+        valueBoard[0][4] = 5;
+        valueBoard[0][5] = 10;
+        valueBoard[2][0] = 10;
+        valueBoard[3][0] = 5;
+        valueBoard[4][0] = 5;
+        valueBoard[5][0] = 10;
+        valueBoard[2][7] = 10;
+        valueBoard[3][7] = 5;
+        valueBoard[4][7] = 5;
+        valueBoard[5][7] = 10;
+        valueBoard[7][2] = 10;
+        valueBoard[7][3] = 5;
+        valueBoard[7][4] = 5;
+        valueBoard[7][5] = 10;
+        //CENTER
+        valueBoard[2][2] = 5;
+        valueBoard[5][2] = 5;
+        valueBoard[5][5] = 5;
+        valueBoard[2][5] = 5;
+        valueBoard[1][3] = -2;
+        valueBoard[3][1] = -2;
+        valueBoard[1][4] = -2;
+        valueBoard[4][1] = -2;
+        valueBoard[6][4] = -2;
+        valueBoard[4][6] = -2;
+        valueBoard[6][3] = -2;
+        valueBoard[3][6] = -2;
+    }
+
+    public int[][] getValueBoard() {
+        return valueBoard;
     }
 
     public CellContent getCell(int x, int y) {
@@ -239,7 +300,18 @@ public class ReversiBoard extends BoardInterface {
 
     @Override
     public Set<Move> getValidMoves(GameState state) {
-        return null;
+        CellContent player;
+        try {
+            player = state.toCellContent();
+        } catch (GameState.InvalidOperationException e) {
+            throw new RuntimeException(e);
+        }
+        validMovesOverview(player);
+        HashSet<Move> set = new HashSet<>();
+        for (Point value : getSuggestionsList()) {
+            set.add(new Move(state, value.x, value.y));
+        }
+        return set;
     }
 
     @Override

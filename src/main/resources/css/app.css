@@ -2,8 +2,8 @@
  * Declaring variables
  */
 * {
-    -fx-primary-color: #337653;
-    -fx-primary-color-shade: #23523a;
+    -fx-primary-color: #004d40;
+    -fx-primary-color-shade: #00251a;
     -fx-dark-color: #494949;
 }
 
@@ -66,7 +66,22 @@
     -fx-font-size: 18px;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
-    -fx-cursor: HAND;
+}
+
+/**
+ * Lobby
+ */
+.btn-challenge {
+    -fx-background-color: #78909c;
+}
+
+.btn-challenge, .btn-challenge:focused, .btn-challenge.focused {
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}
+
+.btn-challenge:hover {
+    -fx-background-color: #4b636e;
 }
 
 /**
@@ -147,8 +162,7 @@
 }
 
 .piece-tictactoe-possible-move {
-    -fx-opacity: 0.3;
-    -fx-cursor: HAND;
+    -fx-opacity: 0.2;
 }
 
 /**

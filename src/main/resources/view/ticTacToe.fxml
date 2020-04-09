@@ -213,6 +213,7 @@
                   </VBox>
                </children>
             </VBox>
+            <Region prefHeight="200.0" prefWidth="200.0" />
          </children>
       </HBox>
       <Region minHeight="80.0" VBox.vgrow="ALWAYS" />

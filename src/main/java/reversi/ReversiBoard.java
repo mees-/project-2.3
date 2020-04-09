@@ -12,8 +12,14 @@ import java.util.Set;
 
 public class ReversiBoard extends BoardInterface {
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_WHITE = "\u001B[30m";
+    public static final String ANSI_BLACK = "\u001B[37m";
+    private static final char BLACK_DISC = '#';
+    private static final char WHITE_DISC = 'o';
+    private static final char EMPTY_CELL = '-';
+
+    private char playerColour;
+    private char opponentColour;
 
     private static final int BOARD_SIZE = 8;
 
@@ -21,6 +27,9 @@ public class ReversiBoard extends BoardInterface {
 
     private CellContent[][] board;
     private int[][] valueBoard;
+
+    private GameState startingPlayer;
+
 
     public ReversiBoard() {
         init();
@@ -157,7 +166,7 @@ public class ReversiBoard extends BoardInterface {
     }
 
     public CellContent checkForWin() {
-        if (!canMakeTurn(CellContent.Local) && canMakeTurn(CellContent.Remote)) {
+        if (!canMakeTurn(CellContent.Local) && !canMakeTurn(CellContent.Remote)) {
             int[] pieces = countPieces();
             if (pieces[0] > pieces[1]) {
                 return CellContent.Local;
@@ -279,23 +288,62 @@ public class ReversiBoard extends BoardInterface {
         return opponent;
     }
 
+    public void setStartingPlayer(GameState startingPlayer) {
+//        this.startingPlayer = startingPlayer;
+        // If player one; black; first
+        if (startingPlayer == GameState.TurnOne) {
+//            System.out.println(gameState.toString()+" is black.");
+            setCell(3, 3, CellContent.Remote);
+            setCell(4, 4, CellContent.Remote);
+            setCell(3, 4, CellContent.Local);
+            setCell(4, 3, CellContent.Local);
+            playerColour = BLACK_DISC;
+            opponentColour = WHITE_DISC;
+
+            // If player two; white; second
+        } else {
+//            System.out.println(gameState.toString()+" is white.");
+            setCell(3, 3, CellContent.Local);
+            setCell(4, 4, CellContent.Local);
+            setCell(3, 4, CellContent.Remote);
+            setCell(4, 3, CellContent.Remote);
+            playerColour = WHITE_DISC;
+            opponentColour = BLACK_DISC;
+        }
+    }
+
     public void printBoard() {
+        System.out.println(ANSI_WHITE + "  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | ");
+        System.out.println("-----------------------------------");
         for (int row = 0; row < getSize(); row++) {
+            System.out.print(ANSI_WHITE+row + " | ");
             for (int col = 0; col < getSize(); col++) {
-                System.out.print(ANSI_RED + "("+row+", "+col+") ");
+//                System.out.print(ANSI_RED + "("+row+", "+col+") ");
                 CellContent a = getCell(row, col);
-                if (a == CellContent.Local) {
-                    System.out.print(ANSI_WHITE + a + ANSI_RED + " | ");
-                } else if (a == CellContent.Remote) {
-                    System.out.print(ANSI_BLACK + a + ANSI_RED + " | ");
-                } else {
-                    System.out.print(ANSI_RED + a + ANSI_RED + " | ");
+                // Player one
+                if (playerColour == BLACK_DISC) {
+                    if (a == CellContent.Local) {
+                        System.out.print(ANSI_BLACK + playerColour + ANSI_RED + " | ");
+                    } else if (a == CellContent.Remote) {
+                        System.out.print(ANSI_WHITE + opponentColour + ANSI_RED + " | ");
+                    } else {
+                        System.out.print(ANSI_RED + EMPTY_CELL + ANSI_RED + " | ");
+                    }
+                // Player two
+                } else if (playerColour == WHITE_DISC) {
+                    if (a == CellContent.Local) {
+                        System.out.print(ANSI_WHITE + playerColour + ANSI_RED + " | ");
+                    } else if (a == CellContent.Remote) {
+                        System.out.print(ANSI_BLACK + opponentColour + ANSI_RED + " | ");
+                    } else {
+                        System.out.print(ANSI_RED + EMPTY_CELL + ANSI_RED + " | ");
+                    }
                 }
             }
             System.out.println("");
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(ANSI_WHITE+"---"+ANSI_RED+"--------------------------------");
         }
-        System.out.println("");
+        System.out.println(ANSI_WHITE+"");
     }
 
     @Override

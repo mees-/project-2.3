@@ -9,11 +9,6 @@ import java.util.Arrays;
 public class ReversiGame implements GameInterface {
 
     private static final int BOARD_SIZE = 8;
-    private static final char BLACK_DISC = '#';
-    private static final char WHITE_DISC = 'o';
-
-    private char playerColour;
-    private char opponentColour;
 
     private CellContent playerCell;
 
@@ -31,7 +26,6 @@ public class ReversiGame implements GameInterface {
 
     private void init() {
         board = new ReversiBoard();
-//        board.resetSuggestionsList();
     }
 
 
@@ -70,26 +64,7 @@ public class ReversiGame implements GameInterface {
     @Override
     public void setup(GameState startingPlayer) {
         board.reset();
-        // If player one; black; first
-        if (startingPlayer != GameState.TurnTwo) {
-//            System.out.println(gameState.toString()+" is black.");
-            board.setCell(3, 3, CellContent.Remote);
-            board.setCell(4, 4, CellContent.Remote);
-            board.setCell(3, 4, CellContent.Local);
-            board.setCell(4, 3, CellContent.Local);
-            playerColour = BLACK_DISC;
-            opponentColour = WHITE_DISC;
-
-            // If player two; white; second
-        } else {
-//            System.out.println(gameState.toString()+" is white.");
-            board.setCell(3, 3, CellContent.Local);
-            board.setCell(4, 4, CellContent.Local);
-            board.setCell(3, 4, CellContent.Remote);
-            board.setCell(4, 3, CellContent.Remote);
-            playerColour = WHITE_DISC;
-            opponentColour = BLACK_DISC;
-        }
+        board.setStartingPlayer(startingPlayer);
     }
 
     public void flipDiscs(Move move, CellContent player) {

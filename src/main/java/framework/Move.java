@@ -26,4 +26,17 @@ public class Move {
     public int getY() {
         return y;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (super.equals(obj)) {
+            return true;
+        }
+        if (obj instanceof Move) {
+            Move move = (Move)obj;
+            return this.player == move.player && this.x == move.x && this.y == move.y;
+        } else {
+            return false;
+        }
+    }
 }

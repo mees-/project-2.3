@@ -1,27 +1,24 @@
 package reversi;
 
-import framework.BoardInterface;
-import framework.CellContent;
-import framework.GameState;
-import framework.Move;
+import framework.*;
 
-import java.util.Collection;
+import java.util.Set;
 
-public class Board implements BoardInterface {
+public class ReversiBoard extends BoardInterface {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_WHITE = "\u001B[37m";
     public static final String ANSI_BLACK = "\u001B[30m";
 
-    private CellContent[][] board;
-    private int size;
+    private static final int BOARD_SIZE = 8;
 
-    public Board(int size) {
-        this.size = size;
+    private CellContent[][] board;
+
+    public ReversiBoard() {
         init();
     }
 
     private void init(){
-        board = new CellContent[size][size];
+        board = new CellContent[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 setCell(i, j, CellContent.Empty);
@@ -30,7 +27,10 @@ public class Board implements BoardInterface {
     }
 
     public CellContent getCell(int x, int y) {
-        return board[x][y];
+        if((x >= 0 && x < BOARD_SIZE) && (y >= 0 && y < BOARD_SIZE)) {
+            return board[x][y];
+        }
+        return null;
     }
 
     public void setCell(int x, int y, CellContent content) {
@@ -42,13 +42,9 @@ public class Board implements BoardInterface {
     }
 
     public int getSize() {
-        return size;
+        return BOARD_SIZE;
     }
 
-    @Override
-    public Collection<Move> getValidMoves(GameState state) {
-        return null;
-    }
 
     public int[] countPieces() {
         int[] pieces;
@@ -88,6 +84,17 @@ public class Board implements BoardInterface {
             System.out.println("-------------------------------------------------------------------------------------------------------------------------");
         }
         System.out.println("");
-//        System.out.println(board.getCell(3,3));
+    }
+
+    @Override
+    public Set<Move> getValidMoves(GameState state) {
+        return null;
+    }
+
+    @Override
+    public ReversiBoard clone() {
+        ReversiBoard clone = new ReversiBoard();
+        clone.board = this.board.clone();
+        return clone;
     }
 }

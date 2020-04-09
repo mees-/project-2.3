@@ -9,6 +9,7 @@ import framework.player.Player;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -42,17 +43,24 @@ public class Main {
         }
 
         @Override
-        public Move getNextMove(BoardInterface board) {
-            System.out.print("Enter (simple) move: ");
+        public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
             try {
-                int position = Integer.parseInt(reader.readLine());
-                Move move = Move.fromSimplePosition(GameState.LocalTurn, 3, position);
-                return move;
+                System.out.print("Enter x: ");
+                int x = Integer.parseInt(reader.readLine());
+                System.out.print("Enter y: ");
+                int y = Integer.parseInt(reader.readLine());
+                for (Move move : possibleMoves) {
+                    if (move.getY() == y && move.getX() == x) {
+                        return move;
+                    }
+                }
+                System.out.println("Not a valid move, try again");
+                return getNextMove(board, possibleMoves);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (NumberFormatException e) {
-                System.out.println("That's not a number");
-                return getNextMove(board);
+                System.out.println("That's not a number, try again");
+                return getNextMove(board, possibleMoves);
             }
         }
 

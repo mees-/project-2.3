@@ -2,6 +2,7 @@ package framework;
 
 import connection.Connection;
 import framework.player.Player;
+import reversi.ReversiGame;
 import tictactoe.Game;
 
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class Framework {
                 game = new Game();
                 break;
             case Reversi:
-                game = new Game();
+                game = new ReversiGame();
                 break;
         }
         match = new Match(game, localPlayer, remotePlayer);

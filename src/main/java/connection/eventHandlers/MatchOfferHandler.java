@@ -28,9 +28,9 @@ public class MatchOfferHandler extends EventHandler {
             connection.setPlayer(remotePlayer);
             GameState startingState;
             if (details.get("OPPONENT").equals(details.get("PLAYERTOMOVE"))) {
-                startingState = GameState.RemoteTurn;
+                startingState = GameState.TurnTwo;
             } else {
-                startingState = GameState.LocalTurn;
+                startingState = GameState.TurnOne;
             }
             connection.getFramework().notifyGameOffer(
                     GameType.fromString(details.get("GAMETYPE")),

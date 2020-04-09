@@ -1,23 +1,27 @@
 package connection.commands;
 
+import connection.commands.response.StandardResponse;
 import framework.GameType;
 
-public class SubscribeCommand implements ICommand {
+public class SubscribeCommand extends Command<StandardResponse> {
     private final GameType gameType;
 
     public SubscribeCommand(GameType gameType) {
         this.gameType = gameType;
     }
 
+    @Override
     public String getCommandString() {
         return "SUBSCRIBE " + gameType.getToken();
     }
 
+    @Override
     public boolean isValidResponse(String[] response) {
-        return ICommand.isStandardResponse(response);
+        return StandardResponse.isStandardResponse(response);
     }
 
-    public CommandResponse parseResponse(String[] response) {
-        return ICommand.isOk(response);
+    @Override
+    public StandardResponse parseResponse(String[] response) {
+        return StandardResponse.isOk(response);
     }
 }

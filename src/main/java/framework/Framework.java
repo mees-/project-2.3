@@ -1,6 +1,10 @@
 package framework;
 
 import connection.Connection;
+import connection.commands.LoginCommand;
+import connection.commands.LogoutCommand;
+import connection.eventHandlers.EventPayload;
+import connection.eventHandlers.EventType;
 import framework.player.Player;
 import reversi.ReversiGame;
 import tictactoe.Game;
@@ -32,10 +36,6 @@ public class Framework {
             e.printStackTrace();
         }
     }
-
-    public void login() {
-        connection.login(localPlayer.getUsername());
-    }
   
     public synchronized void notifyGameOffer(GameType gameType, Player remotePlayer, GameState startingPlayer) {
         GameInterface game = null;
@@ -54,7 +54,12 @@ public class Framework {
         notify();
     }
 
+    public synchronized void handleEvent(EventPayload payload) {
+
+    }
+
     public void close() throws IOException {
+        connection.executeCommand(new LogoutCommand());
         connection.close();
     }
 }

@@ -15,7 +15,6 @@ public class Main {
         Connection connection = new Connection();
         Player player = new LocalConnectedPlayer(new TicTacToeAi("mees" + (new Random()).nextInt(100)), connection);
         framework = new Framework(player, connection);
-        framework.login();
         framework.runGameSync(GameType.TicTacToe);
         framework.close();
     }

@@ -2,16 +2,10 @@ package connection.commands;
 
 import connection.commands.response.StandardResponse;
 
-public class LoginCommand extends Command<StandardResponse> {
-    private final String username;
-
-    public LoginCommand(String username) {
-        this.username = username;
-    }
-
+public class ForfeitCommand extends Command<StandardResponse> {
     @Override
     public String getCommandString() {
-        return "LOGIN " + username;
+        return "forfeit";
     }
 
     @Override

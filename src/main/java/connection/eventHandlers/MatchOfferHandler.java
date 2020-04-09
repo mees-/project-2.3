@@ -20,12 +20,12 @@ public class MatchOfferHandler extends EventHandler {
     }
 
     @Override
-    public void handle(String[] message) {
+    public EventPayload handle(String[] message) {
         String rawMap = Parser.sliceStringFromParts(message, 3, message.length);
         try {
             HashMap<String, String> details = Parser.parseMap(rawMap);
             BlockingPlayer remotePlayer = new BlockingPlayer(details.get("OPPONENT"));
-            connection.setPlayer(remotePlayer);
+            connection.setRemotePlayer(remotePlayer);
             GameState startingState;
             if (details.get("OPPONENT").equals(details.get("PLAYERTOMOVE"))) {
                 startingState = GameState.TurnTwo;
@@ -40,5 +40,7 @@ public class MatchOfferHandler extends EventHandler {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+        // TODO: change notifyGameOffer to EventPayload
+        return null;
     }
 }

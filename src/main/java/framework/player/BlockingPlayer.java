@@ -6,11 +6,10 @@ import framework.Move;
 
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 public class BlockingPlayer extends Player {
 
-    final BlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
+    final ArrayBlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
 
     public BlockingPlayer(String username) {
         super(username);

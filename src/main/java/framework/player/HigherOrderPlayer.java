@@ -12,7 +12,6 @@ public class HigherOrderPlayer extends Player {
 
     protected HigherOrderPlayer(Player original) {
         super(original.getUsername());
-//        this.username = original.username;
         this.original = original;
     }
 
@@ -24,6 +23,11 @@ public class HigherOrderPlayer extends Player {
     @Override
     public void onEnd(GameResult state) {
         original.onEnd(state);
+    }
+
+    @Override
+    public String getUsername() {
+        return original.getUsername();
     }
 
     @Override

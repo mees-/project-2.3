@@ -33,7 +33,7 @@ public class TicTacToeAi extends Ai {
             CellContent gameWin = ((Board)board).checkForWinBetter();
             if (gameWin == turn.toCellContent()) {
                 return 10;
-            } else if (gameWin == turn.otherTurn().toCellContent()) {
+            } else if (gameWin == turn.otherPlayer().toCellContent()) {
                 return -10;
             } else {
                 return 0;
@@ -91,11 +91,7 @@ public class TicTacToeAi extends Ai {
 
     @Override
     public GameState getTurnAfterMove(BoardInterface currentBoard, Move lastMove) {
-        try {
-            return lastMove.getPlayer().otherTurn();
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
-        }
+        return lastMove.getPlayer().otherPlayer();
     }
 
     private static class CoordinatePair {

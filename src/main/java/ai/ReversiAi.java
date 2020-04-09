@@ -3,9 +3,6 @@ package ai;
 import framework.*;
 import reversi.ReversiBoard;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 public class ReversiAi extends Ai {
@@ -32,7 +29,7 @@ public class ReversiAi extends Ai {
             CellContent gameWin = ((ReversiBoard)board).checkForWin();
             if (gameWin == turn.toCellContent()) {
                 return 1000;
-            } else if (gameWin == turn.otherTurn().toCellContent()) {
+            } else if (gameWin == turn.otherPlayer().toCellContent()) {
                 return -1000;
             } else {
                 return (((ReversiBoard)board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
@@ -57,11 +54,7 @@ public class ReversiAi extends Ai {
             throw new RuntimeException(e);
         }
         if (((ReversiBoard)currentBoard).canMakeTurn(((ReversiBoard)currentBoard).getOpposite(player))) {
-            try {
-                return lastMove.getPlayer().otherTurn();
-            } catch (GameState.InvalidOperationException e) {
-                throw new RuntimeException(e);
-            }
+            return lastMove.getPlayer().otherPlayer();
         } else {
             return lastMove.getPlayer();
         }

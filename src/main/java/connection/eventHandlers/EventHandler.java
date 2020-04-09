@@ -11,7 +11,7 @@ public abstract class EventHandler {
 
     public abstract boolean isValidMessage(String[] message);
 
-    public abstract void handle(String[] message);
+    public abstract EventPayload handle(String[] message);
 
     public static boolean validateWords(String[] wanted, String[] input) {
         if (wanted.length > input.length) {

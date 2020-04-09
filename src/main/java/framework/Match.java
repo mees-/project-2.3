@@ -53,6 +53,11 @@ public class Match {
             }
             Set<Move> possibleMoves = game.getBoard().getValidMoves(gameState);
             Move move = playerToMove.getNextMove(game.getBoard(), Collections.unmodifiableSet(possibleMoves));
+            if (move instanceof ForfeitMove) {
+                setGameState(playerToMove.getTurn().otherPlayer().toWin());
+                System.out.println(playerToMove.getUsername() + " forfeit");
+                continue;
+            }
             if (!possibleMoves.contains(move)) {
                 System.err.println("Returned move is not in set of valid moves");
                 switch (getGameState()) {

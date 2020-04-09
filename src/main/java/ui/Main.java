@@ -82,7 +82,6 @@ public class Main extends Application {
         Connection connection = new Connection();
         Player player = new LocalConnectedPlayer(new RandomMovePlayer(), connection);
         framework = new Framework(player, connection);
-        framework.login();
 
         new Thread ( () -> {
             framework.runGameSync(GameType.Reversi);

@@ -13,7 +13,8 @@ public class TurnHandler extends EventHandler {
     }
 
     @Override
-    public void handle(String[] message) {
+    public EventPayload handle(String[] message) {
 //        framework.notifyState(GameState.LocalTurn);
+        return null;
     }
 }

@@ -30,7 +30,6 @@ public class Main {
         CliPlayer cliPlayer = new CliPlayer(username);
         LocalConnectedPlayer player = new LocalConnectedPlayer(cliPlayer, connection);
         Framework framework = new Framework(player, connection);
-        framework.login();
         framework.runGameSync(GameType.Reversi);
         framework.close();
     }

@@ -7,6 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import connection.commands.*;
 
+import connection.commands.response.StandardResponse;
 import connection.eventHandlers.*;
 import framework.Framework;
 import framework.GameType;
@@ -25,10 +26,10 @@ public class Connection {
 
     private final ArrayList<EventHandler> eventHandlers = new ArrayList<>();
 
-    private final LinkedBlockingQueue<ICommand> commandsWaitingForResponse = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<Command> commandsWaitingForResponse = new LinkedBlockingQueue<>();
 
     private final Thread readingThread = new Thread(this::connectionReader);
-    private MoveHandler moveHandler;
+    private BlockingPlayer remotePlayer;
 
     public Connection() throws IOException {
         try {
@@ -49,10 +50,9 @@ public class Connection {
 
     public void setFramework(Framework framework) {
         this.framework = framework;
-        moveHandler = new MoveHandler(this);
         eventHandlers.add(new GameEndHandler(this));
         eventHandlers.add(new MatchOfferHandler(this));
-        eventHandlers.add(moveHandler);
+        eventHandlers.add(new MoveHandler(this));
         eventHandlers.add(new TurnHandler(this));
         readingThread.start();
 
@@ -74,43 +74,52 @@ public class Connection {
     private void handleEventMessage(String[] message) {
         for (EventHandler handler : eventHandlers) {
             if (handler.isValidMessage(message)) {
-                handler.handle(message);
+                EventPayload payload = handler.handle(message);
+                if (payload != null) {
+                    framework.handleEvent(payload);
+                }
                 return;
             }
         }
         throw new RuntimeException(String.join(" ", message) + "\ndidn't match the first command in the queue and didn't match any eventHandler");
     }
 
-    private <T extends ICommand> void executeCommand(T command) {
+    public <T extends Command> CommandFuture executeCommand(T command) {
         try {
             commandsWaitingForResponse.put(command);
             out.println(command.getCommandString());
+            return command.getFuture();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    public void sendMove(Move move) {
-        executeCommand(new MoveCommand(framework.getBoardSize(), move.getX() ,move.getY()));
+    public CommandFuture sendMove(Move move) {
+        return executeCommand(new MoveCommand(framework.getBoardSize(), move.getX() ,move.getY()));
     }
 
     public void subscribe(GameType gameType) {
         executeCommand(new SubscribeCommand(gameType));
     }
 
-    public void login(String username) {
-        executeCommand(new LoginCommand(username));
-    }
-
     private void connectionReader() {
         while (true) {
             try {
+                if (!in.ready()) break;
+            } catch (IOException e) {
+                try {
+                    this.close();
+                } catch (IOException ex) {
+                    break;
+                }
+            }
+            try {
                 String message = in.readLine();
                 String[] words = message.split("\\s+");
-                ICommand command = commandsWaitingForResponse.peek();
+                Command command = commandsWaitingForResponse.peek();
                 if (command != null && command.isValidResponse(words)) {
                     commandsWaitingForResponse.poll();
-                    ICommand.CommandResponse response = command.parseResponse(words);
+                    StandardResponse response = command.parseAndHandleResponse(words);
                     if (!response.isSuccess()) {
                         throw new RuntimeException("failed executing command: " + command.getCommandString() + "\nerror: " + response.getErrorMessage());
                     }
@@ -126,7 +135,11 @@ public class Connection {
         }
     }
 
-    public void setPlayer(BlockingPlayer remotePlayer) {
-        this.moveHandler.setPlayer(remotePlayer);
+    public BlockingPlayer getRemotePlayer() {
+        return remotePlayer;
+    }
+
+    public void setRemotePlayer(BlockingPlayer remotePlayer) {
+        this.remotePlayer = remotePlayer;
     }
 }

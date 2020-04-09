@@ -20,11 +20,7 @@ public class MoveTree {
     public MoveTree(Ai gameUtils, BoardInterface board, int depth, GameState startingPlayer) {
         this.gameUtils = gameUtils;
         this.board = board;
-        try {
-            this.move = new Move(startingPlayer.otherTurn(), -1,-1);
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
-        }
+        this.move = new Move(startingPlayer.otherPlayer(), -1,-1);
         buildTree(startingPlayer, depth);
     }
 

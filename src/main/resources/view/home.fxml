@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+
+<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.HomeController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="40.0" prefWidth="1314.0" styleClass="bg-primary">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tha Koel Gamebox" HBox.hgrow="ALWAYS">
+               <styleClass>
+                  <String fx:value="title-xl" />
+                  <String fx:value="b" />
+               </styleClass>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </HBox>
+      <Region prefHeight="63.0" prefWidth="1225.0" />
+      <HBox alignment="CENTER">
+         <children>
+            <VBox fx:id="vbTicTacToe" alignment="CENTER" onMouseClicked="#chosenGameEvent" styleClass="panel-game">
+               <children>
+                  <ImageView fitHeight="200.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                     <image>
+                        <Image url="@../img/tictactoe.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h3" text="Tic-Tac-Toe">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Text>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="16.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </VBox>
+            <VBox fx:id="vbReversi" alignment="CENTER" onMouseClicked="#chosenGameEvent">
+               <children>
+                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/reversi.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h3" text="Reversi">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets bottom="16.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+               <styleClass>
+                  <String fx:value="panel-game" />
+                  <String fx:value="panel-game-active" />
+               </styleClass>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </VBox>
+         </children>
+      </HBox>
+      <Region prefHeight="20.0" prefWidth="1225.0" VBox.vgrow="ALWAYS" />
+      <Separator prefWidth="200.0" />
+      <HBox>
+         <children>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+            <VBox alignment="TOP_CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gametype">
+                     <styleClass>
+                        <String fx:value="h2" />
+                        <String fx:value="b" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Button fx:id="btnLocal" mnemonicParsing="false" onAction="#typeButtonEvent" text="Local">
+                     <padding>
+                        <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-game" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="btnOnline" mnemonicParsing="false" onAction="#typeButtonEvent" text="Online">
+                     <padding>
+                        <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-game" />
+                        <String fx:value="btn-primary" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <Region prefHeight="200.0" prefWidth="262.0" HBox.hgrow="ALWAYS" />
+            <VBox alignment="TOP_CENTER" prefHeight="274.0" prefWidth="203.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Players">
+                     <styleClass>
+                        <String fx:value="h2" />
+                        <String fx:value="b" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Text>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                           <styleClass>
+                              <String fx:value="h5" />
+                              <String fx:value="b" />
+                           </styleClass>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TextField fx:id="txtPlayerOneName" promptText="Name">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <RadioButton fx:id="rbPlayerOneHuman" mnemonicParsing="false" onAction="#playerTypeEvent" text="Human">
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="tgPlayerOne" />
+                                 </toggleGroup>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </RadioButton>
+                              <RadioButton fx:id="rbPlayerOneAI" mnemonicParsing="false" onAction="#playerTypeEvent" text="AI" toggleGroup="$tgPlayerOne">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor></RadioButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vbPlayerTwo" prefHeight="200.0" prefWidth="100.0" visible="false">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
+                           <styleClass>
+                              <String fx:value="h5" />
+                              <String fx:value="b" />
+                           </styleClass>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TextField fx:id="txtPlayerTwoName" promptText="Name">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <RadioButton fx:id="rbPlayerTwoHuman" mnemonicParsing="false" onAction="#playerTypeEvent" text="Human">
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="tgPlayerTwo" />
+                                 </toggleGroup>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </RadioButton>
+                              <RadioButton fx:id="rbPlayerTwoAI" mnemonicParsing="false" onAction="#playerTypeEvent" text="AI" toggleGroup="$tgPlayerTwo">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor></RadioButton>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </VBox>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <VBox fx:id="vbOnlineOption" alignment="TOP_CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Online Options">
+                     <styleClass>
+                        <String fx:value="h2" />
+                        <String fx:value="b" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Button fx:id="btnSubscribe" mnemonicParsing="false" onAction="#optionButtonEvent" text="Subscribe">
+                     <padding>
+                        <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-game" />
+                        <String fx:value="btn-primary" />
+                     </styleClass>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="btnChallenge" mnemonicParsing="false" onAction="#optionButtonEvent" text="Challenge">
+                     <padding>
+                        <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-game" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </VBox>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <Region prefHeight="72.0" prefWidth="1641.0" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" text="Play" onAction="#playButtonEvent">
+               <padding>
+                  <Insets bottom="6.0" left="10.0" right="10.0" top="6.0" />
+               </padding>
+               <styleClass>
+                  <String fx:value="btn" />
+                  <String fx:value="btn-game" />
+               </styleClass>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </HBox>
+      <Region prefHeight="77.0" prefWidth="1641.0" />
+   </children>
+   <stylesheets>
+      <URL value="@../css/bootstrapfx.css" />
+      <URL value="@../css/app.css" />
+   </stylesheets>
+</VBox>

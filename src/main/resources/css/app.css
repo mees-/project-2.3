@@ -1,0 +1,117 @@
+/**
+ * Declaring variables
+ */
+* {
+    -fx-primary-color: #337653;
+    -fx-primary-color-shade: #23523a;
+    -fx-dark-color: #494949;
+}
+
+/**
+ * General
+ */
+.title-lg {
+    -fx-font-size: 4em;
+}
+
+.text-white {
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}
+
+.text-dark {
+    -fx-text-fill: -fx-dark-color;
+    -fx-fill: -fx-dark-color;
+}
+
+.bg-dark {
+    -fx-background-color: -fx-dark-color;
+}
+
+.bg-light {
+    -fx-background-color: #efefef;
+}
+
+.invisible {
+    opacity: 0;
+}
+
+/**
+ * Home
+ */
+.title-xl {
+    -fx-font-size: 8em;
+}
+
+.panel-game {
+    -fx-border-width: 3px;
+    -fx-border-style: solid;
+    -fx-border-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.05), 1px, 0, 0, 1px);
+    -fx-background-radius: 10px;
+}
+
+.panel-game-active {
+    -fx-border-color: -fx-primary-color;
+}
+
+.panel-game:hover {
+    -fx-opacity: 0.7;
+}
+
+.btn-game {
+    -fx-pref-height: 60px;
+    -fx-pref-width: 200px;
+    -fx-font-size: 18px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-cursor: HAND;
+}
+
+/**
+ * Game
+ */
+
+.text-gold {
+    -fx-text-fill: #ffcf40;
+    -fx-fill: #ffcf40;
+}
+
+/**
+ * Reversi
+ */
+.tile-reversi {
+    -fx-border-color: -fx-dark-color;
+    -fx-border-width: 1px;
+    -fx-background-color: #2eae52;
+    -fx-min-height: 90px;
+    -fx-min-width: 90px;
+}
+
+.tile-reversi-available {
+    -fx-cursor: HAND;
+}
+
+.tile-reversi-available:hover {
+    -fx-opacity: 0.7;
+}
+
+.tile-reversi-occupied {
+}
+
+.piece-reversi {
+    -fx-stroke-width: 0.06;
+    -fx-scale-x: 38;
+    -fx-scale-y: 38;
+}
+
+.piece-reversi-black {
+    -fx-text-fill: #000;
+    -fx-fill: #000;
+}
+
+.piece-reversi-white {
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}

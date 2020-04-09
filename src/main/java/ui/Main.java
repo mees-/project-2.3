@@ -1,102 +1,96 @@
 package ui;
 
+import connection.Connection;
+import framework.Framework;
+import framework.GameType;
+import framework.player.LocalConnectedPlayer;
+import framework.player.Player;
+import framework.player.RandomMovePlayer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import ui.controller.HomeController;
+import ui.settings.ChosenGame;
+import ui.settings.OnlineOption;
+import ui.settings.PlayerType;
 
-import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
 
 public class Main extends Application {
-    private static BorderPane pane = new BorderPane();
+    private static Pane currentPane;
+    private static Pane root;
+    private static Framework framework;
+
+    public static ui.settings.GameType gameTypeEnum;
+    public static OnlineOption onlineOptionEnum;
+    public static PlayerType playerOneTypeEnum;
+    public static PlayerType playerTwoTypeEnum;
+    public static ChosenGame chosenGameEnum;
 
     public static void main(String[] args) {
+        gameTypeEnum = ui.settings.GameType.LOCAL;
+        onlineOptionEnum = OnlineOption.SUBSCRIBE;
+        playerOneTypeEnum = PlayerType.HUMAN;
+        playerTwoTypeEnum = PlayerType.HUMAN;
+        chosenGameEnum = ChosenGame.REVERSI;
+
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        HBox test = new HBox();
-        Button button1 = new Button("doei");
-        Button button2 = new Button("hoi");
-
-        button1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                changePane(0);
-            }
-        });
-
-        button2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                changePane(0);
-            }
-        });
-
-        test.getChildren().addAll(button1, button2);
-        pane.setTop(test);
-
-        pane.setCenter(new Home());
-        pane.setBottom(createBottom());
-
-        Scene scene = new Scene(pane, 1000, 600);
-        scene.getStylesheets().add("file:///" + new File("src/Styles/stylesheet.css").getAbsolutePath().replace("\\", "/"));
-        scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css"); //(3)
-
-
-        primaryStage.setTitle("Tha Koel GameBox");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void start(Stage stage) throws IOException {
+        stage.setTitle("Tha Koel Gamebox");
+        initUI(stage);
+        stage.show();
     }
 
-    private Pane createBottom() {
-        // Create labels
-        Label group = new Label("Groep D3");
-        Label madeBy = new Label("Made by: Ivo, Jeroen, Joeri, Mees");
+    private void initUI(Stage stage) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
+        currentPane = FXMLLoader.load(getClass().getResource("/view/home.fxml"));
+        root.getChildren().add(currentPane);
 
-        // Create new BorderPane and background color
-        BorderPane bottomPane = new BorderPane();
-        bottomPane.setId("id");
+        ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());
+        Collections.swap(workingCollection, 0, 1);
+        root.getChildren().setAll(workingCollection);
 
-        // Create two HBox's
-        HBox left = new HBox();
-        HBox right = new HBox();
-
-        // Styling the HBox
-        HBox.setMargin(group, new Insets(3, 6, 3, 0));
-        HBox.setMargin(madeBy, new Insets(3, 0, 3, 6));
-
-        left.setAlignment(Pos.BOTTOM_LEFT);
-        right.setAlignment(Pos.BOTTOM_RIGHT);
-
-        // Setting the new nodes on the HBox's
-        left.getChildren().add(madeBy);
-        right.getChildren().add(group);
-
-        // Set the HBox's on the new pane
-        bottomPane.setLeft(left);
-        bottomPane.setRight(right);
-
-        return bottomPane;
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setMaximized(true);
     }
 
-    public static void changePane(int i) {
-        switch (i) {
-            case 1:
-                pane.setCenter(new Local());
+    public static void changePane() throws IOException {
+        switch (chosenGameEnum) {
+            case REVERSI:
+                root.getChildren().remove(currentPane);
+                root.getChildren().add(FXMLLoader.load(Main.class.getResource("/view/reversi.fxml")));
+                startFramework();
                 break;
-            case 2:
-                pane.setCenter(new Online());
+            case TICTACTOE:
                 break;
             default:
-                pane.setCenter(new Home());
+                System.out.println("Something went wrong!");
         }
     }
+
+    public static void startFramework() throws IOException {
+        Connection connection = new Connection();
+        Player player = new LocalConnectedPlayer(new RandomMovePlayer(), connection);
+        framework = new Framework(player, connection);
+        framework.login();
+
+        new Thread ( () -> {
+            framework.runGameSync(GameType.Reversi);
+        });
+    }
+
+    public static void stopFramework() throws IOException {
+        framework.close();
+    }
+
 }

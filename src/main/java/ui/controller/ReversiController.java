@@ -59,11 +59,13 @@ public class ReversiController {
 
     private Players players;
 
+    private boolean test = false;
+
     public ReversiController(Main main, Framework framework, LocalPlayer localPlayer) {
         this.framework = framework;
         this.main = main;
         this.localPlayer = localPlayer;
-
+        System.out.println(localPlayer.getUsername());
         new Thread(() -> {
             while (match == null) {
                 match = framework.getMatch();
@@ -115,54 +117,26 @@ public class ReversiController {
     public void run() {
         BoardInterface board = null;
         while (match != null) {
+            if (test) {
+                test = false;
+                System.out.println("click");
+            }
+
             if (board != match.getGame().getBoard()) {
-                if (match.getGameState() == GameState.TurnOne) {
+                System.out.println(match.getGameState());
+
+                if (match.getGameState() == GameState.TurnOne || match.getGameState() == GameState.TurnTwo) {
                     board = match.getGame().getBoard();
-                    Set<Move> possibleMoves = board.getValidMoves(GameState.TurnOne);
 
-                    for (Node node : childNodes) {
-                        if (node instanceof HBox) {
-                            node.getStyleClass().remove("tile-reversi-disabled");
+                    updateBoard(board, match.getGameState());
 
-                            CellContent content = board.getCell(GridPane.getColumnIndex(node) - 1, GridPane.getRowIndex(node) - 1);
-                            HBox hBox = (HBox) node;
-
-                            if (content == CellContent.Local) {
-                                if (hBox.getChildren().size() > 0) {
-                                    if (!hBox.getChildren().get(0).getStyleClass().contains("piece-reversi-white") && (hBox.getChildren().get(0) instanceof Circle)) {
-                                        if (hBox.getChildren().get(0).getStyleClass().contains("piece-reversi-black")) {
-                                            hBox.getChildren().remove(0);
-                                        }
-                                    }
-                                }
-                                Platform.runLater(() -> {
-                                    hBox.getChildren().add((setupPiece(false)));
-                                });
-                            } else if (content == CellContent.Remote) {
-                                if (hBox.getChildren().size() > 0) {
-                                    if (!hBox.getChildren().get(0).getStyleClass().contains("piece-reversi-black") && (hBox.getChildren().get(0) instanceof Circle)) {
-                                        if (hBox.getChildren().get(0).getStyleClass().contains("piece-reversi-white")) {
-                                            hBox.getChildren().remove(0);
-                                        }
-                                    }
-                                }
-                                Platform.runLater(() -> {
-                                    hBox.getChildren().add((setupPiece(true)));
-                                });
-                            }
-
-                            for (Move move : possibleMoves) {
-                                if ((GridPane.getColumnIndex(node) -1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
-                                    node.getStyleClass().add("tile-reversi-available");
-                                }
-                            }
-                        }
+                    if (match.getGameState() == GameState.TurnOne) {
+                        tPlayerOne.setVisible(true);
+                        tPlayerTwo.setVisible(false);
+                    } else if (match.getGameState() == GameState.TurnTwo) {
+                        tPlayerOne.setVisible(false);
+                        tPlayerTwo.setVisible(true);
                     }
-
-
-                    tPlayerOne.setVisible(true);
-                    tPlayerTwo.setVisible(false);
-
                 } else if (match.getGameState() == GameState.OneWin) {
                     wcPlayerOne.setVisible(true);
                 } else if (match.getGameState() == GameState.TwoWin) {
@@ -170,15 +144,77 @@ public class ReversiController {
                 } else if (match.getGameState() == GameState.Draw) {
                     // ???
                 } else {
-                    for (Node node : childNodes) {
-                        if (node instanceof HBox) {
-                            node.getStyleClass().add("tile-reversi-disabled");
-                            node.getStyleClass().remove("tile-reversi-available");
+//                    for (Node node : childNodes) {
+//                        if (node instanceof HBox) {
+//                            if (!node.getStyleClass().contains("tile-reversi-disabled")) {
+//                                node.getStyleClass().add("tile-reversi-disabled");
+//                            }
+//                            node.getStyleClass().remove("tile-reversi-available");
+//                        }
+//                    }
+//                    updateBoard(board, match.getGameState());
+
+
+                }
+            }
+        }
+    }
+
+    private void updateBoard(BoardInterface board, GameState turn) {
+        Set<Move> possibleMoves = board.getValidMoves(GameState.TurnOne);
+
+        for (Node node : childNodes) {
+            if (node instanceof HBox) {
+                if (turn == GameState.TurnOne) {
+                    node.getStyleClass().remove("tile-reversi-disabled");
+                } else if (turn == GameState.TurnTwo) {
+                    if (!node.getStyleClass().contains("tile-reversi-disabled")) {
+                        node.getStyleClass().add("tile-reversi-disabled");
+                    }
+                    node.getStyleClass().remove("tile-reversi-available");
+                }
+
+                CellContent content = board.getCell(GridPane.getColumnIndex(node) - 1, GridPane.getRowIndex(node) - 1);
+                HBox hBox = (HBox) node;
+
+                if (content == CellContent.Local) {
+                    changeHbox(hBox, false);
+                    Platform.runLater(() -> {
+                        hBox.getChildren().add((setupPiece(false)));
+                    });
+                } else if (content == CellContent.Remote) {
+                    changeHbox(hBox, true);
+                    Platform.runLater(() -> {
+                        hBox.getChildren().add((setupPiece(true)));
+                    });
+                }
+
+                if (turn == GameState.TurnOne) {
+                    for (Move move : possibleMoves) {
+                        if ((GridPane.getColumnIndex(node) - 1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
+                            node.getStyleClass().add("tile-reversi-available");
                         }
                     }
+                }
+            }
+        }
+    }
 
-                    tPlayerOne.setVisible(false);
-                    tPlayerTwo.setVisible(true);
+    private void changeHbox(HBox hBox, boolean blackOrWhite) {
+        String cssClass, cssClassContains;
+
+        if (blackOrWhite) {
+            cssClassContains = "piece-reversi-black";
+            cssClass = "piece-reversi-white";
+        } else {
+            cssClassContains = "piece-reversi-white";
+            cssClass = "piece-reversi-black";
+        }
+
+        if (hBox.getChildren().size() > 0) {
+            if (!hBox.getChildren().get(0).getStyleClass().contains(cssClass) && (hBox.getChildren().get(0) instanceof Circle)) {
+                if (hBox.getChildren().get(0).getStyleClass().contains(cssClassContains)) {
+                    hBox.getChildren().remove(0);
                 }
             }
         }
@@ -190,6 +226,8 @@ public class ReversiController {
         if (field.getStyleClass().contains("tile-reversi-available")) {
             Move move = new Move(GameState.TurnOne, (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
             localPlayer.putMove(move);
+            test = true;
+//            match.setGameState(GameState.TurnTwo);
         }
     }
 }

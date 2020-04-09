@@ -9,13 +9,14 @@ public enum GameType {
         this.token = token;
     }
 
-    public String getToken() {
+    @Override
+    public String toString() {
         return token;
     }
 
     public static GameType fromString(String str) {
         for (GameType type : GameType.values()) {
-            if (type.getToken().equals(str)) {
+            if (type.toString().equals(str)) {
                 return type;
             }
         }

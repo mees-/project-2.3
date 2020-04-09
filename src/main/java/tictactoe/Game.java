@@ -37,6 +37,11 @@ public class Game implements GameInterface
         return getResult(move);
     }
 
+    @Override
+    public void setup(GameState gameState) {
+        board.reset();
+    }
+
     private GameState getResult(Move move) {
         // todo CheckForWin laten controleren welke speler gewonnen heeft.
         if(board.checkForWin() && move.getPlayer() == GameState.TurnOne) {
@@ -69,11 +74,6 @@ public class Game implements GameInterface
 
     private void setLastTurn(GameState player) {
         lastTurn = player;
-    }
-
-    @Override
-    public void setup() {
-        board.reset();
     }
 
     @Override

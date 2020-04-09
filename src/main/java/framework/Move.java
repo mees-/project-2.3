@@ -39,4 +39,9 @@ public class Move {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "x: " + getX() + " y: " + getY() + " player: " +getPlayer();
+    }
 }

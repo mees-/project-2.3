@@ -6,7 +6,7 @@ public interface GameInterface {
 
     GameState doMove(Move move) throws InvalidMoveException, InvalidTurnException;
 
-    void setup();
+    void setup(GameState gameState);
 
     GameType getType();
 }

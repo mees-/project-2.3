@@ -74,13 +74,13 @@ public abstract class Ai extends Player {
 
     @Override
     public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
-        Move move =  getBestMove(board, 9);
+        Move move = getBestMove(board, 9);
         for (Move possible : possibleMoves) {
             if (possible.equals(move)) {
                 return possible;
             }
         }
-        throw new RuntimeException("Do it the hard way you cuck;");
+        throw new RuntimeException("Minimax returned an invalid move");
     }
 
     @Override

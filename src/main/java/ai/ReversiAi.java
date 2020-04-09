@@ -28,8 +28,6 @@ public class ReversiAi extends Ai {
 
     @Override
     public int analyzeMove(Move lastMove, BoardInterface board) {
-        // this method was found on
-        // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-2-evaluation-function/
         try {
             CellContent gameWin = ((ReversiBoard)board).checkForWin();
             if (gameWin == turn.toCellContent()) {

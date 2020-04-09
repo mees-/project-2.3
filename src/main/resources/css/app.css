@@ -79,6 +79,79 @@
 }
 
 /**
+ * TicTacToe
+ */
+.tile-tictactoe {
+    -fx-min-height: 200px;
+    -fx-min-width: 200px;
+    -fx-border-width: 5;
+}
+
+.tile-tictactoe-top-left {
+    -fx-border-color: transparent -fx-dark-color -fx-dark-color transparent;
+}
+
+.tile-tictactoe-top-middle {
+    -fx-border-color: transparent -fx-dark-color -fx-dark-color -fx-dark-color;
+}
+
+.tile-tictactoe-top-right {
+    -fx-border-color: transparent transparent -fx-dark-color -fx-dark-color;
+}
+
+.tile-tictactoe-middle-left {
+    -fx-border-color: -fx-dark-color -fx-dark-color -fx-dark-color transparent;
+}
+
+.tile-tictactoe-middle-center {
+    -fx-border-color: -fx-dark-color;
+}
+
+.tile-tictactoe-middle-right {
+    -fx-border-color: -fx-dark-color transparent -fx-dark-color -fx-dark-color;
+}
+
+.tile-tictactoe-bottom-left {
+    -fx-border-color: -fx-dark-color -fx-dark-color transparent transparent;
+}
+
+.tile-tictactoe-bottom-middle {
+    -fx-border-color: -fx-dark-color -fx-dark-color transparent -fx-dark-color;
+}
+
+.tile-tictactoe-bottom-right {
+    -fx-border-color: -fx-dark-color transparent transparent -fx-dark-color;
+}
+
+.piece-tictactoe-cross {
+    -fx-text-fill: #b71c1c;
+    -fx-fill: #b71c1c;
+
+}
+
+.piece-tictactoe-circle-base {
+    -fx-stroke-width: 0.35;
+    -fx-text-fill: transparent;
+    -fx-fill: transparent;
+    -fx-stroke: #0d47a1;
+}
+
+.piece-tictactoe-circle {
+    -fx-scale-x: 78;
+    -fx-scale-y: 78;
+}
+
+.piece-tictactoe-circle-player {
+    -fx-scale-x: 12;
+    -fx-scale-y: 12;
+}
+
+.piece-tictactoe-possible-move {
+    -fx-opacity: 0.3;
+    -fx-cursor: HAND;
+}
+
+/**
  * Reversi
  */
 .tile-reversi {

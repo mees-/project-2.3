@@ -8,6 +8,7 @@ import framework.player.LocalPlayer;
 import framework.player.Player;
 import framework.player.RandomMovePlayer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -66,23 +67,18 @@ public class Main extends Application {
     }
 
     public void changePane(ChosenGame chosenGame, String playerName) throws IOException {
-        startFramework(playerName);
+        LocalPlayer player = new LocalPlayer(playerName);
+        startFramework(player);
         switch (chosenGame) {
             case REVERSI:
-//                try {
-//                    wait();
                     root.getChildren().remove(paneHome);
-                    ReversiController reversiController = new ReversiController(this, framework);
+                    ReversiController reversiController = new ReversiController(this, framework, player);
                     loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
                     loader.setController(reversiController);
                     paneReversi = loader.load();
                     root.getChildren().add(paneReversi);
-                    startReversi(reversiController);
                     reversiController.setup();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-
+                    startReversi(reversiController);
                 break;
             case TICTACTOE:
                 break;
@@ -91,18 +87,17 @@ public class Main extends Application {
         }
     }
 
-    public void startFramework(String playerName) throws IOException {
+    public void startFramework(LocalPlayer player) throws IOException {
         Connection connection = new Connection();
-        Player player = new LocalConnectedPlayer(new LocalPlayer(playerName), connection);
-        framework = new Framework(player, connection);
+        Player connectedPlayer = new LocalConnectedPlayer(player, connection);
+        framework = new Framework(connectedPlayer, connection);
         framework.login();
     }
 
     private void startReversi(ReversiController reversiController) {
         new Thread ( () -> {
             framework.runGameSync(GameType.Reversi);
-            reversiController.run();
-        });
+        }).start();
     }
 
     public void stopFramework() throws IOException {

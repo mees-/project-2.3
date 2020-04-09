@@ -318,6 +318,9 @@
                            <padding>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </padding>
+                           <styleClass>
+                              <String fx:value="tile-reversi-available" />
+                           </styleClass>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
                            <padding>

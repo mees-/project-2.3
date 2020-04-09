@@ -31,7 +31,7 @@
             <Region HBox.hgrow="ALWAYS" />
             <VBox alignment="TOP_CENTER" minHeight="700.0" prefHeight="1000.0" prefWidth="442.0">
                <children>
-                  <HBox alignment="CENTER" styleClass="bg-primary">
+                  <HBox alignment="CENTER" minWidth="300.0" styleClass="bg-primary">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Players">
                            <styleClass>
@@ -78,7 +78,7 @@
                               <Insets bottom="10.0" top="10.0" />
                            </padding>
                         </HBox>
-                        <ListView minHeight="600.0" prefHeight="1000.0" prefWidth="200.0" styleClass="bg-llight" />
+                        <ListView minHeight="500.0" prefHeight="900.0" prefWidth="200.0" styleClass="bg-llight" />
                      </children>
                   </VBox>
                </children>
@@ -86,15 +86,15 @@
                   <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
                </HBox.margin>
             </VBox>
-            <Region maxWidth="40.0" minWidth="80.0" HBox.hgrow="ALWAYS" />
-            <VBox prefHeight="100.0" prefWidth="442.0">
+            <Region HBox.hgrow="ALWAYS" />
+            <VBox prefHeight="100.0" prefWidth="280.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />
                </HBox.margin>
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox alignment="CENTER" styleClass="bg-primary">
+                        <HBox alignment="CENTER" minWidth="300.0" styleClass="bg-primary" VBox.vgrow="ALWAYS">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
@@ -112,7 +112,7 @@
                            <children>
                               <HBox alignment="TOP_CENTER">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                    <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                                              <styleClass>
@@ -123,7 +123,7 @@
                                           </Text>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                                    <HBox alignment="CENTER_RIGHT">
                                        <children>
                                           <Button mnemonicParsing="false" text="Cancel">
                                              <styleClass>
@@ -138,7 +138,7 @@
                                     <Insets bottom="10.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <ListView minHeight="250.0" prefHeight="500.0" prefWidth="200.0" styleClass="bg-llight" />
+                              <ListView minHeight="196.0" prefHeight="700.0" prefWidth="200.0" styleClass="bg-llight" />
                            </children>
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -149,7 +149,7 @@
                   <Region maxHeight="60.0" minHeight="20.0" VBox.vgrow="ALWAYS" />
                   <VBox prefHeight="100.0" prefWidth="442.0">
                      <children>
-                        <HBox alignment="CENTER" styleClass="bg-primary">
+                        <HBox alignment="CENTER" minWidth="400.0" styleClass="bg-primary" VBox.vgrow="ALWAYS">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Received challenges">
                                  <styleClass>
@@ -167,7 +167,7 @@
                            <children>
                               <HBox alignment="TOP_CENTER">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                    <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                                              <styleClass>
@@ -178,7 +178,7 @@
                                           </Text>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                                    <HBox alignment="CENTER_RIGHT">
                                        <children>
                                           <Button mnemonicParsing="false" text="Accept">
                                              <styleClass>
@@ -205,7 +205,7 @@
                                     <Insets bottom="10.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <ListView minHeight="240.0" prefHeight="500.0" prefWidth="200.0" styleClass="bg-llight" />
+                              <ListView minHeight="196.0" prefHeight="700.0" prefWidth="200.0" styleClass="bg-llight" />
                            </children>
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -217,6 +217,27 @@
             </VBox>
             <Region HBox.hgrow="ALWAYS" />
          </children>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <Region minWidth="40.0" />
+      <HBox alignment="CENTER" minHeight="60.0" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" text="Leave">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="6.0" left="10.0" right="10.0" top="6.0" />
+               </padding>
+               <styleClass>
+                  <String fx:value="btn" />
+                  <String fx:value="btn-game" />
+               </styleClass>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </VBox.margin>
       </HBox>
       <Region VBox.vgrow="ALWAYS" />
    </children>

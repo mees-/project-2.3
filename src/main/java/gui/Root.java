@@ -25,7 +25,7 @@ public class Root extends Application {
 
     private void initUI(Stage stage) throws IOException {
         VBox root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
-        Pane reversi = FXMLLoader.load(getClass().getResource("/view/ticTacToe.fxml"));
+        Pane reversi = FXMLLoader.load(getClass().getResource("/view/lobby.fxml"));
         root.getChildren().add(reversi);
 
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());

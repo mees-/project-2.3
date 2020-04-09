@@ -27,27 +27,6 @@ public class ReversiGame implements GameInterface {
 
     public ReversiGame() {
         init();
-
-        // If player one; black; first
-        if (lastTurn != GameState.TurnTwo) {
-//            System.out.println(gameState.toString()+" is black.");
-            board.setCell(3, 3, CellContent.Remote);
-            board.setCell(4, 4, CellContent.Remote);
-            board.setCell(3, 4, CellContent.Local);
-            board.setCell(4, 3, CellContent.Local);
-            playerColour = BLACK_DISC;
-            opponentColour = WHITE_DISC;
-
-        // If player two; white; second
-        } else {
-//            System.out.println(gameState.toString()+" is white.");
-            board.setCell(3, 3, CellContent.Local);
-            board.setCell(4, 4, CellContent.Local);
-            board.setCell(3, 4, CellContent.Remote);
-            board.setCell(4, 3, CellContent.Remote);
-            playerColour = WHITE_DISC;
-            opponentColour = BLACK_DISC;
-        }
     }
 
     private void init() {
@@ -84,12 +63,33 @@ public class ReversiGame implements GameInterface {
         if (board.canMakeTurn(board.getOpposite(player))) {
             setLastTurn(move.getPlayer());
         }
+        printBoard();
         return board.getResult(move);
     }
 
     @Override
-    public void setup() {
+    public void setup(GameState startingPlayer) {
         board.reset();
+        // If player one; black; first
+        if (startingPlayer != GameState.TurnTwo) {
+//            System.out.println(gameState.toString()+" is black.");
+            board.setCell(3, 3, CellContent.Remote);
+            board.setCell(4, 4, CellContent.Remote);
+            board.setCell(3, 4, CellContent.Local);
+            board.setCell(4, 3, CellContent.Local);
+            playerColour = BLACK_DISC;
+            opponentColour = WHITE_DISC;
+
+            // If player two; white; second
+        } else {
+//            System.out.println(gameState.toString()+" is white.");
+            board.setCell(3, 3, CellContent.Local);
+            board.setCell(4, 4, CellContent.Local);
+            board.setCell(3, 4, CellContent.Remote);
+            board.setCell(4, 3, CellContent.Remote);
+            playerColour = WHITE_DISC;
+            opponentColour = BLACK_DISC;
+        }
     }
 
     public void flipDiscs(Move move, CellContent player) {

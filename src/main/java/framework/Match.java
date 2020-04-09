@@ -35,7 +35,7 @@ public class Match {
 
     public void setupGame() {
 
-        game.setup();
+        game.setup(gameState);
     }
 
     public void gameLoop() {

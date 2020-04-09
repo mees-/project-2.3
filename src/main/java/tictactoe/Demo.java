@@ -16,7 +16,7 @@ public class Demo
         boolean draw = false;
         GameState currentTurn = GameState.TurnOne;
         ttt.setPrintToCommandLine(true);
-        ttt.setup();
+        ttt.setup(currentTurn);
         ttt.printBoard();
 
         do {

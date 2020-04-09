@@ -52,7 +52,7 @@ public class Left extends Parent {
 
         @Override
         public void handle(ActionEvent actionEvent) {
-            Home.type = GameType.LOCAL;
+//            Home.type = GameType.LOCAL;
 
             Platform.runLater(
                     () -> {
@@ -78,7 +78,7 @@ public class Left extends Parent {
 
         @Override
         public void handle(ActionEvent actionEvent) {
-            Home.type = GameType.ONLINE;
+//            Home.type = GameType.ONLINE;
 
             Platform.runLater(
                     () -> {

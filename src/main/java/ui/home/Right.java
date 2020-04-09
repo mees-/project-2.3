@@ -44,7 +44,7 @@ public class Right extends Parent {
 
         @Override
         public void handle(ActionEvent actionEvent) {
-            Home.option = OnlineOption.SUBSCRIBE;
+//            Home.option = OnlineOption.SUBSCRIBE;
 
             Platform.runLater(
                     () -> {
@@ -66,7 +66,7 @@ public class Right extends Parent {
 
         @Override
         public void handle(ActionEvent actionEvent) {
-            Home.option = OnlineOption.CHALLENGE;
+//            Home.option = OnlineOption.CHALLENGE;
 
             Platform.runLater(
                     () -> {

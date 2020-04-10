@@ -18,18 +18,14 @@ public class MoveHandler extends EventHandler {
         return EventHandler.validateWords(new String[]{"svr", "game", "move"}, message);
     }
 
-    public EventPayload handle(String[] message) {
-        try {
-            String rawDetails = Parser.sliceStringFromParts(message, 3, message.length);
-            HashMap<String, String> details = Parser.parseMap(rawDetails);
-            if (details.get("PLAYER").equals(connection.getRemotePlayer().getUsername())) {
-                int boardSize = connection.getFramework().getBoardSize();
-                int rawCell = Integer.parseInt(details.get("MOVE"));
-                Move move = new Move(GameState.TurnTwo, rawCell % boardSize, rawCell / boardSize);
-                connection.getRemotePlayer().putMove(move);
-            }
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+    public EventPayload handle(String[] message) throws ParseException {
+        String rawDetails = Parser.sliceStringFromParts(message, 3, message.length);
+        HashMap<String, String> details = Parser.parseMap(rawDetails);
+        if (details.get("PLAYER").equals(connection.getRemotePlayer().getUsername())) {
+            int boardSize = connection.getFramework().getBoardSize();
+            int rawCell = Integer.parseInt(details.get("MOVE"));
+            Move move = new Move(GameState.TurnTwo, rawCell % boardSize, rawCell / boardSize);
+            connection.getRemotePlayer().putMove(move);
         }
         return null;
     }

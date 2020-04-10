@@ -20,20 +20,16 @@ public class GameEndHandler extends EventHandler {
     }
 
     @Override
-    public EventPayload handle(String[] message) {
+    public EventPayload handle(String[] message) throws ParseException {
         if (message[2].equalsIgnoreCase("win")) {
-            try {
-                HashMap<String, String> details = Parser.parseMap(
-                        Parser.sliceStringFromParts(message, 3, message.length)
-                );
-                if (
-                        details.get("COMMENT").equalsIgnoreCase("Player forfeited match")
-                        || details.get("COMMENT").equalsIgnoreCase("Client disconnected")
-                ) {
-                    connection.getRemotePlayer().putMove(new ForfeitMove(connection.getRemotePlayer().getTurn()));
-                }
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
+            HashMap<String, String> details = Parser.parseMap(
+                    Parser.sliceStringFromParts(message, 3, message.length)
+            );
+            if (
+                    details.get("COMMENT").equalsIgnoreCase("Player forfeited match")
+                    || details.get("COMMENT").equalsIgnoreCase("Client disconnected")
+            ) {
+                connection.getRemotePlayer().putMove(new ForfeitMove(connection.getRemotePlayer().getTurn()));
             }
         }
         return null;

@@ -2,6 +2,7 @@ package connection;
 
 import java.net.*;
 import java.io.*;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -74,7 +75,12 @@ public class Connection {
     private void handleEventMessage(String[] message) {
         for (EventHandler handler : eventHandlers) {
             if (handler.isValidMessage(message)) {
-                EventPayload payload = handler.handle(message);
+                EventPayload payload = null;
+                try {
+                    payload = handler.handle(message);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
                 if (payload != null) {
                     framework.handleEvent(payload);
                 }

@@ -14,16 +14,16 @@ public class ChallengeCommand extends Command<StandardResponse> {
 
     @Override
     public String getCommandString() {
-        return "challenge " + player + " " + game.toString();
+        return "challenge \"" + player + "\" \"" + game.toString() + "\"";
     }
 
     @Override
     public boolean isValidResponse(String[] response) {
-        return false;
+        return StandardResponse.isStandardResponse(response);
     }
 
     @Override
     public StandardResponse parseResponse(String[] response) {
-        return null;
+        return StandardResponse.isOk(response);
     }
 }

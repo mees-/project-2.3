@@ -5,21 +5,19 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 public class ReversiGame implements GameInterface {
 
     private static final int BOARD_SIZE = 8;
-    private static final char BLACK_DISC = '#';
-    private static final char WHITE_DISC = 'o';
-
-    private char playerColour;
-    private char opponentColour;
 
     private CellContent playerCell;
 
     private boolean AI = false;
 
     private ReversiBoard board;
+
+    private Set<Move> validMoves;
 
     private GameState lastTurn;
 
@@ -31,7 +29,6 @@ public class ReversiGame implements GameInterface {
 
     private void init() {
         board = new ReversiBoard();
-//        board.resetSuggestionsList();
     }
 
 
@@ -52,15 +49,16 @@ public class ReversiGame implements GameInterface {
         } catch (GameState.InvalidOperationException e) {
             throw new RuntimeException(e);
         }
-        board.validMovesOverview(player);
-        if (board.getSuggestionsList().contains(new Point(move.getX(), move.getY()))) {
+        validMoves = getBoard().getValidMoves(move.getPlayer());
+//        System.out.println(validMoves.toString());
+        if (validMoves.contains(move)) {
             board.setCell(move.getX(), move.getY(), player);
             flipDiscs(move, player);
         } else {
             throw new InvalidMoveException("The move to set xPos: "+move.getX()+" and yPos: "+move.getY()+" to "+player+" is invalid.");
         }
 
-        if (board.canMakeTurn(board.getOpposite(player))) {
+        if (board.canMakeTurn(board.getOpposite(move.getPlayer()))) {
             setLastTurn(move.getPlayer());
         }
         printBoard();
@@ -70,26 +68,8 @@ public class ReversiGame implements GameInterface {
     @Override
     public void setup(GameState startingPlayer) {
         board.reset();
-        // If player one; black; first
-        if (startingPlayer != GameState.TurnTwo) {
-//            System.out.println(gameState.toString()+" is black.");
-            board.setCell(3, 3, CellContent.Remote);
-            board.setCell(4, 4, CellContent.Remote);
-            board.setCell(3, 4, CellContent.Local);
-            board.setCell(4, 3, CellContent.Local);
-            playerColour = BLACK_DISC;
-            opponentColour = WHITE_DISC;
-
-            // If player two; white; second
-        } else {
-//            System.out.println(gameState.toString()+" is white.");
-            board.setCell(3, 3, CellContent.Local);
-            board.setCell(4, 4, CellContent.Local);
-            board.setCell(3, 4, CellContent.Remote);
-            board.setCell(4, 3, CellContent.Remote);
-            playerColour = WHITE_DISC;
-            opponentColour = BLACK_DISC;
-        }
+        board.setStartingPlayer(startingPlayer);
+        board.getValidMoves(startingPlayer);
     }
 
     public void flipDiscs(Move move, CellContent player) {

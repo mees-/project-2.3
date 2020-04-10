@@ -26,10 +26,11 @@ public class ReversiDemo {
 //        reversi.printBoard();
 
 //        boolean inputCommand = false;
-
+        reversi.setup(currentTurn);
         do {
             reversi.printBoard();
             System.out.println("Player '" + currentTurn.toString() + "', enter an empty row and column to place your mark:");
+            System.out.println(reversi.getBoard().getValidMoves(currentTurn).toString());
             System.out.print("> Row: ");
             int x = input.nextInt();
             System.out.print("> Column: ");

@@ -41,6 +41,15 @@ public class Move {
     }
 
     @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + player.hashCode();
+        result = 31 * result + x;
+        result = 31 * result + y;
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "x: " + getX() + " y: " + getY() + " player: " +getPlayer();
     }

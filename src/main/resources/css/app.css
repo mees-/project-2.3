@@ -95,10 +95,11 @@
 
 .tile-reversi-available {
     -fx-cursor: HAND;
+    -fx-opacity: 0.7;
 }
 
 .tile-reversi-available:hover {
-    -fx-opacity: 0.7;
+    -fx-opacity: 0.4;
     -fx-cursor: hand;
 }
 

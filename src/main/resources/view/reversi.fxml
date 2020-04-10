@@ -625,7 +625,7 @@
                               <HBox alignment="CENTER_LEFT" prefWidth="54.0">
                                  <children>
                                     <Circle radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="piece-reversi-black" />
-                                    <Text fx:id="sPlayerOne" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+                                    <Text fx:id="sPlayerTwo" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
@@ -666,7 +666,7 @@
                               <HBox alignment="CENTER_LEFT" prefWidth="54.0">
                                  <children>
                                     <Circle radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="piece-reversi-white" />
-                                    <Text fx:id="sPlayerTwo" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+                                    <Text fx:id="sPlayerOne" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>

@@ -2,11 +2,9 @@ package ui;
 
 import connection.Connection;
 import framework.Framework;
+import framework.GameState;
 import framework.GameType;
-import framework.player.LocalConnectedPlayer;
-import framework.player.LocalPlayer;
-import framework.player.Player;
-import framework.player.RandomMovePlayer;
+import framework.player.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -31,7 +29,7 @@ public class Main extends Application {
     private Pane root;
     private Framework framework;
 
-    private ui.settings.GameType gameTypeEnum = ui.settings.GameType.LOCAL;
+    private ui.settings.GameType gameTypeEnum = ui.settings.GameType.ONLINE;
     private OnlineOption onlineOptionEnum = OnlineOption.SUBSCRIBE;
     private PlayerType playerOneTypeEnum = PlayerType.HUMAN;
     private PlayerType playerTwoTypeEnum = PlayerType.HUMAN;
@@ -66,9 +64,8 @@ public class Main extends Application {
         stage.setMaximized(true);
     }
 
-    public void changePane(ChosenGame chosenGame, String playerOneName, String playerTwoName) throws IOException {
+    public void changePane(ChosenGame chosenGame, String playerOneName) throws IOException {
         LocalPlayer playerOne = new LocalPlayer(playerOneName);
-        LocalPlayer playerTwo = new LocalPlayer(playerTwoName);
         startFramework(playerOne);
         switch (chosenGame) {
             case REVERSI:
@@ -79,13 +76,42 @@ public class Main extends Application {
                     paneReversi = loader.load();
                     root.getChildren().add(paneReversi);
                     reversiController.setup();
-                    startReversi(reversiController);
+                    startReversi();
                 break;
             case TICTACTOE:
                 break;
             default:
                 System.out.println("Something went wrong!");
         }
+    }
+
+    public void changePane(ChosenGame chosenGame, String playerOneName, String playerTwoName) throws IOException {
+        LocalPlayer playerOne = new LocalPlayer(playerOneName);
+        LocalPlayer playerTwo = new LocalPlayer(playerTwoName);
+        Player test = startFramework(playerOne, playerTwo);
+        switch (chosenGame) {
+            case REVERSI:
+                root.getChildren().remove(paneHome);
+                ReversiController reversiController = new ReversiController(this, framework, playerOne, playerTwo);
+                loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
+                loader.setController(reversiController);
+                paneReversi = loader.load();
+                root.getChildren().add(paneReversi);
+                reversiController.setup();
+                startReversiLocal(test);
+                break;
+            case TICTACTOE:
+                break;
+            default:
+                System.out.println("Something went wrong!");
+        }
+    }
+
+    public Player startFramework(LocalPlayer playerOne, LocalPlayer playerTwo) {
+        Player playerOneLocal = new LocalNotConnectedPlayer(playerOne);
+        Player playerTwoLocal = new LocalNotConnectedPlayer(playerTwo);
+        framework = new Framework(playerOneLocal, playerTwoLocal);
+        return playerTwoLocal;
     }
 
     public void startFramework(LocalPlayer player) throws IOException {
@@ -95,10 +121,14 @@ public class Main extends Application {
         framework.login();
     }
 
-    private void startReversi(ReversiController reversiController) {
+    private void startReversi() {
         new Thread ( () -> {
             framework.runGameSync(GameType.Reversi);
         }).start();
+    }
+
+    private void startReversiLocal(Player playerTwo) {
+        framework.notifyGameOffer(GameType.Reversi, playerTwo, GameState.TurnOne);
     }
 
     public void stopFramework() throws IOException {

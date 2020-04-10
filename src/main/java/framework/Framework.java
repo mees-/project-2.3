@@ -9,13 +9,20 @@ import java.io.IOException;
 
 public class Framework {
     private Match match;
-    private final Player localPlayer;
+    private final Player localPlayerOne, localPlayerTwo;
     private final Connection connection;
 
     public Framework(Player localPlayer, Connection connection) {
-        this.localPlayer = localPlayer;
+        this.localPlayerOne = localPlayer;
+        this.localPlayerTwo= null;
         this.connection = connection;
         this.connection.setFramework(this);
+    }
+
+    public Framework(Player localPlayerOne, Player localPlayerTwo) {
+        this.localPlayerOne = localPlayerOne;
+        this.localPlayerTwo = localPlayerTwo;
+        this.connection = null;
     }
 
     public int getBoardSize() {
@@ -34,7 +41,7 @@ public class Framework {
     }
 
     public void login() {
-        connection.login(localPlayer.getUsername());
+        connection.login(localPlayerOne.getUsername());
     }
   
     public synchronized void notifyGameOffer(GameType gameType, Player remotePlayer, GameState startingPlayer) {
@@ -49,18 +56,25 @@ public class Framework {
 
                 break;
         }
-        match = new Match(game, localPlayer, remotePlayer);
+        match = new Match(game, localPlayerOne, remotePlayer);
         match.setGameState(startingPlayer);
         match.setupGame();
         notify();
     }
-
     public void close() throws IOException {
         connection.close();
     }
 
-    public Player getLocalPlayer() {
-        return localPlayer;
+    public Player getLocalPlayerOne() {
+        return localPlayerOne;
+    }
+
+    public Player getLocalPlayerTwo() {
+        return localPlayerTwo;
+    }
+
+    public void clearMatch() {
+        match = null;
     }
 
     public Match getMatch() {

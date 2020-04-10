@@ -67,12 +67,16 @@ public class Match {
             try {
                 GameState newState = game.doMove(move);
                 setGameState(newState);
+                synchronized (this) {
+                    notify();
+                }
             } catch (InvalidMoveException e) {
                 throw new RuntimeException(e);
             } catch (InvalidTurnException e) {
                 throw new RuntimeException(e);
             }
         }
+
         System.out.println("Game end: " + getGameState().toString());
         switch (getGameState()) {
             case OneWin:

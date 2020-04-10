@@ -18,7 +18,7 @@ public class ReversiDemo {
         GameState currentTurn = GameState.TurnOne;
 
 //        reversi.setPrintToCommandLine(true);
-//        reversi.setup();
+        reversi.setup(currentTurn);
 //        reversi.printBoard();
 
 //        boolean turn = true;

@@ -273,6 +273,9 @@ public class ReversiBoard extends BoardInterface {
         if (getCell(nextX, nextY) == playerCell) {
             return true;
         }
+        if (getCell(nextX, nextY) == CellContent.Empty) {
+            return false;
+        }
         if ((nextX + checkX < 0) || (nextX + checkX >= getSize() )) {
             return false;
         }
@@ -330,7 +333,11 @@ public class ReversiBoard extends BoardInterface {
     @Override
     public ReversiBoard clone() {
         ReversiBoard clone = new ReversiBoard();
-        clone.board = this.board.clone();
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                clone.board[row][col] = this.board[row][col];
+            }
+        }
         return clone;
     }
 }

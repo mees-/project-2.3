@@ -66,13 +66,14 @@ public class Main extends Application {
         stage.setMaximized(true);
     }
 
-    public void changePane(ChosenGame chosenGame, String playerName) throws IOException {
-        LocalPlayer player = new LocalPlayer(playerName);
-        startFramework(player);
+    public void changePane(ChosenGame chosenGame, String playerOneName, String playerTwoName) throws IOException {
+        LocalPlayer playerOne = new LocalPlayer(playerOneName);
+        LocalPlayer playerTwo = new LocalPlayer(playerTwoName);
+        startFramework(playerOne);
         switch (chosenGame) {
             case REVERSI:
                     root.getChildren().remove(paneHome);
-                    ReversiController reversiController = new ReversiController(this, framework, player);
+                    ReversiController reversiController = new ReversiController(this, framework, playerOne);
                     loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
                     loader.setController(reversiController);
                     paneReversi = loader.load();

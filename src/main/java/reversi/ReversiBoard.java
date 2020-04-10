@@ -26,6 +26,19 @@ public class ReversiBoard extends BoardInterface {
         init();
     }
 
+    public ReversiBoard(ReversiBoard reversiBoard) {
+        this.board = new CellContent[BOARD_SIZE][BOARD_SIZE];
+        for (int i = 0; i < reversiBoard.board.length; i ++) {
+            for (int j = 0; j < reversiBoard.board[i].length; j++) {
+                this.board[i][j] = reversiBoard.board[i][j];
+            }
+        }
+    }
+
+    public CellContent[][] getBoard() {
+        return board;
+    }
+
     private void init(){
         board = new CellContent[BOARD_SIZE][BOARD_SIZE];
         valueBoard = new int[BOARD_SIZE][BOARD_SIZE];

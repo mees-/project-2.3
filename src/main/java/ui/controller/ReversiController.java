@@ -157,7 +157,7 @@ public class ReversiController {
             }
 
             if (reversiBoard == null || !Arrays.deepEquals(reversiBoard.getBoard(), ((ReversiBoard) match.getGame().getBoard()).getBoard())) {
-                reversiBoard = new ReversiBoard((ReversiBoard)match.getGame().getBoard());
+                reversiBoard = ((ReversiBoard)match.getGame().getBoard()).clone();
 
                 synchronized (match) {
                     ReversiBoard board = (ReversiBoard) match.getGame().getBoard();

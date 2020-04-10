@@ -351,4 +351,8 @@ public class ReversiBoard extends BoardInterface {
         }
         return clone;
     }
+
+    public CellContent[][] getBoard() {
+        return board;
+    }
 }

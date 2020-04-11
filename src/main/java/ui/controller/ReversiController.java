@@ -15,15 +15,8 @@ import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import reversi.ReversiBoard;
-import tictactoe.Game;
 import ui.Main;
 import ui.update.GameStateUpdate;
-
-import java.util.Arrays;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-
 import static javafx.scene.paint.Color.BLACK;
 
 public class ReversiController {
@@ -64,8 +57,6 @@ public class ReversiController {
 
     private Players players;
 
-    private boolean test = false;
-
     private Thread a;
 
     public ReversiController(Main main, Framework framework, Player localPlayerOne) {
@@ -73,21 +64,11 @@ public class ReversiController {
         this.main = main;
         this.localPlayerOne = localPlayerOne;
         System.out.println(localPlayerOne.getUsername());
-        new Thread(() -> {
-            while (match == null) {
-                match = framework.getMatch();
-                if (match != null) {
-                    setupNames();
-                    run();
-                }
-            }
-        }).start();
+        getMatch();
     }
 
     public ReversiController(Main main, Framework framework, LocalPlayer localPlayerOne, LocalPlayer localPlayerTwo) {
-        this.framework = framework;
-        this.main = main;
-        this.localPlayerOne = localPlayerOne;
+        this(main, framework, localPlayerOne);
         this.localPlayerTwo = localPlayerTwo;
         System.out.println(localPlayerOne.getUsername());
         getMatch();
@@ -275,7 +256,6 @@ public class ReversiController {
         if (field.getStyleClass().contains("tile-reversi-available")) {
             Move move = new Move(currentPlayer.getTurn(), (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
             ((LocalPlayer) currentPlayer).putMove(move);
-            test = true;
         }
     }
 }

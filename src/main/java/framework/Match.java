@@ -34,7 +34,6 @@ public class Match {
     }
 
     public void setupGame() {
-
         game.setup(gameState);
     }
 
@@ -68,12 +67,16 @@ public class Match {
             try {
                 GameState newState = game.doMove(move);
                 setGameState(newState);
+                synchronized (this) {
+                    notify();
+                }
             } catch (InvalidMoveException e) {
                 throw new RuntimeException(e);
             } catch (InvalidTurnException e) {
                 throw new RuntimeException(e);
             }
         }
+
         System.out.println("Game end: " + getGameState().toString());
         switch (getGameState()) {
             case OneWin:
@@ -91,5 +94,9 @@ public class Match {
             default:
                 throw new RuntimeException("Really shoulnd't be here 2");
         }
+    }
+
+    public Players getPlayers() {
+        return players;
     }
 }

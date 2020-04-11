@@ -56,7 +56,7 @@ public class ReversiAi extends Ai {
         } catch (GameState.InvalidOperationException e) {
             throw new RuntimeException(e);
         }
-        if (((ReversiBoard)currentBoard).canMakeTurn(((ReversiBoard)currentBoard).getOpposite(player))) {
+        if (((ReversiBoard)currentBoard).canMakeTurn(((ReversiBoard)currentBoard).getOpposite(lastMove.getPlayer()))) {
             try {
                 return lastMove.getPlayer().otherTurn();
             } catch (GameState.InvalidOperationException e) {

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" styleClass="bg-primary">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tic-Tac-Toe" HBox.hgrow="ALWAYS">
+               <styleClass>
+                  <String fx:value="title-lg" />
+                  <String fx:value="b" />
+               </styleClass>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </HBox>
+      <Region minHeight="82.0" VBox.vgrow="ALWAYS" />
+      <HBox minHeight="50.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+            <VBox prefHeight="100.0" prefWidth="560.0">
+               <HBox.margin>
+                  <Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />
+               </HBox.margin>
+               <children>
+                  <GridPane maxHeight="-Infinity" prefHeight="632.0" prefWidth="694.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <HBox alignment="CENTER" minHeight="200.0" minWidth="200.0" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <SVGPath content="M 100.671875 106 L 142.179688 64.566406 C 147.273438 59.480469 147.273438 51.234375 142.179688 46.148438 L 132.957031 36.9375 C 127.863281 31.855469 119.605469 31.855469 114.507812 36.9375 L 73 78.375 L 31.492188 36.9375 C 26.398438 31.855469 18.140625 31.855469 13.042969 36.9375 L 3.820312 46.148438 C -1.273438 51.230469 -1.273438 59.476562 3.820312 64.566406 L 45.328125 106 L 3.820312 147.433594 C -1.273438 152.519531 -1.273438 160.765625 3.820312 165.851562 L 13.042969 175.0625 C 18.136719 180.144531 26.398438 180.144531 31.492188 175.0625 L 73 133.625 L 114.507812 175.0625 C 119.601562 180.144531 127.863281 180.144531 132.957031 175.0625 L 142.179688 165.851562 C 147.273438 160.769531 147.273438 152.523438 142.179688 147.433594 Z M 100.671875 106 " styleClass="piece-tictactoe-cross" />
+                           </children>
+                           <styleClass>
+                              <String fx:value="tile-tictactoe" />
+                              <String fx:value="tile-tictactoe-top-left" />
+                           </styleClass></HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <styleClass>
+                              <String fx:value="tile-tictactoe" />
+                              <String fx:value="tile-tictactoe-middle-left" />
+                           </styleClass></HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                           <styleClass>
+                              <String fx:value="tile-tictactoe" />
+                              <String fx:value="tile-tictactoe-bottom-left" />
+                           </styleClass></HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <Circle fill="DODGERBLUE" radius="1.0" stroke="BLACK" strokeType="INSIDE">
+                                 <styleClass>
+                                    <String fx:value="piece-tictactoe-circle-base" />
+                                    <String fx:value="piece-tictactoe-circle" />
+                                 </styleClass>
+                              </Circle>
+                           </children>
+                           <styleClass>
+                              <String fx:value="tile-tictactoe" />
+                              <String fx:value="tile-tictactoe-top-middle" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <styleClass>
+                              <String fx:value="tile-tictactoe" />
+                              <String fx:value="tile-tictactoe-middle-center" />
+                           </styleClass>
+                           <children>
+                              <SVGPath content="M 100.671875 106 L 142.179688 64.566406 C 147.273438 59.480469 147.273438 51.234375 142.179688 46.148438 L 132.957031 36.9375 C 127.863281 31.855469 119.605469 31.855469 114.507812 36.9375 L 73 78.375 L 31.492188 36.9375 C 26.398438 31.855469 18.140625 31.855469 13.042969 36.9375 L 3.820312 46.148438 C -1.273438 51.230469 -1.273438 59.476562 3.820312 64.566406 L 45.328125 106 L 3.820312 147.433594 C -1.273438 152.519531 -1.273438 160.765625 3.820312 165.851562 L 13.042969 175.0625 C 18.136719 180.144531 26.398438 180.144531 31.492188 175.0625 L 73 133.625 L 114.507812 175.0625 C 119.601562 180.144531 127.863281 180.144531 132.957031 175.0625 L 142.179688 165.851562 C 147.273438 160.769531 147.273438 152.523438 142.179688 147.433594 Z M 100.671875 106 ">
+                                 <styleClass>
+                                    <String fx:value="piece-tictactoe-cross" />
+                                    <String fx:value="piece-tictactoe-possible-move" />
+                                 </styleClass>
+                              </SVGPath>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <styleClass>
+                              <String fx:value="tile-tictactoe" />
+                              <String fx:value="tile-tictactoe-bottom-middle" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <styleClass>
+                              <String fx:value="tile-tictactoe" />
+                              <String fx:value="tile-tictactoe-top-right" />
+                           </styleClass></HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <styleClass>
+                              <String fx:value="tile-tictactoe" />
+                              <String fx:value="tile-tictactoe-middle-right" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <styleClass>
+                              <String fx:value="tile-tictactoe" />
+                              <String fx:value="tile-tictactoe-bottom-right" />
+                           </styleClass></HBox>
+                     </children>
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+            <VBox prefHeight="100.0" prefWidth="442.0">
+               <HBox.margin>
+                  <Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />
+               </HBox.margin>
+               <children>
+                  <Region prefHeight="10.0" prefWidth="200.0" />
+                  <HBox alignment="CENTER" styleClass="bg-primary">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Players">
+                           <styleClass>
+                              <String fx:value="h2" />
+                              <String fx:value="text-white" />
+                              <String fx:value="b" />
+                           </styleClass>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" styleClass="bg-light">
+                     <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="237.0" prefWidth="610.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefWidth="30.0">
+                                 <children>
+                                    <SVGPath content="M 21.082031 19.46875 L 4.472656 19.46875 C 4.121094 19.46875 3.832031 19.78125 3.832031 20.164062 L 3.832031 21.554688 C 3.832031 21.9375 4.121094 22.253906 4.472656 22.253906 L 21.082031 22.253906 C 21.4375 22.253906 21.726562 21.9375 21.726562 21.554688 L 21.726562 20.164062 C 21.726562 19.78125 21.4375 19.46875 21.082031 19.46875 Z M 23.644531 5.5625 C 22.582031 5.5625 21.726562 6.496094 21.726562 7.648438 C 21.726562 7.960938 21.789062 8.242188 21.902344 8.507812 L 19.011719 10.394531 C 18.394531 10.796875 17.597656 10.570312 17.246094 9.894531 L 13.992188 3.691406 C 14.417969 3.308594 14.699219 2.734375 14.699219 2.085938 C 14.699219 0.929688 13.839844 0 12.78125 0 C 11.722656 0 10.863281 0.929688 10.863281 2.085938 C 10.863281 2.734375 11.144531 3.308594 11.570312 3.691406 L 8.316406 9.894531 C 7.957031 10.570312 7.160156 10.796875 6.550781 10.394531 L 3.660156 8.507812 C 3.773438 8.246094 3.839844 7.960938 3.839844 7.648438 C 3.839844 6.496094 2.980469 5.5625 1.921875 5.5625 C 0.863281 5.5625 0 6.496094 0 7.648438 C 0 8.800781 0.855469 9.734375 1.914062 9.734375 C 2.019531 9.734375 2.125 9.714844 2.226562 9.699219 L 5.109375 18.082031 L 20.445312 18.082031 L 23.335938 9.699219 C 23.4375 9.714844 23.539062 9.734375 23.644531 9.734375 C 24.699219 9.734375 25.558594 8.800781 25.558594 7.648438 C 25.558594 6.496094 24.699219 5.5625 23.644531 5.5625 Z M 23.644531 5.5625" styleClass="text-gold" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="210.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                                       <styleClass>
+                                          <String fx:value="h3" />
+                                          <String fx:value="text-dark" />
+                                          <String fx:value="b" />
+                                       </styleClass>
+                                       <HBox.margin>
+                                          <Insets left="20.0" right="20.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <SVGPath content="M 15.171875 16 L 21.425781 9.746094 C 22.191406 8.976562 22.191406 7.734375 21.425781 6.964844 L 20.035156 5.574219 C 19.265625 4.808594 18.023438 4.808594 17.253906 5.574219 L 11 11.828125 L 4.746094 5.574219 C 3.976562 4.808594 2.734375 4.808594 1.964844 5.574219 L 0.574219 6.964844 C -0.191406 7.734375 -0.191406 8.976562 0.574219 9.746094 L 6.828125 16 L 0.574219 22.253906 C -0.191406 23.023438 -0.191406 24.265625 0.574219 25.035156 L 1.964844 26.425781 C 2.734375 27.191406 3.976562 27.191406 4.746094 26.425781 L 11 20.171875 L 17.253906 26.425781 C 18.023438 27.191406 19.265625 27.191406 20.035156 26.425781 L 21.425781 25.035156 C 22.191406 24.265625 22.191406 23.023438 21.425781 22.253906 Z M 15.171875 16 " styleClass="piece-tictactoe-cross" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="237.0" prefWidth="610.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefWidth="30.0">
+                                 <children>
+                                    <SVGPath content="M 9.410156 3.152344 L 10.507812 2.105469 C 10.972656 1.664062 11.726562 1.664062 12.183594 2.105469 L 21.789062 11.265625 C 22.253906 11.707031 22.253906 12.425781 21.789062 12.863281 L 12.183594 22.023438 C 11.71875 22.46875 10.96875 22.46875 10.507812 22.023438 L 9.410156 20.976562 C 8.941406 20.53125 8.953125 19.800781 9.433594 19.363281 L 15.386719 13.949219 L 1.1875 13.949219 C 0.527344 13.949219 0 13.445312 0 12.820312 L 0 11.3125 C 0 10.683594 0.527344 10.179688 1.1875 10.179688 L 15.386719 10.179688 L 9.433594 4.769531 C 8.949219 4.332031 8.9375 3.601562 9.410156 3.152344 Z M 9.410156 3.152344" styleClass="text-danger" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="4.0" prefWidth="210.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2 name">
+                                       <styleClass>
+                                          <String fx:value="h3" />
+                                          <String fx:value="text-dark" />
+                                          <String fx:value="b" />
+                                       </styleClass>
+                                       <HBox.margin>
+                                          <Insets left="20.0" right="20.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" minWidth="20.0">
+                                 <children>
+                                    <Circle fill="DODGERBLUE" radius="1.0" stroke="BLACK" strokeType="INSIDE">
+                                       <styleClass>
+                                          <String fx:value="piece-tictactoe-circle-base" />
+                                          <String fx:value="piece-tictactoe-circle-player" />
+                                       </styleClass>
+                                    </Circle>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+      <Region minHeight="80.0" VBox.vgrow="ALWAYS" />
+   </children>
+   <stylesheets>
+      <URL value="@../css/bootstrapfx.css" />
+      <URL value="@../css/app.css" />
+   </stylesheets>
+</VBox>

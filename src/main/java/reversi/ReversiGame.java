@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 public class ReversiGame implements GameInterface {
 
@@ -15,6 +16,8 @@ public class ReversiGame implements GameInterface {
     private boolean AI = false;
 
     private ReversiBoard board;
+
+    private Set<Move> validMoves;
 
     private GameState lastTurn;
 
@@ -46,15 +49,16 @@ public class ReversiGame implements GameInterface {
         } catch (GameState.InvalidOperationException e) {
             throw new RuntimeException(e);
         }
-        board.validMovesOverview(player);
-        if (board.getSuggestionsList().contains(new Point(move.getX(), move.getY()))) {
+        validMoves = getBoard().getValidMoves(move.getPlayer());
+//        System.out.println(validMoves.toString());
+        if (validMoves.contains(move)) {
             board.setCell(move.getX(), move.getY(), player);
             flipDiscs(move, player);
         } else {
             throw new InvalidMoveException("The move to set xPos: "+move.getX()+" and yPos: "+move.getY()+" to "+player+" is invalid.");
         }
 
-        if (board.canMakeTurn(board.getOpposite(player))) {
+        if (board.canMakeTurn(board.getOpposite(move.getPlayer()))) {
             setLastTurn(move.getPlayer());
         }
         printBoard();
@@ -65,6 +69,7 @@ public class ReversiGame implements GameInterface {
     public void setup(GameState startingPlayer) {
         board.reset();
         board.setStartingPlayer(startingPlayer);
+        board.getValidMoves(startingPlayer);
     }
 
     public void flipDiscs(Move move, CellContent player) {

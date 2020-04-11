@@ -17,19 +17,15 @@ public class ReversiBoard extends BoardInterface {
     private static final char BLACK_DISC = '#';
     private static final char WHITE_DISC = 'o';
     private static final char EMPTY_CELL = '-';
+    private static final char SUGGEST_DISC = 'x';
 
     private char playerColour;
     private char opponentColour;
 
     private static final int BOARD_SIZE = 8;
 
-    ArrayList<Point> coordinates = new ArrayList<Point>();
-
     private CellContent[][] board;
     private int[][] valueBoard;
-
-    private GameState startingPlayer;
-
 
     public ReversiBoard() {
         init();
@@ -120,12 +116,7 @@ public class ReversiBoard extends BoardInterface {
     }
 
     public GameState getResult(Move move) {
-        CellContent player;
-        try {
-            player = move.getPlayer().toCellContent();
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
-        }
+        GameState state = move.getPlayer();
         int[] pieces = countPieces();
         if(checkForWin() == CellContent.Local) {
             return GameState.OneWin;
@@ -133,8 +124,8 @@ public class ReversiBoard extends BoardInterface {
         else if(checkForWin() == CellContent.Remote) {
             return GameState.TwoWin;
         }
-        else if(pieces[0] == pieces[1] && !canMakeTurn(player)
-                && !canMakeTurn(getOpposite(player))) {
+        else if(pieces[0] == pieces[1] && !canMakeTurn(move.getPlayer())
+                && !canMakeTurn(getOpposite(state))) {
             return GameState.Draw;
         }
         else if(move.getPlayer() == GameState.TurnOne) {
@@ -166,7 +157,7 @@ public class ReversiBoard extends BoardInterface {
     }
 
     public CellContent checkForWin() {
-        if (!canMakeTurn(CellContent.Local) && !canMakeTurn(CellContent.Remote)) {
+        if (!canMakeTurn(GameState.TurnOne) && !canMakeTurn(GameState.TurnTwo)) {
             int[] pieces = countPieces();
             if (pieces[0] > pieces[1]) {
                 return CellContent.Local;
@@ -177,65 +168,55 @@ public class ReversiBoard extends BoardInterface {
         return null;
     }
 
-    public boolean canMakeTurn(CellContent player) {
-        validMovesOverview(player);
-        if (getSuggestionsList().isEmpty()) {
+    public boolean canMakeTurn(GameState state) {
+        if (getValidMoves(state).isEmpty()) {
             return false;
         }
         return true;
     }
 
-    /**
-     * @param playerCell
-     * @return Overview of valid moves
-     */
-    public void validMovesOverview(CellContent playerCell) {
-        resetSuggestionsList();
+    @Override
+    public Set<Move> getValidMoves(GameState state) {
+        HashSet<Move> set = new HashSet<>();
 
         for (int i = 0; i < getSize(); i++) {
             for (int j = 0; j < getSize(); j++) {
                 if (getCell(i, j) == CellContent.Empty) {
-                    boolean ww = validMove(playerCell, i, j, 0, -1);
-                    boolean sw = validMove(playerCell, i, j, 1, -1);
-                    boolean ss = validMove(playerCell, i, j, 1, 0);
-                    boolean se = validMove(playerCell, i, j, 1, 1);
-                    boolean ee = validMove(playerCell, i, j, 0, 1);
-                    boolean ne = validMove(playerCell, i, j, -1, 1);
-                    boolean nn = validMove(playerCell, i, j, -1, 0);
-                    boolean nw = validMove(playerCell, i, j, -1, -1);
+                    boolean ww = validMove(state, i, j, 0, -1);
+                    boolean sw = validMove(state, i, j, 1, -1);
+                    boolean ss = validMove(state, i, j, 1, 0);
+                    boolean se = validMove(state, i, j, 1, 1);
+                    boolean ee = validMove(state, i, j, 0, 1);
+                    boolean ne = validMove(state, i, j, -1, 1);
+                    boolean nn = validMove(state, i, j, -1, 0);
+                    boolean nw = validMove(state, i, j, -1, -1);
 
                     if (nn || ne || ee || se || ss || sw || ww || nw) {
-                        addSuggestionsList(i, j);
+                        set.add(new Move(state, i, j));
                     }
                 }
             }
         }
-    }
-
-    private void addSuggestionsList(int x, int y) {
-        coordinates.add(new Point(x, y));
-    }
-
-    private void resetSuggestionsList() {
-        coordinates.clear();
-    }
-
-    public ArrayList<Point> getSuggestionsList() {
-        return coordinates;
+        return set;
     }
 
     /**
      * Check if the current position contains the opposite player's colour and if the line indicated by adding checkX to
      * currentX and checkY to currentY eventually ends in the player's own colour
-     * @param playerCell
+     * @param state
      * @param currentX
      * @param currentY
      * @param checkX
      * @param checkY
      * @return boolean if move is valid.
      */
-    public boolean validMove(CellContent playerCell, int currentX, int currentY, int checkX, int checkY) {
-        CellContent opposite = getOpposite(playerCell);
+    public boolean validMove(GameState state, int currentX, int currentY, int checkX, int checkY) {
+        CellContent opposite;
+        try {
+            opposite = getOpposite(state).toCellContent();
+        } catch (GameState.InvalidOperationException e) {
+            throw new RuntimeException(e);
+        }
 
         if ((currentX + checkX < 0) || (currentX + checkX >= getSize() )) {
             return false;
@@ -252,38 +233,47 @@ public class ReversiBoard extends BoardInterface {
         if ((currentY + 2 * checkY < 0) || (currentY + 2 * checkY >= getSize() )) {
             return false;
         }
-        return check_line_match(playerCell, checkX, checkY, currentX + 2 * checkX, currentY + 2 * checkY);
+        return check_line_match(state, currentX + 2 * checkX, currentY + 2 * checkY, checkX, checkY);
     }
 
     /**
      * Check if there is the player's colour on the line starting at (checkX, checkY) or anywhere further by adding
      * nextX and nextY to (checkX, checkY)
-     * @param playerCell
-     * @param checkX
-     * @param checkY
+     * @param state
+     * @param newX
+     * @param newY
      * @param nextX
      * @param nextY
      * @return boolean if move creates line match
      */
-    public boolean check_line_match(CellContent playerCell, int checkX, int checkY, int nextX, int nextY) {
-        if (getCell(nextX, nextY) == playerCell) {
+    public boolean check_line_match(GameState state, int newX, int newY, int nextX, int nextY) {
+        CellContent player;
+        try {
+            player = state.toCellContent();
+        } catch (GameState.InvalidOperationException e) {
+            throw new RuntimeException(e);
+        }
+        if (getCell(newX, newY) == player) {
             return true;
         }
-        if ((nextX + checkX < 0) || (nextX + checkX >= getSize() )) {
+        if (getCell(newX, newY) == CellContent.Empty){
             return false;
         }
-        if ((nextY + checkY < 0) || (nextY + checkY >= getSize() )) {
+        if ((nextX + newX < 0) || (nextX + newX >= getSize() )) {
             return false;
         }
-        return check_line_match(playerCell, checkX, checkY, checkX + nextX, checkY + nextY);
+        if ((nextY + newY < 0) || (nextY + newY >= getSize() )) {
+            return false;
+        }
+        return check_line_match(state, newX + nextX, newY + nextY, nextX, nextY);
     }
 
-    public CellContent getOpposite(CellContent playerCell) {
-        CellContent opponent;
-        if (playerCell == CellContent.Local) {
-            opponent = CellContent.Remote;
+    public GameState getOpposite(GameState state) {
+        GameState opponent;
+        if (state == GameState.TurnOne) {
+            opponent = GameState.TurnTwo;
         } else {
-            opponent = CellContent.Local;
+            opponent = GameState.TurnOne;
         }
         return opponent;
     }
@@ -318,6 +308,7 @@ public class ReversiBoard extends BoardInterface {
         for (int row = 0; row < getSize(); row++) {
             System.out.print(ANSI_WHITE+row + " | ");
             for (int col = 0; col < getSize(); col++) {
+
 //                System.out.print(ANSI_RED + "("+row+", "+col+") ");
                 CellContent a = getCell(row, col);
                 // Player one
@@ -326,6 +317,8 @@ public class ReversiBoard extends BoardInterface {
                         System.out.print(ANSI_BLACK + playerColour + ANSI_RED + " | ");
                     } else if (a == CellContent.Remote) {
                         System.out.print(ANSI_WHITE + opponentColour + ANSI_RED + " | ");
+//                    } else if (coordinates.contains(new Point(row, col))) {
+//                        System.out.print(ANSI_RED + SUGGEST_DISC + " | ");
                     } else {
                         System.out.print(ANSI_RED + EMPTY_CELL + ANSI_RED + " | ");
                     }
@@ -335,6 +328,8 @@ public class ReversiBoard extends BoardInterface {
                         System.out.print(ANSI_WHITE + playerColour + ANSI_RED + " | ");
                     } else if (a == CellContent.Remote) {
                         System.out.print(ANSI_BLACK + opponentColour + ANSI_RED + " | ");
+//                    } else if (getValidMoves().contains(new Point(row, col))) {
+//                        System.out.print(ANSI_RED + SUGGEST_DISC + " | ");
                     } else {
                         System.out.print(ANSI_RED + EMPTY_CELL + ANSI_RED + " | ");
                     }
@@ -347,25 +342,17 @@ public class ReversiBoard extends BoardInterface {
     }
 
     @Override
-    public Set<Move> getValidMoves(GameState state) {
-        CellContent player;
-        try {
-            player = state.toCellContent();
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
-        }
-        validMovesOverview(player);
-        HashSet<Move> set = new HashSet<>();
-        for (Point value : getSuggestionsList()) {
-            set.add(new Move(state, value.x, value.y));
-        }
-        return set;
-    }
-
-    @Override
     public ReversiBoard clone() {
         ReversiBoard clone = new ReversiBoard();
-        clone.board = this.board.clone();
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                clone.board[row][col] = this.board[row][col];
+            }
+        }
         return clone;
+    }
+
+    public CellContent[][] getBoard() {
+        return board;
     }
 }

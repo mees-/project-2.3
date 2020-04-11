@@ -254,6 +254,7 @@ a.bg-danger:focused {
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
     -fx-min-width: 80;
+    -fx-cursor: HAND;
 }
 .btn:hover, .btn:focused, .btn.focused {
     -fx-text-fill: #333;

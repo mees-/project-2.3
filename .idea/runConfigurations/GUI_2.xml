@@ -1,14 +1,14 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Main" type="Application" factoryName="Application" singleton="false">
+  <configuration default="false" name="GUI 2" type="Application" factoryName="Application" singleton="false">
     <envs>
-      <env name="GAME_HOST" value="localhost" />
+      <env name="GAME_HOST" value="127.0.0.1" />
       <env name="GAME_PORT" value="7789" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="application.Main" />
+    <option name="MAIN_CLASS_NAME" value="ui.Main" />
     <module name="project-2.3" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="application.*" />
+        <option name="PATTERN" value="ui.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

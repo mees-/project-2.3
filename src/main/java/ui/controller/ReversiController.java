@@ -57,7 +57,7 @@ public class ReversiController {
 
     private Players players;
 
-    private Thread a;
+    private Thread run = new Thread(this::run);
 
     public ReversiController(Main main, Framework framework, Player localPlayerOne) {
         this.framework = framework;
@@ -71,25 +71,20 @@ public class ReversiController {
         this.localPlayerOne = localPlayerOne;
         this.localPlayerTwo = localPlayerTwo;
         this.match = match;
-        new Thread(() -> {
-            setupNames();
-            run();
-        }).start();
         System.out.println(localPlayerOne.getUsername());
     }
 
-    public void getMatch() {
-        new Thread(() -> {
-            while (match == null) {
-                match = framework.getMatch();
-                if (match != null) {
-                    match.startAsync();
+    public void start() {
+        run.start();
+    }
 
-                    setupNames();
-                    run();
-                }
+    public void getMatch() {
+        while (match == null) {
+            match = framework.getMatch();
+            if (match != null) {
+                match.startAsync();
             }
-        }).start();
+        }
     }
 
     private Circle setupPiece(boolean blackOrWhite) {
@@ -119,6 +114,7 @@ public class ReversiController {
     }
 
     public void setup() {
+        setupNames();
         childNodes = gpReversi.getChildren();
 
         for (Node node : childNodes) {
@@ -151,7 +147,7 @@ public class ReversiController {
                 sPlayerOne.setText(Integer.toString(score[0]));
             });
 
-            if (gameState == GameState.TurnOne || gameState == GameState.TurnTwo) {
+            if (!gameState.isEnd()) {
                 if (gameState == GameState.TurnOne) {
                     currentPlayer = localPlayerOne;
                     tPlayerOne.setVisible(true);

@@ -65,28 +65,31 @@ public class Main extends Application {
 
     public void changePane(GameType chosenGame, String playerOneName, PlayerType playerType) throws IOException {
         Player playerOne = null;
+        root.getChildren().remove(paneHome);
+
+        playerOne = new LocalPlayer(playerOneName, chosenGame);
+
+
         switch (chosenGame) {
             case Reversi:
-                    if (playerType == PlayerType.HUMAN) {
-                        playerOne = new LocalPlayer(playerOneName, chosenGame);
-                    } else if (playerType == PlayerType.AI) {
-                        playerOne = new ReversiAi(playerOneName);
-                    }
+                if (playerType == PlayerType.AI) {
+                    playerOne = new ReversiAi(playerOneName);
+                }
+                startReversi();
+                startFramework(playerOne);
+                ReversiController reversiController = new ReversiController(this, framework, playerOne);
 
-                    startFramework(playerOne);
-                    root.getChildren().remove(paneHome);
-                    ReversiController reversiController = new ReversiController(this, framework, playerOne);
-                    loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
-                    loader.setController(reversiController);
-                    paneReversi = loader.load();
-                    root.getChildren().add(paneReversi);
-                    reversiController.setup();
-                    startReversi();
+                loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
+                loader.setController(reversiController);
+                paneReversi = loader.load();
+                root.getChildren().add(paneReversi);
+
+                reversiController.setup();
+
+
                 break;
             case TicTacToe:
-                if (playerType == PlayerType.HUMAN) {
-                    playerOne = new LocalPlayer(playerOneName, chosenGame);
-                } else if (playerType == PlayerType.AI) {
+                if (playerType == PlayerType.AI) {
                     playerOne = new TicTacToeAi(playerOneName);
                 }
 
@@ -116,17 +119,21 @@ public class Main extends Application {
         Player playerTwoLocal = new LocalNotConnectedPlayer(playerTwo);
         Match match = null;
         root.getChildren().remove(paneFooter);
+        root.getChildren().remove(paneHome);
 
         switch (gameType) {
             case Reversi:
                 match = new Match(new ReversiGame(), playerOneLocal, playerTwoLocal);
-                root.getChildren().remove(paneHome);
                 ReversiController reversiController = new ReversiController(this, match, playerOne, playerTwo);
+
                 loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
                 loader.setController(reversiController);
                 paneReversi = loader.load();
                 root.getChildren().add(paneReversi);
+
                 reversiController.setup();
+                reversiController.start();
+
                 break;
             case TicTacToe:
                 match = new Match(new Game(), playerOneLocal, playerTwoLocal);
@@ -147,11 +154,6 @@ public class Main extends Application {
         root.getChildren().add(paneFooter);
     }
 
-//    public Player startFramework(LocalPlayer playerOne, LocalPlayer playerTwo) {
-//        framework = new Framework(playerOneLocal, playerTwoLocal);
-//        return playerTwoLocal;
-//    }
-
     public void startFramework(Player player) throws IOException {
         connection = new Connection();
         Player connectedPlayer = new LocalConnectedPlayer(player, connection);
@@ -165,14 +167,6 @@ public class Main extends Application {
     private void startTicTacToe() {
         connection.subscribe(GameType.TicTacToe);
     }
-
-//    private void startReversiLocal(Player playerTwo) {
-//        framework.notifyGameOffer(GameType.Reversi, playerTwo, GameState.TurnOne);
-//    }
-//
-//    private void startTicTacToeLocal(Player playerTwo) {
-//        framework.notifyGameOffer(GameType.TicTacToe, playerTwo, GameState.TurnOne);
-//    }
 
     public void stopFramework() throws IOException {
         framework.close();

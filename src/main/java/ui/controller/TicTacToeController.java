@@ -72,10 +72,14 @@ public class TicTacToeController {
         getMatch();
     }
 
-    public TicTacToeController(Main main, Framework framework, LocalPlayer localPlayerOne, LocalPlayer localPlayerTwo) {
-        this(main, framework, localPlayerOne);
+    public TicTacToeController(Main main, Match match, LocalPlayer localPlayerOne, LocalPlayer localPlayerTwo) {
+        this.localPlayerOne = localPlayerOne;
         this.localPlayerTwo = localPlayerTwo;
-        getMatch();
+        this.match = match;
+        new Thread(() -> {
+            setupNames();
+            run();
+        }).start();
     }
 
     public void getMatch() {
@@ -83,11 +87,7 @@ public class TicTacToeController {
             while (match == null) {
                 match = framework.getMatch();
                 if (match != null) {
-                    a = new Thread(() -> {
-                        match.gameLoop();
-                    });
-                    a.start();
-
+                    match.startAsync();
                     setupNames();
                     run();
                 }

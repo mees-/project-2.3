@@ -51,7 +51,7 @@ public class Match {
         thread.start();
     }
 
-    public void gameLoop() {
+    private void gameLoop() {
 
         while (!getGameState().isEnd()) {
             Player playerToMove;

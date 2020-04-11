@@ -67,11 +67,15 @@ public class ReversiController {
         getMatch();
     }
 
-    public ReversiController(Main main, Framework framework, LocalPlayer localPlayerOne, LocalPlayer localPlayerTwo) {
-        this(main, framework, localPlayerOne);
+    public ReversiController(Main main, Match match, LocalPlayer localPlayerOne, LocalPlayer localPlayerTwo) {
+        this.localPlayerOne = localPlayerOne;
         this.localPlayerTwo = localPlayerTwo;
+        this.match = match;
+        new Thread(() -> {
+            setupNames();
+            run();
+        }).start();
         System.out.println(localPlayerOne.getUsername());
-        getMatch();
     }
 
     public void getMatch() {
@@ -79,10 +83,7 @@ public class ReversiController {
             while (match == null) {
                 match = framework.getMatch();
                 if (match != null) {
-                    a = new Thread(() -> {
-                        match.gameLoop();
-                    });
-                    a.start();
+                    match.startAsync();
 
                     setupNames();
                     run();

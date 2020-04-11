@@ -1,12 +1,9 @@
 package framework.player;
 
-import framework.BoardInterface;
-import framework.Move;
-
-import java.util.Set;
+import framework.GameType;
 
 public class LocalPlayer extends BlockingPlayer {
-    public LocalPlayer(String username) {
-        super(username);
+    public LocalPlayer(String username, GameType gameType) {
+        super(username, gameType);
     }
 }

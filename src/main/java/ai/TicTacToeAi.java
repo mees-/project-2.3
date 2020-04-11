@@ -6,10 +6,8 @@ import tictactoe.Board;
 import java.util.*;
 
 public class TicTacToeAi extends Ai {
-    private static final int BOARD_SIZE = 3;
-
     public TicTacToeAi(String username) {
-        super(username);
+        super(username, GameType.TicTacToe);
     }
 
     @Override
@@ -33,7 +31,7 @@ public class TicTacToeAi extends Ai {
             CellContent gameWin = ((Board)board).checkForWinBetter();
             if (gameWin == turn.toCellContent()) {
                 return 10;
-            } else if (gameWin == turn.otherTurn().toCellContent()) {
+            } else if (gameWin == turn.otherPlayer().toCellContent()) {
                 return -10;
             } else {
                 return 0;
@@ -79,8 +77,8 @@ public class TicTacToeAi extends Ai {
             return new HashSet<>();
         }
         HashSet<Move> result = new HashSet<>();
-        for (int x = 0; x < BOARD_SIZE; x++) {
-            for (int y = 0; y < BOARD_SIZE; y++) {
+        for (int x = 0; x < gameType.getBoardSize(); x++) {
+            for (int y = 0; y < gameType.getBoardSize(); y++) {
                 if (board.getCell(x, y) == CellContent.Empty) {
                     result.add(new Move(state, x, y));
                 }
@@ -91,11 +89,7 @@ public class TicTacToeAi extends Ai {
 
     @Override
     public GameState getTurnAfterMove(BoardInterface currentBoard, Move lastMove) {
-        try {
-            return lastMove.getPlayer().otherTurn();
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
-        }
+        return lastMove.getPlayer().otherPlayer();
     }
 
     private static class CoordinatePair {

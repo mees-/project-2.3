@@ -23,11 +23,17 @@ public class FrameworkTest {
     @BeforeAll
     static void initializeFramework() throws IOException {
         Connection connection = new Connection();
-        Player player = new LocalConnectedPlayer(new RandomMovePlayer(), connection);
+        Player player = new LocalConnectedPlayer(new RandomMovePlayer(GameType.TicTacToe), connection);
         framework = new Framework(player, connection);
-        framework.login();
-        framework.runGameSync(GameType.TicTacToe);
-        framework.close();
+        connection.subscribe(GameType.TicTacToe);
+        try {
+            framework.waitForMatch();
+            framework.getMatch().waitForEnd();
+            framework.close();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Test

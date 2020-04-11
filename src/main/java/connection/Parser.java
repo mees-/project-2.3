@@ -1,10 +1,11 @@
 package connection;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
-@SuppressWarnings("SpellCheckingInspection")
 public class Parser {
     private Parser() {}
 
@@ -16,10 +17,10 @@ public class Parser {
             throw new ParseException("Map must begin with '{'.\n string: " + raw, 0);
         }
         StringBuilder token = new StringBuilder();
-        ParseState state = ParseState.Key;
+        MapParseState state = MapParseState.Key;
         String currentKey = "";
         for (int i = 1; i < chars.length; i++) {
-            if (state != ParseState.Value && chars[i] == ' ') {
+            if (state != MapParseState.Value && chars[i] == ' ') {
                 continue;
             }
             switch (state) {
@@ -27,7 +28,7 @@ public class Parser {
                     if (chars[i] == ':') {
                         currentKey = token.toString();
                         token = new StringBuilder();
-                        state = ParseState.BeforeValue;
+                        state = MapParseState.BeforeValue;
                     } else {
                         token.append(chars[i]);
                     }
@@ -37,7 +38,7 @@ public class Parser {
                     if (chars[i] != '"') {
                         throw new ParseException("Invalid token.\n string: " + raw, i);
                     }
-                    state = ParseState.Value;
+                    state = MapParseState.Value;
                     break;
                 }
                 case Value: {
@@ -45,7 +46,7 @@ public class Parser {
                         result.put(currentKey, token.toString());
                         currentKey = "";
                         token = new StringBuilder();
-                        state = ParseState.AfterValue;
+                        state = MapParseState.AfterValue;
                     } else {
                         token.append(chars[i]);
                     }
@@ -58,7 +59,7 @@ public class Parser {
                     if (chars[i] != ',') {
                         throw new ParseException("Invalid Token.\n string: " + raw, i);
                     }
-                    state = ParseState.Key;
+                    state = MapParseState.Key;
                     break;
                 }
             }
@@ -67,8 +68,58 @@ public class Parser {
         throw new ParseException("Reached end of string without complete parse.\n string: " + raw, chars.length);
     }
 
-    private enum ParseState {
+    private enum MapParseState {
         Key,
+        BeforeValue,
+        Value,
+        AfterValue,
+    }
+
+    public static ArrayList<String> parseList(String raw) throws ParseException {
+        ArrayList<String> result = new ArrayList<>();
+        char[] chars = raw.trim().toCharArray();
+        StringBuilder token = new StringBuilder();
+        ListParseState state = ListParseState.BeforeValue;
+        if (chars[0] != '[') {
+            throw new ParseException("List must begin with '['\nString: " + raw, 0);
+        }
+         for (int i = 1; i < chars.length; i++) {
+             char currentChar = chars[i];
+             if (currentChar == ' ') {
+                 continue;
+             }
+             switch (state) {
+                 case BeforeValue: {
+                     if (currentChar == '"') {
+                         state = ListParseState.Value;
+                     } else {
+                         throw new ParseException("Unexpected token\nString: " + raw, i);
+                     }
+                     break;
+                 }
+                 case Value: {
+                     if (currentChar == '"') {
+                         result.add(token.toString());
+                         token = new StringBuilder();
+                     } else {
+                         token.append(currentChar);
+                     }
+                     break;
+                 }
+                 case AfterValue: {
+                     if (currentChar == ',') {
+                         state = ListParseState.BeforeValue;
+                     } else if (currentChar == ']') {
+                         return result;
+                     }
+                     break;
+                 }
+             }
+         }
+         throw new ParseException("Reached end of string without complete parse\nString: " + raw, raw.length());
+    }
+
+    private enum ListParseState {
         BeforeValue,
         Value,
         AfterValue,

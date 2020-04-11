@@ -1,6 +1,6 @@
 package ui.settings;
 
-public enum GameType {
+public enum PlayType {
     LOCAL,
     ONLINE
 }

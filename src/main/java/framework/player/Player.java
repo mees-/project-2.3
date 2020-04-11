@@ -1,21 +1,20 @@
 package framework.player;
 
-import framework.BoardInterface;
-import framework.GameResult;
-import framework.GameState;
-import framework.Move;
+import framework.*;
 
 import java.util.Set;
 
 public abstract class Player {
     private String username;
     protected GameState turn;
+    protected GameType gameType;
 
-    public Player(String username) {
+    public Player(String username, GameType gameType) {
         if (username == null) {
             throw new RuntimeException("Username can't be null");
         }
         this.username = username;
+        this.gameType = gameType;
     }
 
     public abstract Move getNextMove(BoardInterface board, Set<Move> possibleMoves);
@@ -32,6 +31,10 @@ public abstract class Player {
 
     public void setTurn(GameState turn) {
         this.turn = turn;
+    }
+
+    public GameType getGameType() {
+        return gameType;
     }
 
     public static void logEnd(GameResult state) {

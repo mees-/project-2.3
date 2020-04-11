@@ -1,6 +1,8 @@
 package connection.commands;
 
-public class MoveCommand implements ICommand {
+import connection.commands.response.StandardResponse;
+
+public class MoveCommand extends Command<StandardResponse> {
     private final int cell;
 
 
@@ -19,11 +21,11 @@ public class MoveCommand implements ICommand {
 
     @Override
     public boolean isValidResponse(String[] response) {
-        return ICommand.isStandardResponse(response);
+        return StandardResponse.isStandardResponse(response);
     }
 
     @Override
-    public CommandResponse parseResponse(String[] response) {
-        return ICommand.isOk(response);
+    public StandardResponse parseResponse(String[] response) {
+        return StandardResponse.isOk(response);
     }
 }

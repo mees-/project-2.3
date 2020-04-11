@@ -1,17 +1,20 @@
 package connection.commands;
 
 import connection.commands.response.StandardResponse;
+import framework.GameType;
 
-public class LoginCommand extends Command<StandardResponse> {
-    private final String username;
+public class ChallengeCommand extends Command<StandardResponse> {
+    private String player;
+    private GameType game;
 
-    public LoginCommand(String username) {
-        this.username = username;
+    public ChallengeCommand(String player, GameType game) {
+        this.player = player;
+        this.game = game;
     }
 
     @Override
     public String getCommandString() {
-        return "LOGIN " + username;
+        return "challenge \"" + player + "\" \"" + game.toString() + "\"";
     }
 
     @Override

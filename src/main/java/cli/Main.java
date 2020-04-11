@@ -27,19 +27,18 @@ public class Main {
             e.printStackTrace();
         }
 
-        CliPlayer cliPlayer = new CliPlayer(username);
+        CliPlayer cliPlayer = new CliPlayer(username, GameType.Reversi);
         LocalConnectedPlayer player = new LocalConnectedPlayer(cliPlayer, connection);
         Framework framework = new Framework(player, connection);
-        framework.login();
-        framework.runGameSync(GameType.Reversi);
+        connection.subscribe(GameType.Reversi);
         framework.close();
     }
 
     private static class CliPlayer extends Player {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        public CliPlayer(String username) {
-            super(username);
+        public CliPlayer(String username, GameType gameType) {
+            super(username, gameType);
         }
 
         @Override

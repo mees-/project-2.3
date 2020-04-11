@@ -12,6 +12,7 @@ public class Match {
     private GameState gameState;
     private GameInterface game;
     private LinkedBlockingQueue<GameStateUpdate> gameStateUpdates= new LinkedBlockingQueue<>();
+    private Thread thread = new Thread(this::gameLoop);
 
     private final Players players = new Players();
 
@@ -19,7 +20,7 @@ public class Match {
         return gameState;
     }
 
-    public void setGameState(GameState gameState) {
+    private void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
@@ -36,13 +37,18 @@ public class Match {
         players.two.setTurn(GameState.TurnTwo);
     }
 
-    public void setupGame() {
+    public void setupGame(GameState startingPlayer) {
+        setGameState(startingPlayer);
         game.setup(gameState);
         try {
             gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void startAsync() {
+        thread.start();
     }
 
     public void gameLoop() {
@@ -61,6 +67,11 @@ public class Match {
             }
             Set<Move> possibleMoves = game.getBoard().getValidMoves(gameState);
             Move move = playerToMove.getNextMove(game.getBoard(), Collections.unmodifiableSet(possibleMoves));
+            if (move instanceof ForfeitMove) {
+                setGameState(playerToMove.getTurn().otherPlayer().toWin());
+                System.out.println(playerToMove.getUsername() + " forfeit");
+                continue;
+            }
             if (!possibleMoves.contains(move)) {
                 System.err.println("Returned move is not in set of valid moves");
                 switch (getGameState()) {
@@ -111,5 +122,9 @@ public class Match {
 
     public GameStateUpdate getGameUpdate() throws InterruptedException {
         return gameStateUpdates.take();
+    }
+
+    public void waitForEnd() throws InterruptedException {
+        this.thread.join();
     }
 }

@@ -4,14 +4,11 @@ import ai.ReversiAi;
 import ai.TicTacToeAi;
 import connection.Connection;
 import framework.Framework;
-import framework.GameState;
 import framework.GameType;
 import framework.player.*;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -22,6 +19,7 @@ import ui.controller.ReversiController;
 import ui.controller.TicTacToeController;
 import ui.settings.ChosenGame;
 import ui.settings.OnlineOption;
+import ui.settings.PlayType;
 import ui.settings.PlayerType;
 
 import java.io.IOException;
@@ -31,12 +29,13 @@ public class Main extends Application {
     private Pane paneHome, paneReversi, paneTicTacToe, paneFooter;
     private Pane root;
     private Framework framework;
+    private Connection connection;
 
-    private ui.settings.GameType gameTypeEnum = ui.settings.GameType.ONLINE;
+    private PlayType playTypeEnum = PlayType.ONLINE;
     private OnlineOption onlineOptionEnum = OnlineOption.SUBSCRIBE;
     private PlayerType playerOneTypeEnum = PlayerType.HUMAN;
     private PlayerType playerTwoTypeEnum = PlayerType.HUMAN;
-    private ChosenGame chosenGameEnum = ChosenGame.REVERSI;
+    private GameType chosenGameEnum = GameType.Reversi;
 
     private FXMLLoader loader;
 
@@ -54,13 +53,9 @@ public class Main extends Application {
     private void initUI(Stage stage) throws IOException {
         root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
         loader = new FXMLLoader(getClass().getResource("/view/home.fxml"));
-        loader.setController(new HomeController(this, gameTypeEnum, onlineOptionEnum, playerOneTypeEnum, playerTwoTypeEnum, chosenGameEnum));
+        loader.setController(new HomeController(this, playTypeEnum, onlineOptionEnum, playerOneTypeEnum, playerTwoTypeEnum, chosenGameEnum));
         paneHome = loader.load();
         root.getChildren().add(paneHome);
-//
-//        ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());
-//        Collections.swap(workingCollection, 0, 1);
-//        root.getChildren().setAll(workingCollection);
 
         paneFooter = FXMLLoader.load(getClass().getResource("/view/components/footer.fxml"));
         root.getChildren().add(paneFooter);
@@ -70,10 +65,10 @@ public class Main extends Application {
         stage.setMaximized(true);
     }
 
-    public void changePane(ChosenGame chosenGame, String playerOneName, PlayerType playerType) throws IOException {
+    public void changePane(GameType chosenGame, String playerOneName, PlayerType playerType) throws IOException {
         Player playerOne = null;
         switch (chosenGame) {
-            case REVERSI:
+            case Reversi:
                     if (playerType == PlayerType.HUMAN) {
                         playerOne = new LocalPlayer(playerOneName);
                     } else if (playerType == PlayerType.AI) {
@@ -90,7 +85,7 @@ public class Main extends Application {
                     reversiController.setup();
                     startReversi();
                 break;
-            case TICTACTOE:
+            case TicTacToe:
                 if (playerType == PlayerType.HUMAN) {
                     playerOne = new LocalPlayer(playerOneName);
                 } else if (playerType == PlayerType.AI) {
@@ -116,15 +111,14 @@ public class Main extends Application {
 //        root.getChildren().setAll(workingCollection);
     }
 
-    public void changePane(ChosenGame chosenGame, String playerOneName, String playerTwoName) throws IOException {
+    public void changePane(GameType chosenGame, String playerOneName, String playerTwoName) throws IOException {
         LocalPlayer playerOne = new LocalPlayer(playerOneName);
         LocalPlayer playerTwo = new LocalPlayer(playerTwoName);
         Player playerTwoLocal = startFramework(playerOne, playerTwo);
         root.getChildren().remove(paneFooter);
         switch (chosenGame) {
-            case REVERSI:
+            case Reversi:
                 root.getChildren().remove(paneHome);
-                root.getChildren().add(FXMLLoader.load(getClass().getResource("/view/components/header.fxml")));
                 ReversiController reversiController = new ReversiController(this, framework, playerOne, playerTwo);
                 loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
                 loader.setController(reversiController);
@@ -133,7 +127,7 @@ public class Main extends Application {
                 reversiController.setup();
                 startReversiLocal(playerTwoLocal);
                 break;
-            case TICTACTOE:
+            case TicTacToe:
                 root.getChildren().remove(paneHome);
                 TicTacToeController ticTacToeController = new TicTacToeController(this, framework, playerOne, playerTwo);
                 loader =  new FXMLLoader(getClass().getResource("/view/ticTacToe.fxml"));
@@ -149,39 +143,27 @@ public class Main extends Application {
         root.getChildren().add(paneFooter);
     }
 
-    public Player startFramework(LocalPlayer playerOne, LocalPlayer playerTwo) {
-        Player playerOneLocal = new LocalNotConnectedPlayer(playerOne);
-        Player playerTwoLocal = new LocalNotConnectedPlayer(playerTwo);
-        framework = new Framework(playerOneLocal, playerTwoLocal);
-        return playerTwoLocal;
-    }
-
     public void startFramework(Player player) throws IOException {
-        Connection connection = new Connection();
+        connection = new Connection();
         Player connectedPlayer = new LocalConnectedPlayer(player, connection);
         framework = new Framework(connectedPlayer, connection);
-        framework.login();
     }
 
     private void startReversi() {
-        new Thread ( () -> {
-            framework.runGameSync(GameType.Reversi);
-        }).start();
+        connection.subscribe(GameType.Reversi);
     }
 
     private void startTicTacToe() {
-        new Thread ( () -> {
-            framework.runGameSync(GameType.TicTacToe);
-        }).start();
+        connection.subscribe(GameType.TicTacToe);
     }
 
-    private void startReversiLocal(Player playerTwo) {
-        framework.notifyGameOffer(GameType.Reversi, playerTwo, GameState.TurnOne);
-    }
-
-    private void startTicTacToeLocal(Player playerTwo) {
-        framework.notifyGameOffer(GameType.TicTacToe, playerTwo, GameState.TurnOne);
-    }
+//    private void startReversiLocal(Player playerTwo) {
+//        framework.notifyGameOffer(GameType.Reversi, playerTwo, GameState.TurnOne);
+//    }
+//
+//    private void startTicTacToeLocal(Player playerTwo) {
+//        framework.notifyGameOffer(GameType.TicTacToe, playerTwo, GameState.TurnOne);
+//    }
 
     public void stopFramework() throws IOException {
         framework.close();

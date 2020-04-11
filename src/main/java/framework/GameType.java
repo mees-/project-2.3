@@ -1,24 +1,32 @@
 package framework;
 
 public enum GameType {
-    Reversi("Reversi"),
-    TicTacToe("Tic-tac-toe");
+    Reversi("Reversi", 8),
+    TicTacToe("Tic-tac-toe", 3);
 
     private final String token;
-    GameType(String token) {
+    private final int boardSize;
+
+    GameType(String token, int boardSize) {
         this.token = token;
+        this.boardSize = boardSize;
     }
 
-    public String getToken() {
+    @Override
+    public String toString() {
         return token;
     }
 
     public static GameType fromString(String str) {
         for (GameType type : GameType.values()) {
-            if (type.getToken().equals(str)) {
+            if (type.toString().equals(str)) {
                 return type;
             }
         }
         return null;
+    }
+
+    public int getBoardSize() {
+        return boardSize;
     }
 }

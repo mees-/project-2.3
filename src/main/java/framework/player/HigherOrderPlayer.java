@@ -1,9 +1,6 @@
 package framework.player;
 
-import framework.BoardInterface;
-import framework.GameResult;
-import framework.GameState;
-import framework.Move;
+import framework.*;
 
 import java.util.Set;
 
@@ -11,8 +8,7 @@ public class HigherOrderPlayer extends Player {
     private final Player original;
 
     protected HigherOrderPlayer(Player original) {
-        super(original.getUsername());
-//        this.username = original.username;
+        super(original.getUsername(),original.getGameType());
         this.original = original;
     }
 
@@ -27,6 +23,11 @@ public class HigherOrderPlayer extends Player {
     }
 
     @Override
+    public String getUsername() {
+        return original.getUsername();
+    }
+
+    @Override
     public GameState getTurn() {
         return original.getTurn();
     }
@@ -34,5 +35,10 @@ public class HigherOrderPlayer extends Player {
     @Override
     public void setTurn(GameState turn) {
         original.setTurn(turn);
+    }
+
+    @Override
+    public GameType getGameType() {
+        return super.getGameType();
     }
 }

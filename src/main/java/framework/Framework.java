@@ -1,6 +1,9 @@
 package framework;
 
 import connection.Connection;
+import connection.commands.LogoutCommand;
+import connection.eventHandlers.EventPayload;
+import connection.eventHandlers.MatchOfferHandler;
 import framework.player.Player;
 import reversi.ReversiGame;
 import tictactoe.Game;
@@ -9,68 +12,66 @@ import java.io.IOException;
 
 public class Framework {
     private Match match;
-    private final Player localPlayerOne, localPlayerTwo;
+    private final Player localPlayer;
     private final Connection connection;
+    private final Thread eventLoopThread = new Thread(this::eventLoop);
+    private final Object matchMonitor = new Object();
 
     public Framework(Player localPlayer, Connection connection) {
-        this.localPlayerOne = localPlayer;
-        this.localPlayerTwo= null;
+        this.localPlayer = localPlayer;
         this.connection = connection;
-        this.connection.setFramework(this);
-    }
-
-    public Framework(Player localPlayerOne, Player localPlayerTwo) {
-        this.localPlayerOne = localPlayerOne;
-        this.localPlayerTwo = localPlayerTwo;
-        this.connection = null;
+        eventLoopThread.start();
     }
 
     public int getBoardSize() {
         return match.getGame().getBoard().getSize();
     }
 
-    public synchronized void runGameSync(GameType gameType) {
-        connection.subscribe(gameType);
-        try {
-            wait();
-
-            match.gameLoop();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private void eventLoop() {
+        while (true) {
+            try {
+                handleEvent(connection.getEvent());
+            } catch (InterruptedException e) {
+                System.out.println("Stopped eventloop");
+            }
         }
     }
 
-    public void login() {
-        connection.login(localPlayerOne.getUsername());
-    }
-  
-    public synchronized void notifyGameOffer(GameType gameType, Player remotePlayer, GameState startingPlayer) {
-        GameInterface game = null;
-      
-        switch (gameType) {
-            case TicTacToe:
-                game = new Game();
+    private synchronized void handleEvent(EventPayload payload) {
+        switch (payload.getType()) {
+            case MatchOffer: {
+                GameInterface game = null;
+                MatchOfferHandler.MatchOffer matchOffer = (MatchOfferHandler.MatchOffer)payload;
+                switch (matchOffer.getGameType()) {
+                    case TicTacToe:
+                        game = new Game();
+                        break;
+                    case Reversi:
+                        game = new ReversiGame();
+                        break;
+                }
+                match = new Match(game, localPlayer, matchOffer.getRemotePlayer());
+                synchronized (match) {
+                    synchronized (matchMonitor) {
+                        this.matchMonitor.notifyAll();
+                    }
+                    match.setupGame(matchOffer.getStartingState());
+                    match.startAsync();
+                }
                 break;
-            case Reversi:
-                game = new ReversiGame();
-
-                break;
+            }
         }
-        match = new Match(game, localPlayerOne, remotePlayer);
-        match.setGameState(startingPlayer);
-        match.setupGame();
-        notify();
+    }
+
+    public void waitForMatch() throws InterruptedException {
+        synchronized (matchMonitor) {
+            matchMonitor.wait();
+        }
     }
     public void close() throws IOException {
+        connection.executeCommand(new LogoutCommand());
         connection.close();
-    }
-
-    public Player getLocalPlayerOne() {
-        return localPlayerOne;
-    }
-
-    public Player getLocalPlayerTwo() {
-        return localPlayerTwo;
+        eventLoopThread.interrupt();
     }
 
     public void clearMatch() {

@@ -1,15 +1,9 @@
 package ui.controller;
 
-import connection.Connection;
-import framework.Framework;
-import framework.player.LocalConnectedPlayer;
-import framework.player.Player;
-import framework.player.RandomMovePlayer;
-import javafx.application.Platform;
+import framework.GameType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ui.Main;
 import ui.settings.*;
@@ -67,16 +61,16 @@ public class HomeController {
     @FXML
     private TextField txtPlayerTwoName;
 
-    private GameType gameTypeEnum;
+    private PlayType playTypeEnum;
     private OnlineOption onlineOptionEnum;
     private PlayerType playerOneTypeEnum;
     private PlayerType playerTwoTypeEnum;
-    private ChosenGame chosenGameEnum;
+    private GameType chosenGameEnum;
     private Main main;
 
-    public HomeController(Main main, GameType gameTypeEnum, OnlineOption onlineOptionEnum, PlayerType playerOneTypeEnum, PlayerType playerTwoTypeEnum, ChosenGame chosenGameEnum) {
+    public HomeController(Main main, PlayType gameTypeEnum, OnlineOption onlineOptionEnum, PlayerType playerOneTypeEnum, PlayerType playerTwoTypeEnum, GameType chosenGameEnum) {
         this.main = main;
-        this.gameTypeEnum = gameTypeEnum;
+        this.playTypeEnum = gameTypeEnum;
         this.onlineOptionEnum = onlineOptionEnum;
         this.playerOneTypeEnum = playerOneTypeEnum;
         this.playerTwoTypeEnum = playerTwoTypeEnum;
@@ -106,11 +100,11 @@ public class HomeController {
         if (btnSource.getId().equals("btnOnline")) {
             btnOne = btnOnline;
             btnTwo = btnLocal;
-            gameTypeEnum = GameType.ONLINE;
+            playTypeEnum = PlayType.ONLINE;
             vbPlayerTwo.setVisible(false);
             vbOnlineOption.setVisible(true);
         } else {
-            gameTypeEnum = GameType.LOCAL;
+            playTypeEnum = PlayType.LOCAL;
             vbPlayerTwo.setVisible(true);
             vbOnlineOption.setVisible(false);
         }
@@ -149,12 +143,12 @@ public class HomeController {
     private void chosenGameEvent(MouseEvent event) {
         VBox vbSource = (VBox) event.getSource();
         VBox vbOne = vbReversi, vbTwo = vbTicTacToe;
-        chosenGameEnum = ChosenGame.REVERSI;
+        chosenGameEnum = GameType.Reversi;
 
         if (vbSource.equals(vbTicTacToe)) {
             vbOne = vbTicTacToe;
             vbTwo = vbReversi;
-            chosenGameEnum = ChosenGame.TICTACTOE;
+            chosenGameEnum = GameType.TicTacToe;
         }
 
         gameChange(vbOne, vbTwo);
@@ -169,8 +163,8 @@ public class HomeController {
 
     @FXML
     private void playButtonEvent(ActionEvent event) throws IOException {
-        if (chosenGameEnum != null && gameTypeEnum != null ) {
-            if (gameTypeEnum == GameType.LOCAL) {
+        if (chosenGameEnum != null && playTypeEnum != null ) {
+            if (playTypeEnum == PlayType.LOCAL) {
                 if (playerOneTypeEnum != null && playerTwoTypeEnum != null) {
                     main.changePane(chosenGameEnum, txtPlayerOneName.getText(), txtPlayerTwoName.getText());
                 }

@@ -2,7 +2,9 @@ package connection.eventHandlers;
 
 import connection.Connection;
 
-public abstract class EventHandler {
+import java.text.ParseException;
+
+public abstract class EventHandler<T extends EventPayload> {
     protected final Connection connection;
 
     public EventHandler(Connection connection) {
@@ -11,7 +13,7 @@ public abstract class EventHandler {
 
     public abstract boolean isValidMessage(String[] message);
 
-    public abstract void handle(String[] message);
+    public abstract T handle(String[] message) throws ParseException;
 
     public static boolean validateWords(String[] wanted, String[] input) {
         if (wanted.length > input.length) {

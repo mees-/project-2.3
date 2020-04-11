@@ -10,13 +10,13 @@ import java.util.Random;
 
 public class Main {
     static Framework framework;
-    public static void main(String[] argv) throws IOException {
+    public static void main(String[] argv) throws IOException, InterruptedException {
         System.out.println("Hello, world!");
         Connection connection = new Connection();
         Player player = new LocalConnectedPlayer(new TicTacToeAi("mees" + (new Random()).nextInt(100)), connection);
         framework = new Framework(player, connection);
-        framework.login();
-        framework.runGameSync(GameType.TicTacToe);
-        framework.close();
+        connection.subscribe(GameType.TicTacToe);
+        framework.waitForMatch();
+        framework.getMatch().waitForEnd();
     }
 }

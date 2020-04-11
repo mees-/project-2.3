@@ -8,12 +8,12 @@ public class RandomMovePlayer extends Player {
     private static final Random usernameRand = new Random();
     private final Random rand = new Random();
 
-    public RandomMovePlayer(String username) {
-        super(username);
+    public RandomMovePlayer(String username, GameType gameType) {
+        super(username, gameType);
     }
 
-    public RandomMovePlayer() {
-        this("randomUsername " + usernameRand.nextInt(200));
+    public RandomMovePlayer(GameType gameType) {
+        this("randomUsername " + usernameRand.nextInt(200), gameType);
     }
 
     @Override

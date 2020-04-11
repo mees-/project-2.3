@@ -43,15 +43,34 @@ public enum GameState {
         }
     }
 
-    public GameState otherTurn() throws InvalidOperationException {
+    public GameState otherPlayer() {
         switch (this) {
             case TurnOne:
                 return TurnTwo;
             case TurnTwo:
                 return TurnOne;
-            default:
-                throw new InvalidOperationException("It's not a players turn");
+            case OneWin:
+                return TwoWin;
+            case TwoWin:
+                return OneWin;
+            case Draw:
+                return Draw;
         }
+        return this;
+    }
+
+    public GameState toWin() {
+        switch (this) {
+            case OneWin:
+            case TwoWin:
+            case Draw:
+                return this;
+            case TurnOne:
+                return OneWin;
+            case TurnTwo:
+                return TwoWin;
+        }
+        return this;
     }
 
     public class InvalidOperationException extends Exception {

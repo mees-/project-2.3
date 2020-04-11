@@ -2,18 +2,18 @@ package framework.player;
 
 import framework.BoardInterface;
 import framework.GameResult;
+import framework.GameType;
 import framework.Move;
 
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 public class BlockingPlayer extends Player {
 
-    final BlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
+    final ArrayBlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
 
-    public BlockingPlayer(String username) {
-        super(username);
+    public BlockingPlayer(String username, GameType gameType) {
+        super(username, gameType);
     }
 
     public synchronized void putMove(Move move){

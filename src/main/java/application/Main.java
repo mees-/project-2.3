@@ -13,10 +13,14 @@ public class Main {
     public static void main(String[] argv) throws IOException, InterruptedException {
         System.out.println("Hello, world!");
         Connection connection = new Connection();
-        Player player = new LocalConnectedPlayer(new TicTacToeAi("mees" + (new Random()).nextInt(100)), connection);
+        LocalConnectedPlayer player = new LocalConnectedPlayer(new TicTacToeAi("mees" + (new Random()).nextInt(100)), connection);
         framework = new Framework(player, connection);
         connection.subscribe(GameType.TicTacToe);
-        framework.waitForMatch();
-        framework.getMatch().waitForEnd();
+        Match test = framework.getFutureMatch().get();
+        test.waitForEnd();
+        player.logout().waitForResolve();
+        synchronized (System.out) {
+            framework.close();
+        }
     }
 }

@@ -16,6 +16,10 @@ public class LogoutCommand extends Command<StandardResponse> {
 
     @Override
     public StandardResponse parseResponse(String[] response) {
-        return null;
+        if (response == null) {
+            return new StandardResponse(true);
+        } else {
+            throw new RuntimeException("Shouldn't be here");
+        }
     }
 }

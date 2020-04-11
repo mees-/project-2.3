@@ -105,6 +105,12 @@ public class Connection {
         while (true) {
             try {
                 String message = in.readLine();
+                if (message == null) {
+                    if (commandsWaitingForResponse.peek() instanceof LogoutCommand) {
+                        commandsWaitingForResponse.poll().parseAndHandleResponse(null);
+                        break;
+                    }
+                }
                 String[] words = message.split("\\s+");
                 Command command = commandsWaitingForResponse.peek();
                 if (command != null && command.isValidResponse(words)) {

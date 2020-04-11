@@ -1,6 +1,7 @@
 package framework;
 
 import connection.Connection;
+import connection.GenericFuture;
 import connection.commands.LogoutCommand;
 import connection.eventHandlers.EventPayload;
 import connection.eventHandlers.MatchOfferHandler;
@@ -15,7 +16,7 @@ public class Framework {
     private final Player localPlayer;
     private final Connection connection;
     private final Thread eventLoopThread = new Thread(this::eventLoop);
-    private final Object matchMonitor = new Object();
+    private GenericFuture<Match> matchFuture = new GenericFuture<>();
 
     public Framework(Player localPlayer, Connection connection) {
         this.localPlayer = localPlayer;
@@ -32,7 +33,7 @@ public class Framework {
             try {
                 handleEvent(connection.getEvent());
             } catch (InterruptedException e) {
-                System.out.println("Stopped eventloop");
+                break;
             }
         }
     }
@@ -52,33 +53,26 @@ public class Framework {
                 }
                 match = new Match(game, localPlayer, matchOffer.getRemotePlayer());
                 synchronized (match) {
-                    synchronized (matchMonitor) {
-                        this.matchMonitor.notifyAll();
-                    }
                     match.setupGame(matchOffer.getStartingState());
                     match.startAsync();
+                    matchFuture.resolve(match);
                 }
                 break;
             }
         }
     }
 
-    public void waitForMatch() throws InterruptedException {
-        synchronized (matchMonitor) {
-            matchMonitor.wait();
-        }
-    }
     public void close() throws IOException {
         connection.executeCommand(new LogoutCommand());
         connection.close();
         eventLoopThread.interrupt();
     }
 
-    public void clearMatch() {
-        match = null;
-    }
-
     public Match getMatch() {
         return match;
+    }
+
+    public synchronized GenericFuture<Match> getFutureMatch() {
+        return matchFuture;
     }
 }

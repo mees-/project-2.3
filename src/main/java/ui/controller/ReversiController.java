@@ -177,7 +177,7 @@ public class ReversiController {
     }
 
     private void resetMatch() {
-        framework.clearMatch();
+//        framework.clearMatch();
         match = null;
     }
 

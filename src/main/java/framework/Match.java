@@ -2,13 +2,16 @@ package framework;
 
 import framework.player.Player;
 import framework.player.Players;
+import ui.update.GameStateUpdate;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Match {
     private GameState gameState;
     private GameInterface game;
+    private LinkedBlockingQueue<GameStateUpdate> gameStateUpdates= new LinkedBlockingQueue<>();
 
     private final Players players = new Players();
 
@@ -35,9 +38,15 @@ public class Match {
 
     public void setupGame() {
         game.setup(gameState);
+        try {
+            gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void gameLoop() {
+
         while (!getGameState().isEnd()) {
             Player playerToMove;
             switch (getGameState()) {
@@ -67,12 +76,12 @@ public class Match {
             try {
                 GameState newState = game.doMove(move);
                 setGameState(newState);
-                synchronized (this) {
-                    notify();
-                }
+                gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
             } catch (InvalidMoveException e) {
                 throw new RuntimeException(e);
             } catch (InvalidTurnException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -98,5 +107,9 @@ public class Match {
 
     public Players getPlayers() {
         return players;
+    }
+
+    public GameStateUpdate getGameUpdate() throws InterruptedException {
+        return gameStateUpdates.take();
     }
 }

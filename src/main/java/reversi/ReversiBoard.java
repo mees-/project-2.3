@@ -32,8 +32,8 @@ public class ReversiBoard extends BoardInterface {
     }
 
     private void init(){
-        board = new CellContent[BOARD_SIZE][BOARD_SIZE];
         valueBoard = new int[BOARD_SIZE][BOARD_SIZE];
+        board = new CellContent[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 setCell(i, j, CellContent.Empty);
@@ -127,11 +127,13 @@ public class ReversiBoard extends BoardInterface {
         else if(pieces[0] == pieces[1] && !canMakeTurn(move.getPlayer())
                 && !canMakeTurn(getOpposite(state))) {
             return GameState.Draw;
+        } else if (!canMakeTurn(getOpposite(state))) {
+            return state;
         }
-        else if(move.getPlayer() == GameState.TurnOne) {
+        else if(state == GameState.TurnOne) {
             return GameState.TurnTwo;
         }
-        else if(move.getPlayer() == GameState.TurnTwo) {
+        else if(state == GameState.TurnTwo) {
             return GameState.TurnOne;
         }
         return null;
@@ -314,6 +316,7 @@ public class ReversiBoard extends BoardInterface {
                 // Player one
                 if (playerColour == BLACK_DISC) {
                     if (a == CellContent.Local) {
+                        int blackCount = 0;
                         System.out.print(ANSI_BLACK + playerColour + ANSI_RED + " | ");
                     } else if (a == CellContent.Remote) {
                         System.out.print(ANSI_WHITE + opponentColour + ANSI_RED + " | ");
@@ -339,6 +342,7 @@ public class ReversiBoard extends BoardInterface {
             System.out.println(ANSI_WHITE+"---"+ANSI_RED+"--------------------------------");
         }
         System.out.println(ANSI_WHITE+"");
+        System.out.println("Player one pieces: "+countPieces()[0]+" | Player two pieces: "+countPieces()[1]);
     }
 
     @Override

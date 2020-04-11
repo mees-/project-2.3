@@ -1,7 +1,9 @@
 package framework.player;
 
 import connection.Connection;
+import connection.GenericFuture;
 import connection.commands.LoginCommand;
+import connection.commands.LogoutCommand;
 import framework.BoardInterface;
 import framework.ForfeitMove;
 import framework.Move;
@@ -31,5 +33,9 @@ public class LocalConnectedPlayer extends HigherOrderPlayer {
             connection.sendMove(nextMove, gameType.getBoardSize());
         }
         return nextMove;
+    }
+
+    public GenericFuture logout() {
+        return connection.executeCommand(new LogoutCommand());
     }
 }

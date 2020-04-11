@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Main" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
+  <configuration default="false" name="Application" type="Application" factoryName="Application" singleton="false">
     <envs>
       <env name="GAME_HOST" value="localhost" />
       <env name="GAME_PORT" value="7789" />

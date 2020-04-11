@@ -21,8 +21,6 @@ public class ReversiGame implements GameInterface {
 
     private GameState lastTurn;
 
-
-
     public ReversiGame() {
         init();
     }
@@ -30,8 +28,6 @@ public class ReversiGame implements GameInterface {
     private void init() {
         board = new ReversiBoard();
     }
-
-
 
     @Override
     public BoardInterface getBoard() {
@@ -50,7 +46,6 @@ public class ReversiGame implements GameInterface {
             throw new RuntimeException(e);
         }
         validMoves = getBoard().getValidMoves(move.getPlayer());
-//        System.out.println(validMoves.toString());
         if (validMoves.contains(move)) {
             board.setCell(move.getX(), move.getY(), player);
             flipDiscs(move, player);
@@ -61,7 +56,6 @@ public class ReversiGame implements GameInterface {
         if (board.canMakeTurn(board.getOpposite(move.getPlayer()))) {
             setLastTurn(move.getPlayer());
         }
-//        printBoard();
         return board.getResult(move);
     }
 

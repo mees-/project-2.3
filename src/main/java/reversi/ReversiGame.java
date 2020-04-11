@@ -21,6 +21,8 @@ public class ReversiGame implements GameInterface {
 
     private GameState lastTurn;
 
+
+
     public ReversiGame() {
         init();
     }
@@ -28,6 +30,8 @@ public class ReversiGame implements GameInterface {
     private void init() {
         board = new ReversiBoard();
     }
+
+
 
     @Override
     public BoardInterface getBoard() {

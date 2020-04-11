@@ -41,4 +41,11 @@ public class HigherOrderPlayer extends Player {
     public GameType getGameType() {
         return super.getGameType();
     }
+
+    public Player getOriginal() {
+        if (original instanceof HigherOrderPlayer) {
+            return ((HigherOrderPlayer) original).getOriginal();
+        }
+        return original;
+    }
 }

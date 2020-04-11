@@ -72,7 +72,7 @@ public class Framework {
         return match;
     }
 
-    public synchronized GenericFuture<Match> getFutureMatch() {
+    public synchronized GenericFuture<Match> getMatchFuture() {
         return matchFuture;
     }
 }

@@ -176,6 +176,11 @@
     -fx-min-width: 90px;
 }
 
+
+.tile-tictactoe-disabled {
+    -fx-background-color: gray;
+}
+
 .tile-reversi-disabled {
     -fx-background-color: gray;
 }

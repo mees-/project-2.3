@@ -166,7 +166,7 @@ public class HomeController {
         if (chosenGameEnum != null && playTypeEnum != null ) {
             if (playTypeEnum == PlayType.LOCAL) {
                 if (playerOneTypeEnum != null && playerTwoTypeEnum != null) {
-                    main.changePane(chosenGameEnum, txtPlayerOneName.getText(), txtPlayerTwoName.getText());
+                    main.changePane(chosenGameEnum, txtPlayerOneName.getText(), txtPlayerTwoName.getText(), playerOneTypeEnum, playerTwoTypeEnum);
                 }
             } else if (onlineOptionEnum != null) {
                 Button playButton = (Button) event.getSource();

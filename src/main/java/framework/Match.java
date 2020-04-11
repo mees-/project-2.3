@@ -51,7 +51,12 @@ public class Match {
         thread.start();
     }
 
-    public void gameLoop() {
+    private void gameLoop() {
+        try {
+            gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         while (!getGameState().isEnd()) {
             Player playerToMove;

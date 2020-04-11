@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.collections.FXCollections?>
 
-<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" prefHeight="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" prefHeight="40.0" prefWidth="1314.0" styleClass="bg-primary">
          <children>
@@ -28,7 +28,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </HBox>
-      <Region prefHeight="63.0" prefWidth="1225.0" />
+      <Region VBox.vgrow="ALWAYS" />
       <HBox alignment="CENTER">
          <children>
             <VBox fx:id="vbTicTacToe" alignment="CENTER" onMouseClicked="#chosenGameEvent" styleClass="panel-game">
@@ -83,8 +83,8 @@
             </VBox>
          </children>
       </HBox>
-      <Region prefHeight="20.0" prefWidth="1225.0" VBox.vgrow="ALWAYS" />
-      <Separator prefWidth="200.0" />
+      <Region VBox.vgrow="ALWAYS" />
+      <Separator />
       <HBox>
          <children>
             <Region prefHeight="200.0" prefWidth="200.0" />
@@ -96,7 +96,7 @@
                         <String fx:value="b" />
                      </styleClass>
                      <VBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="20.0" />
                      </VBox.margin>
                   </Text>
                   <Button fx:id="btnLocal" mnemonicParsing="false" onAction="#typeButtonEvent" text="Local">
@@ -144,7 +144,7 @@
                         <String fx:value="b" />
                      </styleClass>
                      <VBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="20.0" />
                      </VBox.margin>
                   </Text>
                   <VBox prefHeight="200.0" prefWidth="100.0">
@@ -221,7 +221,7 @@
                         </HBox>
                      </children>
                      <VBox.margin>
-                        <Insets top="30.0" />
+                        <Insets />
                      </VBox.margin>
                      <padding>
                         <Insets bottom="20.0" />
@@ -238,7 +238,7 @@
                         <String fx:value="b" />
                      </styleClass>
                      <VBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="20.0" />
                      </VBox.margin>
                   </Text>
                   <Button fx:id="btnSubscribe" mnemonicParsing="false" onAction="#optionButtonEvent" text="Subscribe">
@@ -272,16 +272,34 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
+                  <Button fx:id="btnChallenge1" mnemonicParsing="false" onAction="#optionButtonEvent" text="Tournament">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <padding>
+                        <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-game" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
             <Region prefHeight="200.0" prefWidth="200.0" />
          </children>
+         <padding>
+            <Insets bottom="20.0" top="20.0" />
+         </padding>
       </HBox>
-      <Separator prefWidth="200.0" />
-      <Region prefHeight="72.0" prefWidth="1641.0" />
+      <Separator />
+      <Region />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" text="Play" onAction="#playButtonEvent">
+            <Button mnemonicParsing="false" onAction="#playButtonEvent" text="Play">
                <padding>
                   <Insets bottom="6.0" left="10.0" right="10.0" top="6.0" />
                </padding>
@@ -295,7 +313,7 @@
             </Button>
          </children>
       </HBox>
-      <Region prefHeight="77.0" prefWidth="1641.0" />
+      <Region />
    </children>
    <stylesheets>
       <URL value="@../css/bootstrapfx.css" />

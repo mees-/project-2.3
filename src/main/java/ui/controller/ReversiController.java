@@ -1,5 +1,6 @@
 package ui.controller;
 
+import ai.Ai;
 import framework.*;
 import framework.player.*;
 import javafx.application.Platform;
@@ -27,8 +28,8 @@ import static javafx.scene.paint.Color.BLACK;
 public class ReversiController {
     private Framework framework;
     private Main main;
-    private LocalPlayer localPlayerOne, localPlayerTwo;
-    private LocalPlayer currentPlayer;
+    private Player localPlayerOne, localPlayerTwo;
+    private Player currentPlayer;
     private Match match;
 
     @FXML
@@ -66,7 +67,7 @@ public class ReversiController {
 
     private Thread a;
 
-    public ReversiController(Main main, Framework framework, LocalPlayer localPlayerOne) {
+    public ReversiController(Main main, Framework framework, Player localPlayerOne) {
         this.framework = framework;
         this.main = main;
         this.localPlayerOne = localPlayerOne;
@@ -142,7 +143,9 @@ public class ReversiController {
                 if (localPlayerTwo == null) {
                     node.getStyleClass().add("tile-reversi-disabled");
                 }
-                node.setOnMouseClicked((this::mouseClick));
+                if (!(localPlayerOne instanceof Ai)) {
+                    node.setOnMouseClicked((this::mouseClick));
+                }
             }
         }
     }
@@ -241,11 +244,12 @@ public class ReversiController {
                         }
                     });
                 }
-
-                if (turn == GameState.TurnOne || (localPlayerTwo != null)) {
-                    for (Move move : board.getValidMoves(turn)) {
-                        if ((GridPane.getColumnIndex(node) - 1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
-                            Platform.runLater(() -> node.getStyleClass().add("tile-reversi-available"));
+                if (!(localPlayerOne instanceof Ai)) {
+                    if (turn == GameState.TurnOne || (localPlayerTwo != null)) {
+                        for (Move move : board.getValidMoves(turn)) {
+                            if ((GridPane.getColumnIndex(node) - 1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
+                                Platform.runLater(() -> node.getStyleClass().add("tile-reversi-available"));
+                            }
                         }
                     }
                 }
@@ -280,7 +284,7 @@ public class ReversiController {
 
         if (field.getStyleClass().contains("tile-reversi-available")) {
             Move move = new Move(currentPlayer.getTurn(), (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
-            currentPlayer.putMove(move);
+            ((LocalPlayer) currentPlayer).putMove(move);
             test = true;
         }
     }

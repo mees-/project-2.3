@@ -177,7 +177,7 @@ public class HomeController {
             } else if (onlineOptionEnum != null) {
                 Button playButton = (Button) event.getSource();
 
-                main.changePane(chosenGameEnum, txtPlayerOneName.getText());
+                main.changePane(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
             }
         }
     }

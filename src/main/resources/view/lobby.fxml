@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" styleClass="bg-primary">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Lobby - [gamenaam]" HBox.hgrow="ALWAYS">
+               <styleClass>
+                  <String fx:value="title-lg" />
+                  <String fx:value="b" />
+               </styleClass>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </HBox>
+      <Region VBox.vgrow="ALWAYS" />
+      <HBox minHeight="50.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Region HBox.hgrow="ALWAYS" />
+            <VBox alignment="TOP_CENTER" minHeight="700.0" prefHeight="1000.0" prefWidth="442.0">
+               <children>
+                  <HBox alignment="CENTER" minWidth="300.0" styleClass="bg-primary">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Players">
+                           <styleClass>
+                              <String fx:value="h2" />
+                              <String fx:value="text-white" />
+                              <String fx:value="b" />
+                           </styleClass>
+                        </Text>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <VBox prefHeight="1000.0" prefWidth="100.0" styleClass="bg-light">
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                     <children>
+                        <HBox alignment="TOP_CENTER">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                                       <styleClass>
+                                          <String fx:value="h3" />
+                                          <String fx:value="text-dark" />
+                                          <String fx:value="b" />
+                                       </styleClass>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" text="Challenge ">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="btn-challenge" />
+                                       </styleClass>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <ListView minHeight="500.0" prefHeight="900.0" prefWidth="200.0" styleClass="bg-llight" />
+                     </children>
+                  </VBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+               </HBox.margin>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <VBox prefHeight="100.0" prefWidth="280.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />
+               </HBox.margin>
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox alignment="CENTER" minWidth="300.0" styleClass="bg-primary" VBox.vgrow="ALWAYS">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Challenged players">
+                                 <styleClass>
+                                    <String fx:value="h2" />
+                                    <String fx:value="text-white" />
+                                    <String fx:value="b" />
+                                 </styleClass>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <VBox prefWidth="100.0" styleClass="bg-light" VBox.vgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="TOP_CENTER">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                                             <styleClass>
+                                                <String fx:value="h3" />
+                                                <String fx:value="text-dark" />
+                                                <String fx:value="b" />
+                                             </styleClass>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT">
+                                       <children>
+                                          <Button mnemonicParsing="false" text="Cancel">
+                                             <styleClass>
+                                                <String fx:value="btn" />
+                                                <String fx:value="btn-danger" />
+                                             </styleClass>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <ListView minHeight="196.0" prefHeight="700.0" prefWidth="200.0" styleClass="bg-llight" />
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <Region maxHeight="60.0" minHeight="20.0" VBox.vgrow="ALWAYS" />
+                  <VBox prefHeight="100.0" prefWidth="442.0">
+                     <children>
+                        <HBox alignment="CENTER" minWidth="400.0" styleClass="bg-primary" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Received challenges">
+                                 <styleClass>
+                                    <String fx:value="h2" />
+                                    <String fx:value="text-white" />
+                                    <String fx:value="b" />
+                                 </styleClass>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <VBox prefWidth="100.0" styleClass="bg-light" VBox.vgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="TOP_CENTER">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                                             <styleClass>
+                                                <String fx:value="h3" />
+                                                <String fx:value="text-dark" />
+                                                <String fx:value="b" />
+                                             </styleClass>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT">
+                                       <children>
+                                          <Button mnemonicParsing="false" text="Accept">
+                                             <styleClass>
+                                                <String fx:value="btn" />
+                                                <String fx:value="btn-success" />
+                                             </styleClass>
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Button mnemonicParsing="false" text="Decline">
+                                             <styleClass>
+                                                <String fx:value="btn" />
+                                                <String fx:value="btn-danger" />
+                                             </styleClass>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <ListView minHeight="196.0" prefHeight="700.0" prefWidth="200.0" styleClass="bg-llight" />
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <Region minWidth="40.0" />
+      <HBox alignment="CENTER" minHeight="60.0" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" text="Leave">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="6.0" left="10.0" right="10.0" top="6.0" />
+               </padding>
+               <styleClass>
+                  <String fx:value="btn" />
+                  <String fx:value="btn-game" />
+               </styleClass>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </VBox.margin>
+      </HBox>
+      <Region VBox.vgrow="ALWAYS" />
+   </children>
+   <stylesheets>
+      <URL value="@../css/bootstrapfx.css" />
+      <URL value="@../css/app.css" />
+   </stylesheets>
+</VBox>

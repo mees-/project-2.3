@@ -15,11 +15,8 @@ import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import reversi.ReversiBoard;
-import ui.Local;
 import ui.Main;
 import ui.update.GameStateUpdate;
-
-import javax.swing.*;
 
 import static javafx.scene.paint.Color.BLACK;
 
@@ -170,7 +167,7 @@ public class ReversiController {
     private void updateBoard(BoardInterface board, GameState turn) {
         for (Node node : childNodes) {
             if (node instanceof HBox) {
-                if (currentPlayer instanceof LocalPlayer || currentPlayer instanceof Ai || currentPlayer instanceof LocalConnectedPlayer) {
+                if (currentPlayer instanceof UIPlayer || currentPlayer instanceof Ai || currentPlayer instanceof LocalConnectedPlayer) {
                     Platform.runLater(() -> node.getStyleClass().remove("tile-reversi-disabled"));
                 } else if (!node.getStyleClass().contains("tile-reversi-disabled")) {
                     Platform.runLater(() -> node.getStyleClass().add("tile-reversi-disabled"));
@@ -196,7 +193,7 @@ public class ReversiController {
                         }
                     });
                 }
-                if (currentPlayer instanceof LocalPlayer) {
+                if (currentPlayer instanceof UIPlayer) {
                     for (Move move : board.getValidMoves(turn)) {
                         if ((GridPane.getColumnIndex(node) - 1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
                             Platform.runLater(() -> node.getStyleClass().add("tile-reversi-available"));
@@ -234,7 +231,7 @@ public class ReversiController {
 
         if (field.getStyleClass().contains("tile-reversi-available")) {
             Move move = new Move(currentPlayer.getTurn(), (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
-            ((LocalPlayer) currentPlayer).putMove(move);
+            ((BlockingPlayer)((HigherOrderPlayer) currentPlayer).getOriginal()).putMove(move);
         }
     }
 

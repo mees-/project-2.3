@@ -2,7 +2,8 @@ package ui.controller;
 
 import ai.Ai;
 import framework.*;
-import framework.player.LocalPlayer;
+import framework.player.BlockingPlayer;
+import framework.player.UIPlayer;
 import framework.player.Player;
 import framework.player.Players;
 import javafx.application.Platform;
@@ -17,7 +18,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
-import org.w3c.dom.ls.LSOutput;
 import tictactoe.Board;
 import ui.Main;
 import ui.update.GameStateUpdate;
@@ -72,7 +72,7 @@ public class TicTacToeController {
         getMatch();
     }
 
-    public TicTacToeController(Main main, Match match, LocalPlayer localPlayerOne, LocalPlayer localPlayerTwo) {
+    public TicTacToeController(Main main, Match match, UIPlayer localPlayerOne, UIPlayer localPlayerTwo) {
         this.localPlayerOne = localPlayerOne;
         this.localPlayerTwo = localPlayerTwo;
         this.match = match;
@@ -244,6 +244,6 @@ public class TicTacToeController {
         System.out.println("click");
 
         Move move = new Move(currentPlayer.getTurn(), (GridPane.getColumnIndex(field)), (GridPane.getRowIndex(field)));
-        ((LocalPlayer) currentPlayer).putMove(move);
+        ((BlockingPlayer) currentPlayer).putMove(move);
     }
 }

@@ -74,7 +74,7 @@ public abstract class Ai extends Player {
 
     @Override
     public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
-        Move move = getBestMove(board, 9);
+        Move move = getBestMove(board, 6);
         for (Move possible : possibleMoves) {
             if (possible.equals(move)) {
                 return possible;

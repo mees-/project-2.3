@@ -6,10 +6,8 @@ import tictactoe.Board;
 import java.util.*;
 
 public class TicTacToeAi extends Ai {
-    private static final int BOARD_SIZE = 3;
-
     public TicTacToeAi(String username) {
-        super(username);
+        super(username, GameType.TicTacToe);
     }
 
     @Override
@@ -79,8 +77,8 @@ public class TicTacToeAi extends Ai {
             return new HashSet<>();
         }
         HashSet<Move> result = new HashSet<>();
-        for (int x = 0; x < BOARD_SIZE; x++) {
-            for (int y = 0; y < BOARD_SIZE; y++) {
+        for (int x = 0; x < gameType.getBoardSize(); x++) {
+            for (int y = 0; y < gameType.getBoardSize(); y++) {
                 if (board.getCell(x, y) == CellContent.Empty) {
                     result.add(new Move(state, x, y));
                 }

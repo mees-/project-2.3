@@ -10,7 +10,6 @@ import connection.commands.*;
 
 import connection.commands.response.StandardResponse;
 import connection.eventHandlers.*;
-import framework.Framework;
 import framework.GameType;
 import framework.Move;
 import framework.player.BlockingPlayer;
@@ -23,11 +22,10 @@ public class Connection {
     private PrintWriter out;
     private BufferedReader in;
 
-    private Framework framework;
-
     private final ArrayList<EventHandler> eventHandlers = new ArrayList<>();
 
     private final LinkedBlockingQueue<Command> commandsWaitingForResponse = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<EventPayload> eventsToHandle = new LinkedBlockingQueue<>();
 
     private final Thread readingThread = new Thread(this::connectionReader);
     private BlockingPlayer remotePlayer;
@@ -43,20 +41,11 @@ public class Connection {
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         checkStartupMessage();
-    }
-
-    public Framework getFramework() {
-        return framework;
-    }
-
-    public void setFramework(Framework framework) {
-        this.framework = framework;
         eventHandlers.add(new GameEndHandler(this));
         eventHandlers.add(new MatchOfferHandler(this));
         eventHandlers.add(new MoveHandler(this));
         eventHandlers.add(new TurnHandler(this));
         readingThread.start();
-
     }
 
     public void close() throws IOException {
@@ -82,7 +71,11 @@ public class Connection {
                     throw new RuntimeException(e);
                 }
                 if (payload != null) {
-                    framework.handleEvent(payload);
+                    try {
+                        eventsToHandle.put(payload);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 return;
             }
@@ -90,7 +83,7 @@ public class Connection {
         throw new RuntimeException(String.join(" ", message) + "\ndidn't match the first command in the queue and didn't match any eventHandler");
     }
 
-    public <T extends Command> CommandFuture executeCommand(T command) {
+    public <T extends Command> GenericFuture<? extends StandardResponse> executeCommand(T command) {
         try {
             commandsWaitingForResponse.put(command);
             out.println(command.getCommandString());
@@ -100,8 +93,8 @@ public class Connection {
         }
     }
 
-    public CommandFuture sendMove(Move move) {
-        return executeCommand(new MoveCommand(framework.getBoardSize(), move.getX() ,move.getY()));
+    public GenericFuture<? extends StandardResponse> sendMove(Move move, int boardSize) {
+        return executeCommand(new MoveCommand(boardSize, move.getX() ,move.getY()));
     }
 
     public void subscribe(GameType gameType) {
@@ -110,15 +103,6 @@ public class Connection {
 
     private void connectionReader() {
         while (true) {
-            try {
-                if (!in.ready()) break;
-            } catch (IOException e) {
-                try {
-                    this.close();
-                } catch (IOException ex) {
-                    break;
-                }
-            }
             try {
                 String message = in.readLine();
                 String[] words = message.split("\\s+");
@@ -147,5 +131,9 @@ public class Connection {
 
     public void setRemotePlayer(BlockingPlayer remotePlayer) {
         this.remotePlayer = remotePlayer;
+    }
+
+    public EventPayload getEvent() throws InterruptedException {
+        return eventsToHandle.take();
     }
 }

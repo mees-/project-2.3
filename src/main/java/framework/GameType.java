@@ -1,12 +1,15 @@
 package framework;
 
 public enum GameType {
-    Reversi("Reversi"),
-    TicTacToe("Tic-tac-toe");
+    Reversi("Reversi", 8),
+    TicTacToe("Tic-tac-toe", 3);
 
     private final String token;
-    GameType(String token) {
+    private final int boardSize;
+
+    GameType(String token, int boardSize) {
         this.token = token;
+        this.boardSize = boardSize;
     }
 
     @Override
@@ -21,5 +24,9 @@ public enum GameType {
             }
         }
         return null;
+    }
+
+    public int getBoardSize() {
+        return boardSize;
     }
 }

@@ -28,7 +28,7 @@ public class LocalConnectedPlayer extends HigherOrderPlayer {
         if (nextMove instanceof ForfeitMove) {
 
         } else {
-            connection.sendMove(nextMove);
+            connection.sendMove(nextMove, gameType.getBoardSize());
         }
         return nextMove;
     }

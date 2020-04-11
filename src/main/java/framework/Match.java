@@ -9,6 +9,7 @@ import java.util.Set;
 public class Match {
     private GameState gameState;
     private GameInterface game;
+    private Thread thread = new Thread(this::gameLoop);
 
     private final Players players = new Players();
 
@@ -16,7 +17,7 @@ public class Match {
         return gameState;
     }
 
-    public void setGameState(GameState gameState) {
+    private void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
@@ -33,9 +34,13 @@ public class Match {
         players.two.setTurn(GameState.TurnTwo);
     }
 
-    public void setupGame() {
-
+    public void setupGame(GameState startingPlayer) {
+        setGameState(startingPlayer);
         game.setup(gameState);
+    }
+
+    public void startAsync() {
+        thread.start();
     }
 
     public void gameLoop() {
@@ -96,5 +101,9 @@ public class Match {
             default:
                 throw new RuntimeException("Really shoulnd't be here 2");
         }
+    }
+
+    public void waitForEnd() throws InterruptedException {
+        this.thread.join();
     }
 }

@@ -22,7 +22,7 @@ public class MoveHandler extends EventHandler {
         String rawDetails = Parser.sliceStringFromParts(message, 3, message.length);
         HashMap<String, String> details = Parser.parseMap(rawDetails);
         if (details.get("PLAYER").equals(connection.getRemotePlayer().getUsername())) {
-            int boardSize = connection.getFramework().getBoardSize();
+            int boardSize = connection.getRemotePlayer().getGameType().getBoardSize();
             int rawCell = Integer.parseInt(details.get("MOVE"));
             Move move = new Move(GameState.TurnTwo, rawCell % boardSize, rawCell / boardSize);
             connection.getRemotePlayer().putMove(move);

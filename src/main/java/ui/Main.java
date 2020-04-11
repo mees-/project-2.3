@@ -80,7 +80,7 @@ public class Main extends Application {
 
     public static void startFramework() throws IOException {
         Connection connection = new Connection();
-        Player player = new LocalConnectedPlayer(new RandomMovePlayer(), connection);
+        Player player = new LocalConnectedPlayer(new RandomMovePlayer(GameType.Reversi), connection);
         framework = new Framework(player, connection);
 
         new Thread ( () -> {

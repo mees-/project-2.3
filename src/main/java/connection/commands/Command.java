@@ -1,11 +1,10 @@
 package connection.commands;
 
+import connection.GenericFuture;
 import connection.commands.response.StandardResponse;
 
-import java.util.Arrays;
-
 public abstract class Command<R extends StandardResponse> {
-    protected CommandFuture<R> future = new CommandFuture<R>();
+    protected GenericFuture<R> future = new GenericFuture<>();
 
     public abstract String getCommandString();
 
@@ -15,11 +14,11 @@ public abstract class Command<R extends StandardResponse> {
 
     public R parseAndHandleResponse(String[] message) {
         R response = parseResponse(message);
-        future.setResponse(response);
+        future.resolve(response);
         return response;
     }
 
-    public CommandFuture<R> getFuture() {
+    public GenericFuture<R> getFuture() {
         return future;
     }
 

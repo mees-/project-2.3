@@ -8,7 +8,9 @@ import java.util.Set;
 public class ReversiAi extends Ai {
     private static final int BOARD_SIZE = 8;
 
-    public ReversiAi(String username) { super(username); }
+    public ReversiAi(String username) {
+        super(username, GameType.Reversi);
+    }
 
     @Override
     public void applyMoveToBoard(Move move, BoardInterface board) throws InvalidMoveException {

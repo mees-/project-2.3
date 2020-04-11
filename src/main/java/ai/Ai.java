@@ -8,8 +8,9 @@ import java.util.Set;
 
 public abstract class Ai extends Player {
     private MoveTree tree;
-    public Ai(String username) {
-        super(username);
+
+    public Ai(String username, GameType gameType) {
+        super(username, gameType);
     }
 
     public abstract void applyMoveToBoard(Move move, BoardInterface board) throws InvalidMoveException;

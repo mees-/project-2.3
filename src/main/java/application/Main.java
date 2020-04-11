@@ -16,7 +16,7 @@ public class Main {
         LocalConnectedPlayer player = new LocalConnectedPlayer(new TicTacToeAi("mees" + (new Random()).nextInt(100)), connection);
         framework = new Framework(player, connection);
         connection.subscribe(GameType.TicTacToe);
-        Match test = framework.getFutureMatch().get();
+        Match test = framework.getMatchFuture().get();
         test.waitForEnd();
         player.logout().waitForResolve();
         synchronized (System.out) {

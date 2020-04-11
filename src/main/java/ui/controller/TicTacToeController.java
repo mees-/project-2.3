@@ -205,7 +205,6 @@ public class TicTacToeController {
     }
 
     private void resetMatch() {
-        framework.clearMatch();
         match = null;
     }
 

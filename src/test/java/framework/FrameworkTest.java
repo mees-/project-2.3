@@ -27,7 +27,7 @@ public class FrameworkTest {
         framework = new Framework(player, connection);
         connection.subscribe(GameType.TicTacToe);
         try {
-            framework.getFutureMatch().get().waitForEnd();
+            framework.getMatchFuture().get().waitForEnd();
             framework.close();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

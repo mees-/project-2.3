@@ -161,7 +161,9 @@ public class HomeController {
     }
 
     private void gameChange(VBox vbOne, VBox vbTwo) {
-        vbOne.getStyleClass().add("panel-game-active");
+        if (!vbOne.getStyleClass().contains("panel-game-active")) {
+            vbOne.getStyleClass().add("panel-game-active");
+        }
         vbTwo.getStyleClass().remove("panel-game-active");
     }
 

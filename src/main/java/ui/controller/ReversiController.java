@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import reversi.ReversiBoard;
 import tictactoe.Game;
 import ui.Main;
+import ui.update.GameStateUpdate;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -151,59 +152,48 @@ public class ReversiController {
     }
 
     public void run() {
-        ReversiBoard reversiBoard = null;
-
         while (match != null) {
-            if (test) {
-                test = false;
-                System.out.println("click");
+            GameStateUpdate update;
+
+            try {
+                update = match.getGameUpdate();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
-            if (reversiBoard == null || !Arrays.deepEquals(reversiBoard.getBoard(), ((ReversiBoard) match.getGame().getBoard()).getBoard())) {
-                reversiBoard = ((ReversiBoard)match.getGame().getBoard()).clone();
+            ReversiBoard board = ((ReversiBoard) update.getBoard());
+            GameState gameState = update.getGameState();
+            int[] score = board.countPieces();
+            Platform.runLater( () -> {
+                sPlayerTwo.setText(Integer.toString(score[1]));
+                sPlayerOne.setText(Integer.toString(score[0]));
+            });
 
-                synchronized (match) {
-                    ReversiBoard board = (ReversiBoard) match.getGame().getBoard();
-                    int[] score = board.countPieces();
-                    Platform.runLater( () -> {
-                        sPlayerTwo.setText(Integer.toString(score[1]));
-                        sPlayerOne.setText(Integer.toString(score[0]));
-                    });
-
-                    if (match.getGameState() == GameState.TurnOne || match.getGameState() == GameState.TurnTwo) {
-                        if (match.getGameState() == GameState.TurnOne) {
-                            currentPlayer = localPlayerOne;
-                            tPlayerOne.setVisible(true);
-                            tPlayerTwo.setVisible(false);
-
-                        } else if (match.getGameState() == GameState.TurnTwo) {
-                            currentPlayer = localPlayerTwo;
-                            tPlayerOne.setVisible(false);
-                            tPlayerTwo.setVisible(true);
-                        }
-
-                        updateBoard(board, match.getGameState());
-                    } else if (match.getGameState() == GameState.OneWin) {
-                        wcPlayerOne.setVisible(true);
-                        updateBoard(board, GameState.TurnOne);
-                        resetMatch();
-                    } else if (match.getGameState() == GameState.TwoWin) {
-                        wcPlayerTwo.setVisible(true);
-                        updateBoard(board, GameState.TurnTwo);
-                        resetMatch();
-                    } else if (match.getGameState() == GameState.Draw) {
-                        // ???
-                        resetMatch();
-                    } else {
-
-                    }
-
-                    try {
-                        match.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            if (gameState == GameState.TurnOne || gameState == GameState.TurnTwo) {
+                if (gameState == GameState.TurnOne) {
+                    currentPlayer = localPlayerOne;
+                    tPlayerOne.setVisible(true);
+                    tPlayerTwo.setVisible(false);
+                } else {
+                    currentPlayer = localPlayerTwo;
+                    tPlayerOne.setVisible(false);
+                    tPlayerTwo.setVisible(true);
                 }
+
+                updateBoard(board, gameState);
+            } else if (gameState == GameState.OneWin) {
+                wcPlayerOne.setVisible(true);
+                updateBoard(board, GameState.TurnOne);
+                resetMatch();
+            } else if (gameState == GameState.TwoWin) {
+                wcPlayerTwo.setVisible(true);
+                updateBoard(board, GameState.TurnTwo);
+                resetMatch();
+            } else if (gameState == GameState.Draw) {
+                // ???
+                resetMatch();
+            } else {
+
             }
         }
     }

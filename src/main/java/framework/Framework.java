@@ -74,10 +74,6 @@ public class Framework {
         eventLoopThread.interrupt();
     }
 
-    public void clearMatch() {
-        match = null;
-    }
-
     public Match getMatch() {
         return match;
     }

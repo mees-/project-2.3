@@ -49,7 +49,7 @@ class GameTest {
     @Test
     @Order(4)
     void setup() {
-        game.setup();
+//        game.setup();
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
                 assertEquals(CellContent.Empty, game.getBoard().getCell(i,j));

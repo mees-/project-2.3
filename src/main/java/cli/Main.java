@@ -31,7 +31,7 @@ public class Main {
         LocalConnectedPlayer player = new LocalConnectedPlayer(cliPlayer, connection);
         Framework framework = new Framework(player, connection);
         framework.login();
-        framework.runGameSync(GameType.TicTacToe);
+        framework.runGameSync(GameType.Reversi);
         framework.close();
     }
 
@@ -44,6 +44,9 @@ public class Main {
 
         @Override
         public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
+            for (Move move : possibleMoves) {
+                System.out.println("Possible move: " + move.toString());
+            }
             try {
                 System.out.print("Enter x: ");
                 int x = Integer.parseInt(reader.readLine());

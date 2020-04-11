@@ -72,13 +72,15 @@ public class HomeController {
     private PlayerType playerOneTypeEnum;
     private PlayerType playerTwoTypeEnum;
     private ChosenGame chosenGameEnum;
+    private Main main;
 
-    public HomeController() {
-        gameTypeEnum = Main.gameTypeEnum;
-        onlineOptionEnum = Main.onlineOptionEnum;
-        playerOneTypeEnum = Main.playerOneTypeEnum;
-        playerTwoTypeEnum = Main.playerTwoTypeEnum;
-        chosenGameEnum = Main.chosenGameEnum;
+    public HomeController(Main main, GameType gameTypeEnum, OnlineOption onlineOptionEnum, PlayerType playerOneTypeEnum, PlayerType playerTwoTypeEnum, ChosenGame chosenGameEnum) {
+        this.main = main;
+        this.gameTypeEnum = gameTypeEnum;
+        this.onlineOptionEnum = onlineOptionEnum;
+        this.playerOneTypeEnum = playerOneTypeEnum;
+        this.playerTwoTypeEnum = playerTwoTypeEnum;
+        this.chosenGameEnum = chosenGameEnum;
     }
 
     @FXML
@@ -159,7 +161,9 @@ public class HomeController {
     }
 
     private void gameChange(VBox vbOne, VBox vbTwo) {
-        vbOne.getStyleClass().add("panel-game-active");
+        if (!vbOne.getStyleClass().contains("panel-game-active")) {
+            vbOne.getStyleClass().add("panel-game-active");
+        }
         vbTwo.getStyleClass().remove("panel-game-active");
     }
 
@@ -168,12 +172,12 @@ public class HomeController {
         if (chosenGameEnum != null && gameTypeEnum != null ) {
             if (gameTypeEnum == GameType.LOCAL) {
                 if (playerOneTypeEnum != null && playerTwoTypeEnum != null) {
-
+                    main.changePane(chosenGameEnum, txtPlayerOneName.getText(), txtPlayerTwoName.getText());
                 }
-            }
-            if (onlineOptionEnum != null) {
-//                Main.screenActive = ScreenActive.REVERSI;
-                Main.changePane();
+            } else if (onlineOptionEnum != null) {
+                Button playButton = (Button) event.getSource();
+
+                main.changePane(chosenGameEnum, txtPlayerOneName.getText());
             }
         }
     }

@@ -12,7 +12,6 @@ public abstract class BoardInterface {
 
     public abstract int getSize();
 
-
     public abstract Set<Move> getValidMoves(GameState state);
 
     public abstract BoardInterface clone();

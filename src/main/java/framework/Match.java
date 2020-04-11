@@ -126,6 +126,6 @@ public class Match {
     }
 
     public void waitForEnd() throws InterruptedException {
-        this.thread.join();
+        thread.join();
     }
 }

@@ -1,12 +1,10 @@
 package connection;
 
-import connection.commands.response.StandardResponse;
-
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class GenericFuture<T extends StandardResponse> implements Future<T> {
+public class GenericFuture<T> implements Future<T> {
     private ArrayBlockingQueue<T> valueQueue = new ArrayBlockingQueue<>(1);
     private T value = null;
 
@@ -51,5 +49,9 @@ public class GenericFuture<T extends StandardResponse> implements Future<T> {
             value = valueQueue.poll(l, timeUnit);
             return value;
         }
+    }
+
+    public void waitForResolve() throws InterruptedException {
+        get();
     }
 }

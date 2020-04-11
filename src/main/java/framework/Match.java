@@ -88,6 +88,7 @@ public class Match {
                 GameState newState = game.doMove(move);
                 setGameState(newState);
                 gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
+                System.out.println(getGame().getBoard().toString());
             } catch (InvalidMoveException e) {
                 throw new RuntimeException(e);
             } catch (InvalidTurnException e) {

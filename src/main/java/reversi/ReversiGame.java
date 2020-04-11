@@ -61,7 +61,7 @@ public class ReversiGame implements GameInterface {
         if (board.canMakeTurn(board.getOpposite(move.getPlayer()))) {
             setLastTurn(move.getPlayer());
         }
-        printBoard();
+//        printBoard();
         return board.getResult(move);
     }
 

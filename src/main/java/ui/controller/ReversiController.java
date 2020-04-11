@@ -1,5 +1,6 @@
 package ui.controller;
 
+import ai.Ai;
 import framework.*;
 import framework.player.*;
 import javafx.application.Platform;
@@ -14,21 +15,15 @@ import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import reversi.ReversiBoard;
-import tictactoe.Game;
 import ui.Main;
-
-import java.util.Arrays;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-
+import ui.update.GameStateUpdate;
 import static javafx.scene.paint.Color.BLACK;
 
 public class ReversiController {
     private Framework framework;
     private Main main;
-    private LocalPlayer localPlayerOne, localPlayerTwo;
-    private LocalPlayer currentPlayer;
+    private Player localPlayerOne, localPlayerTwo;
+    private Player currentPlayer;
     private Match match;
 
     @FXML
@@ -62,30 +57,18 @@ public class ReversiController {
 
     private Players players;
 
-    private boolean test = false;
-
     private Thread a;
 
-    public ReversiController(Main main, Framework framework, LocalPlayer localPlayerOne) {
+    public ReversiController(Main main, Framework framework, Player localPlayerOne) {
         this.framework = framework;
         this.main = main;
         this.localPlayerOne = localPlayerOne;
         System.out.println(localPlayerOne.getUsername());
-        new Thread(() -> {
-            while (match == null) {
-                match = framework.getMatch();
-                if (match != null) {
-                    setupNames();
-                    run();
-                }
-            }
-        }).start();
+        getMatch();
     }
 
     public ReversiController(Main main, Framework framework, LocalPlayer localPlayerOne, LocalPlayer localPlayerTwo) {
-        this.framework = framework;
-        this.main = main;
-        this.localPlayerOne = localPlayerOne;
+        this(main, framework, localPlayerOne);
         this.localPlayerTwo = localPlayerTwo;
         System.out.println(localPlayerOne.getUsername());
         getMatch();
@@ -142,65 +125,56 @@ public class ReversiController {
                 if (localPlayerTwo == null) {
                     node.getStyleClass().add("tile-reversi-disabled");
                 }
-                node.setOnMouseClicked((this::mouseClick));
+                if (!(localPlayerOne instanceof Ai)) {
+                    node.setOnMouseClicked((this::mouseClick));
+                }
             }
         }
     }
 
     public void run() {
-        ReversiBoard reversiBoard = null;
-
         while (match != null) {
-            if (test) {
-                test = false;
-                System.out.println("click");
+            GameStateUpdate update;
+
+            try {
+                update = match.getGameUpdate();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
-            if (reversiBoard == null || !Arrays.deepEquals(reversiBoard.getBoard(), ((ReversiBoard) match.getGame().getBoard()).getBoard())) {
-                reversiBoard = ((ReversiBoard)match.getGame().getBoard()).clone();
+            ReversiBoard board = ((ReversiBoard) update.getBoard());
+            GameState gameState = update.getGameState();
+            int[] score = board.countPieces();
+            Platform.runLater( () -> {
+                sPlayerTwo.setText(Integer.toString(score[1]));
+                sPlayerOne.setText(Integer.toString(score[0]));
+            });
 
-                synchronized (match) {
-                    ReversiBoard board = (ReversiBoard) match.getGame().getBoard();
-                    int[] score = board.countPieces();
-                    Platform.runLater( () -> {
-                        sPlayerTwo.setText(Integer.toString(score[1]));
-                        sPlayerOne.setText(Integer.toString(score[0]));
-                    });
-
-                    if (match.getGameState() == GameState.TurnOne || match.getGameState() == GameState.TurnTwo) {
-                        if (match.getGameState() == GameState.TurnOne) {
-                            currentPlayer = localPlayerOne;
-                            tPlayerOne.setVisible(true);
-                            tPlayerTwo.setVisible(false);
-
-                        } else if (match.getGameState() == GameState.TurnTwo) {
-                            currentPlayer = localPlayerTwo;
-                            tPlayerOne.setVisible(false);
-                            tPlayerTwo.setVisible(true);
-                        }
-
-                        updateBoard(board, match.getGameState());
-                    } else if (match.getGameState() == GameState.OneWin) {
-                        wcPlayerOne.setVisible(true);
-                        updateBoard(board, GameState.TurnOne);
-                        resetMatch();
-                    } else if (match.getGameState() == GameState.TwoWin) {
-                        wcPlayerTwo.setVisible(true);
-                        updateBoard(board, GameState.TurnTwo);
-                        resetMatch();
-                    } else if (match.getGameState() == GameState.Draw) {
-                        // ???
-                        resetMatch();
-                    } else {
-
-                    }
-
-                    try {
-                        match.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            if (gameState == GameState.TurnOne || gameState == GameState.TurnTwo) {
+                if (gameState == GameState.TurnOne) {
+                    currentPlayer = localPlayerOne;
+                    tPlayerOne.setVisible(true);
+                    tPlayerTwo.setVisible(false);
+                } else {
+                    currentPlayer = localPlayerTwo;
+                    tPlayerOne.setVisible(false);
+                    tPlayerTwo.setVisible(true);
                 }
+
+                updateBoard(board, gameState);
+            } else if (gameState == GameState.OneWin) {
+                wcPlayerOne.setVisible(true);
+                updateBoard(board, GameState.TurnOne);
+                resetMatch();
+            } else if (gameState == GameState.TwoWin) {
+                wcPlayerTwo.setVisible(true);
+                updateBoard(board, GameState.TurnTwo);
+                resetMatch();
+            } else if (gameState == GameState.Draw) {
+                // ???
+                resetMatch();
+            } else {
+
             }
         }
     }
@@ -241,11 +215,12 @@ public class ReversiController {
                         }
                     });
                 }
-
-                if (turn == GameState.TurnOne || (localPlayerTwo != null)) {
-                    for (Move move : board.getValidMoves(turn)) {
-                        if ((GridPane.getColumnIndex(node) - 1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
-                            Platform.runLater(() -> node.getStyleClass().add("tile-reversi-available"));
+                if (!(localPlayerOne instanceof Ai)) {
+                    if (turn == GameState.TurnOne || (localPlayerTwo != null)) {
+                        for (Move move : board.getValidMoves(turn)) {
+                            if ((GridPane.getColumnIndex(node) - 1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
+                                Platform.runLater(() -> node.getStyleClass().add("tile-reversi-available"));
+                            }
                         }
                     }
                 }
@@ -280,8 +255,7 @@ public class ReversiController {
 
         if (field.getStyleClass().contains("tile-reversi-available")) {
             Move move = new Move(currentPlayer.getTurn(), (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
-            currentPlayer.putMove(move);
-            test = true;
+            ((LocalPlayer) currentPlayer).putMove(move);
         }
     }
 }

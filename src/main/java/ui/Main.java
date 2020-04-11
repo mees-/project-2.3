@@ -1,5 +1,6 @@
 package ui;
 
+import ai.ReversiAi;
 import connection.Connection;
 import framework.Framework;
 import framework.GameState;
@@ -64,8 +65,14 @@ public class Main extends Application {
         stage.setMaximized(true);
     }
 
-    public void changePane(ChosenGame chosenGame, String playerOneName) throws IOException {
-        LocalPlayer playerOne = new LocalPlayer(playerOneName);
+    public void changePane(ChosenGame chosenGame, String playerOneName, PlayerType playerType) throws IOException {
+        Player playerOne = null;
+        if (playerType == PlayerType.HUMAN) {
+            playerOne = new LocalPlayer(playerOneName);
+        } else if (playerType == PlayerType.AI) {
+            playerOne = new ReversiAi(playerOneName);
+        }
+
         startFramework(playerOne);
         switch (chosenGame) {
             case REVERSI:
@@ -114,7 +121,7 @@ public class Main extends Application {
         return playerTwoLocal;
     }
 
-    public void startFramework(LocalPlayer player) throws IOException {
+    public void startFramework(Player player) throws IOException {
         Connection connection = new Connection();
         Player connectedPlayer = new LocalConnectedPlayer(player, connection);
         framework = new Framework(connectedPlayer, connection);

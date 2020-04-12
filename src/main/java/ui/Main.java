@@ -84,7 +84,7 @@ public class Main extends Application {
     }
 
     private Player createPlayer(String playerName, PlayerType playerType, GameType gameType, boolean uiPlayer) {
-        Player player = new BlockingPlayer(playerName, gameType);
+        Player player = new ForfeitablePlayer(new BlockingPlayer(playerName, gameType));
 
         switch(playerType) {
             case AI:
@@ -151,7 +151,7 @@ public class Main extends Application {
         setCurrentPane(paneGame);
 
         try {
-            gameController.setup(framework.getMatchFuture().get());
+            gameController.setup(framework.getNextMatch());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

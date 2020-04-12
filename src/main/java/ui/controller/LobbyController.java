@@ -20,7 +20,7 @@ public class LobbyController {
 
         if (!main.isTournament()) {
             try {
-                match = framework.getMatchFuture().get();
+                match = framework.getNextMatch();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

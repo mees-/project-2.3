@@ -192,6 +192,6 @@ public class TicTacToeController extends GameController {
         System.out.println("click");
 
         Move move = new Move(currentPlayer.getTurn(), (GridPane.getColumnIndex(field)), (GridPane.getRowIndex(field)));
-        ((BlockingPlayer)((HigherOrderPlayer) currentPlayer).getOriginal()).putMove(move);
+        ((BlockingPlayer)((HigherOrderPlayer) currentPlayer).getSource()).putMove(move);
     }
 }

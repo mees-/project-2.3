@@ -149,6 +149,17 @@ public class Match {
         return players;
     }
 
+    public synchronized Player getCurrentPlayer() {
+        switch (getGameState()) {
+            case TurnOne:
+                return players.one;
+            case TurnTwo:
+                return players.two;
+            default:
+                return null;
+        }
+    }
+
     public GameStateUpdate getGameUpdate() throws InterruptedException {
         return gameStateUpdates.take();
     }

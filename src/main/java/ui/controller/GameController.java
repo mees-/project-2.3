@@ -13,7 +13,6 @@ import ui.Main;
 
 public abstract class GameController {
     protected Main main;
-    protected Player currentPlayer;
     protected Match match;
 
     @FXML

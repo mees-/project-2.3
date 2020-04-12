@@ -5,7 +5,6 @@ import framework.*;
 import framework.player.*;
 import javafx.application.Platform;
 import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -121,16 +120,6 @@ public class TicTacToeController extends GameController {
             GameState gameState = update.getGameState();
 
             if (!gameState.isEnd()) {
-                if (gameState == GameState.TurnOne) {
-                    currentPlayer = match.getPlayers().one;
-                    tPlayerOne.setVisible(true);
-                    tPlayerTwo.setVisible(false);
-                } else {
-                    currentPlayer = match.getPlayers().two;
-                    tPlayerOne.setVisible(false);
-                    tPlayerTwo.setVisible(true);
-                }
-
                 updateBoard(board);
             } else if (gameState == GameState.OneWin) {
                 wcPlayerOne.setVisible(true);
@@ -159,7 +148,8 @@ public class TicTacToeController extends GameController {
     private void updateBoard(BoardInterface board) {
         for (Node node : childNodes) {
             if (node instanceof HBox) {
-                if (currentPlayer instanceof UIPlayer || currentPlayer instanceof Ai || currentPlayer instanceof LocalConnectedPlayer) {
+                ComposablePlayer current = (ComposablePlayer) match.getCurrentPlayer();
+                if (current.isComposedOf(UIPlayer.class) || current.getSource() instanceof Ai) {
                     Platform.runLater(() -> node.getStyleClass().remove("tile-tictactoe-disabled"));
                 } else if (!node.getStyleClass().contains("tile-tictactoe-disabled")) {
                     Platform.runLater(() -> node.getStyleClass().add("tile-tictactoe-disabled"));
@@ -191,7 +181,7 @@ public class TicTacToeController extends GameController {
         HBox field = ((HBox)event.getSource());
         System.out.println("click");
 
-        Move move = new Move(currentPlayer.getTurn(), (GridPane.getColumnIndex(field)), (GridPane.getRowIndex(field)));
-        ((BlockingPlayer)((HigherOrderPlayer) currentPlayer).getSource()).putMove(move);
+        Move move = new Move(match.getCurrentPlayer().getTurn(), (GridPane.getColumnIndex(field)), (GridPane.getRowIndex(field)));
+        ((BlockingPlayer)((ComposablePlayer) match.getCurrentPlayer()).getSource()).putMove(move);
     }
 }

@@ -4,9 +4,12 @@ import framework.*;
 import framework.player.Player;
 
 import java.util.Set;
+import java.util.concurrent.*;
 
 public abstract class Ai extends Player {
     private MoveTree tree;
+
+    private ExecutorService executor = Executors.newFixedThreadPool(8);
 
     public Ai(String username, GameType gameType) {
         super(username, gameType);
@@ -19,6 +22,24 @@ public abstract class Ai extends Player {
     public abstract Set<Move> getValidMoves(GameState state, BoardInterface board);
 
     public abstract GameState getTurnAfterMove(BoardInterface currentBoard, Move lastMove);
+
+    private void mutliTrheadMinimax(MoveTree head) {
+        Future[] results = new Future[head.getChildren().size()];
+        int idx = 0;
+        for (MoveTree child : head.getChildren()) {
+            results[idx++] = executor.submit(() -> {
+
+                child.setEvaluation(minimax(child, child.getHeight(), Integer.MIN_VALUE, Integer.MAX_VALUE));
+            });
+        }
+        for (Future result : results) {
+            try {
+                result.get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     private int minimax(MoveTree position, int depth, int alpha, int beta) {
         if (depth == 0 || position.getChildren().size() == 0) {
@@ -70,7 +91,7 @@ public abstract class Ai extends Player {
                 }
             }
         }
-        minimax(tree, tree.getHeight(), Integer.MIN_VALUE, Integer.MAX_VALUE);
+        mutliTrheadMinimax(tree);
         MoveTree best = tree.getChildren().get(0);
         for (int i = 1; i < tree.getChildren().size(); i++) {
             MoveTree current = tree.getChildren().get(i);

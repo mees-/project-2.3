@@ -1,5 +1,6 @@
 package cli;
 
+import ai.ReversiAi;
 import connection.Connection;
 import framework.*;
 import framework.player.LocalConnectedPlayer;
@@ -27,11 +28,11 @@ public class Main {
             e.printStackTrace();
         }
 
-        CliPlayer cliPlayer = new CliPlayer(username, GameType.Reversi);
-        LocalConnectedPlayer player = new LocalConnectedPlayer(cliPlayer, connection);
+        ReversiAi ai = new ReversiAi(username);
+        LocalConnectedPlayer player = new LocalConnectedPlayer(ai,connection);
         Framework framework = new Framework(player, connection);
         connection.subscribe(GameType.Reversi);
-        framework.close();
+//        framework.close();
     }
 
     private static class CliPlayer extends Player {

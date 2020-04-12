@@ -73,7 +73,7 @@ public class Main extends Application {
     }
 
     public void lobbySetup(GameType gameType, String playerName, PlayerType playerType) throws IOException {
-        startFramework(createPlayer(playerName, playerType, gameType, true));
+        startFramework(createPlayer(playerName, playerType, gameType));
         LobbyController lobbyController = new LobbyController(this, framework, playerName, playerType);
         loader = new FXMLLoader(getClass().getResource("/view/lobby.fxml"));
         loader.setController(lobbyController);
@@ -83,7 +83,7 @@ public class Main extends Application {
         lobbyController.tournamentSetup();
     }
 
-    private Player createPlayer(String playerName, PlayerType playerType, GameType gameType, boolean uiPlayer) {
+    private Player createPlayer(String playerName, PlayerType playerType, GameType gameType) {
         Player player = new ForfeitablePlayer(new BlockingPlayer(playerName, gameType));
 
         switch(playerType) {
@@ -98,9 +98,7 @@ public class Main extends Application {
                 }
                 break;
             case HUMAN:
-                if (uiPlayer) {
-                    player = new UIPlayer(player);
-                }
+                player = new UIPlayer(player);
                 break;
         }
 
@@ -124,7 +122,7 @@ public class Main extends Application {
     public void onlineGameSetup(GameType gameType, String playerName, PlayerType playerType) throws IOException {
         GameController gameController = null;
         if (!isTournament()) {
-            startFramework(createPlayer(playerName, playerType, gameType, false));
+            startFramework(createPlayer(playerName, playerType, gameType));
         }
 
         switch (gameType) {
@@ -179,8 +177,8 @@ public class Main extends Application {
 
         Match match = new Match(
                 game,
-                createPlayer(playerOneName, playerOneType, gameType, true),
-                createPlayer(playerTwoName, playerTwoType, gameType, true)
+                createPlayer(playerOneName, playerOneType, gameType),
+                createPlayer(playerTwoName, playerTwoType, gameType)
         );
 
         loader.setController(gameController);

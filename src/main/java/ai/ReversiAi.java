@@ -14,47 +14,67 @@ public class ReversiAi extends Ai {
 
     @Override
     public void applyMoveToBoard(Move move, BoardInterface board) throws InvalidMoveException {
-        if (board.getCell(move.getX(), move.getY()) == CellContent.Empty) {
-            try {
-                board.setCell(move.getX(), move.getY(), move.getPlayer().toCellContent());
-            } catch (GameState.InvalidOperationException e) {
-                throw new RuntimeException(e);
-            }
+        CellContent player = move.getPlayer().toCellContent();
+        board.setCell(move.getX(), move.getY(), player);
+        flipDiscs(move, player, board);
+    }
+
+    public void flipDiscs(Move move, CellContent player, BoardInterface board) throws InvalidMoveException {
+        int x = move.getX();
+        int y = move.getY();
+
+        flipLine(player, board, x, y, 0, -1); //ww
+        flipLine(player, board, x, y, 1, -1); //sw
+        flipLine(player, board, x, y, 1, 0); //ss
+        flipLine(player, board, x, y, 1, 1); //se
+        flipLine(player, board, x, y, 0, 1); //ee
+        flipLine(player, board, x, y, -1, 1); //ne
+        flipLine(player, board, x, y, -1, 0); //nn
+        flipLine(player, board, x, y, -1, -1); //nw
+    }
+
+    public boolean flipLine(CellContent player, BoardInterface board, int currentX, int currentY, int checkX, int checkY) throws InvalidMoveException {
+
+        if ((currentX + checkX < 0) || (currentX + checkX >= board.getSize() )) {
+            return false;
+        }
+        if ((currentY + checkY < 0) || (currentY + checkY >= board.getSize() )) {
+            return false;
+        }
+        if (board.getCell(currentX + checkX, currentY + checkY) == CellContent.Empty) {
+            return false;
+        }
+        if (board.getCell(currentX + checkX, currentY + checkY) == player) {
+            return true;
         } else {
-            throw new InvalidMoveException("That cell is already taken");
+            if (flipLine(player, board, currentX + checkX, currentY + checkY, checkX, checkY)) {
+                board.setCell(currentX + checkX, currentY + checkY, player);
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
     @Override
     public int analyzeMove(Move lastMove, BoardInterface board) {
-        try {
-            CellContent gameWin = ((ReversiBoard)board).checkForWin();
-            if (gameWin == turn.toCellContent()) {
-                return 1000;
-            } else if (gameWin == turn.otherPlayer().toCellContent()) {
-                return -1000;
-            } else {
-                return (((ReversiBoard)board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
-            }
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
+        CellContent gameWin = ((ReversiBoard)board).checkForWin();
+        if (gameWin == turn.toCellContent()) {
+            return 1000;
+        } else if (gameWin == turn.otherPlayer().toCellContent()) {
+            return -1000;
+        } else {
+            return (((ReversiBoard)board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
         }
     }
 
     @Override
     public Set<Move> getValidMoves(GameState state, BoardInterface board) {
-        return ((ReversiBoard)board).getValidMoves(state);
+        return board.getValidMoves(state);
     }
 
     @Override
     public GameState getTurnAfterMove(BoardInterface currentBoard, Move lastMove) {
-        CellContent player;
-
-        try {
-            player = lastMove.getPlayer().toCellContent();
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
-        }
         if (((ReversiBoard)currentBoard).canMakeTurn(((ReversiBoard)currentBoard).getOpposite(lastMove.getPlayer()))) {
             return lastMove.getPlayer().otherPlayer();
         } else {
@@ -64,6 +84,6 @@ public class ReversiAi extends Ai {
 
     @Override
     public int getDepth() {
-        return 6;
+        return 7;
     }
 }

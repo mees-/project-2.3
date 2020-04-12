@@ -88,7 +88,7 @@ public class Main extends Application {
                 startReversi();
                 ReversiController reversiController = null;
                 try {
-                    reversiController = new ReversiController(this, framework.getMatchFuture().get());
+                    reversiController = new ReversiController(this, framework.getNextMatch());
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

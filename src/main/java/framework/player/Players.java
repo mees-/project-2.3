@@ -1,6 +1,6 @@
 package framework.player;
 
-public class Players {
-    public Player one;
-    public Player two;
+public class Players<T extends Player> {
+    public T one;
+    public T two;
 }

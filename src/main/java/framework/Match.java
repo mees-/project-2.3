@@ -1,5 +1,7 @@
 package framework;
 
+import framework.player.ComposablePlayer;
+import framework.player.NoopComposer;
 import framework.player.Player;
 import framework.player.Players;
 import ui.update.GameStateUpdate;
@@ -20,7 +22,7 @@ public class Match {
 
     private Consumer<Match> onEnd;
 
-    private final Players players = new Players();
+    private final Players<ComposablePlayer> players = new Players();
 
     public GameState getGameState() {
         return gameState;
@@ -36,8 +38,8 @@ public class Match {
 
     public Match(GameInterface game, Player one, Player two) {
         this.game = game;
-        players.one = one;
-        players.two = two;
+        players.one = new NoopComposer(one);
+        players.two = new NoopComposer(two);
 
         players.one.setTurn(GameState.TurnOne);
         players.two.setTurn(GameState.TurnTwo);
@@ -145,15 +147,17 @@ public class Match {
         }
     }
 
-    public Players getPlayers() {
+    public Players<ComposablePlayer> getPlayers() {
         return players;
     }
 
-    public synchronized Player getCurrentPlayer() {
+    public synchronized ComposablePlayer getCurrentPlayer() {
         switch (getGameState()) {
             case TurnOne:
+            case OneWin:
                 return players.one;
             case TurnTwo:
+            case TwoWin:
                 return players.two;
             default:
                 return null;

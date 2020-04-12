@@ -148,7 +148,7 @@ public class TicTacToeController extends GameController {
     private void updateBoard(BoardInterface board) {
         for (Node node : childNodes) {
             if (node instanceof HBox) {
-                ComposablePlayer current = (ComposablePlayer) match.getCurrentPlayer();
+                ComposablePlayer current = match.getCurrentPlayer();
                 if (current.isComposedOf(UIPlayer.class) || current.getSource() instanceof Ai) {
                     Platform.runLater(() -> node.getStyleClass().remove("tile-tictactoe-disabled"));
                 } else if (!node.getStyleClass().contains("tile-tictactoe-disabled")) {
@@ -182,6 +182,6 @@ public class TicTacToeController extends GameController {
         System.out.println("click");
 
         Move move = new Move(match.getCurrentPlayer().getTurn(), (GridPane.getColumnIndex(field)), (GridPane.getRowIndex(field)));
-        ((BlockingPlayer)((ComposablePlayer) match.getCurrentPlayer()).getSource()).putMove(move);
+        ((BlockingPlayer) match.getCurrentPlayer().getSource()).putMove(move);
     }
 }

@@ -121,7 +121,7 @@ public class ReversiController extends GameController {
     private void updateBoard(BoardInterface board, GameState turn) {
         for (Node node : childNodes) {
             if (node instanceof HBox) {
-                ComposablePlayer current = (ComposablePlayer) match.getCurrentPlayer();
+                ComposablePlayer current = match.getCurrentPlayer();
                 if (current.isComposedOf(UIPlayer.class) || current.getSource() instanceof Ai) {
                     Platform.runLater(() -> node.getStyleClass().remove("tile-reversi-disabled"));
                 } else if (!node.getStyleClass().contains("tile-reversi-disabled")) {
@@ -148,7 +148,7 @@ public class ReversiController extends GameController {
                         }
                     });
                 }
-                if (((ComposablePlayer)match.getCurrentPlayer()).isComposedOf(UIPlayer.class)) {
+                if (match.getCurrentPlayer().isComposedOf(UIPlayer.class)) {
                     for (Move move : board.getValidMoves(turn)) {
                         if ((GridPane.getColumnIndex(node) - 1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
                             Platform.runLater(() -> node.getStyleClass().add("tile-reversi-available"));
@@ -186,7 +186,7 @@ public class ReversiController extends GameController {
 
         if (field.getStyleClass().contains("tile-reversi-available")) {
             Move move = new Move(match.getCurrentPlayer().getTurn(), (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
-            ((BlockingPlayer)((ComposablePlayer) match.getCurrentPlayer()).getSource()).putMove(move);
+            ((BlockingPlayer)match.getCurrentPlayer().getSource()).putMove(move);
         }
     }
 

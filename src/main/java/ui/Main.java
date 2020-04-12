@@ -4,10 +4,7 @@ import ai.ReversiAi;
 import ai.TicTacToeAi;
 import connection.Connection;
 import connection.commands.LogoutCommand;
-import framework.Framework;
-import framework.GameState;
-import framework.GameType;
-import framework.Match;
+import framework.*;
 import framework.player.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -17,16 +14,14 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import reversi.ReversiGame;
 import tictactoe.TicTacToeGame;
-import ui.controller.HomeController;
-import ui.controller.ReversiController;
-import ui.controller.TicTacToeController;
+import ui.controller.*;
 import ui.settings.OnlineOption;
 import ui.settings.PlayType;
 import ui.settings.PlayerType;
 import java.io.IOException;
 
 public class Main extends Application {
-    private Pane paneHome, paneReversi, paneTicTacToe, paneFooter;
+    private Pane paneHome, paneGame, paneFooter, paneLobby;
     private Pane currentPane;
     private Pane root;
     private Framework framework;
@@ -39,6 +34,8 @@ public class Main extends Application {
     private GameType chosenGameEnum = GameType.Reversi;
 
     private FXMLLoader loader;
+
+    private boolean tournament;
 
     public static void main(String[] args) {
         launch(args);
@@ -75,109 +72,123 @@ public class Main extends Application {
         stage.setMaximized(true);
     }
 
-    public void changePane(GameType gameType, String playerOneName, PlayerType playerType) throws IOException {
-        Player sourcePlayer = new BlockingPlayer(playerOneName, gameType);
+    public void lobbySetup(GameType gameType, String playerName, PlayerType playerType) throws IOException {
+        startFramework(createPlayer(playerName, playerType, gameType, true));
+        LobbyController lobbyController = new LobbyController(this, framework, playerName, playerType);
+        loader = new FXMLLoader(getClass().getResource("/view/lobby.fxml"));
+        loader.setController(lobbyController);
+        paneLobby = loader.load();
+        setCurrentPane(paneLobby);
 
-        switch (gameType) {
-            case Reversi:
-                if (playerType == PlayerType.AI) {
-                    sourcePlayer = new ReversiAi(playerOneName);
-                }
-
-                startFramework(sourcePlayer);
-                startReversi();
-                ReversiController reversiController = null;
-                try {
-                    reversiController = new ReversiController(this, framework.getMatchFuture().get());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
-                loader.setController(reversiController);
-                paneReversi = loader.load();
-                setCurrentPane(paneReversi);
-
-                reversiController.setup();
-                reversiController.start();
-
-                break;
-            case TicTacToe:
-                if (playerType == PlayerType.AI) {
-                    sourcePlayer = new TicTacToeAi(playerOneName);
-                }
-
-                startFramework(sourcePlayer);
-                startTicTacToe();
-                TicTacToeController ticTacToeController = null;
-
-                try {
-                    ticTacToeController = new TicTacToeController(this, framework.getMatchFuture().get());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                loader =  new FXMLLoader(getClass().getResource("/view/tictactoe.fxml"));
-                loader.setController(ticTacToeController);
-                paneTicTacToe = loader.load();
-                setCurrentPane(paneTicTacToe);
-
-                ticTacToeController.setup();
-                ticTacToeController.start();
-                break;
-            default:
-                System.out.println("Something went wrong!");
-        }
+        lobbyController.tournamentSetup();
     }
 
-    public void changePane(GameType gameType, String playerOneName, String playerTwoName, PlayerType playerTypeOne, PlayerType playerTypeTwo) throws IOException {
-        Player playerOne = new UIPlayer(new BlockingPlayer(playerOneName, gameType));
-        Player playerTwo = new UIPlayer(new BlockingPlayer(playerTwoName, gameType));
-        Match match = null;
+    private Player createPlayer(String playerName, PlayerType playerType, GameType gameType, boolean uiPlayer) {
+        Player player = new BlockingPlayer(playerName, gameType);
+
+        switch(playerType) {
+            case AI:
+                switch (gameType) {
+                    case Reversi:
+                        player = new ReversiAi(playerName);
+                        break;
+                    case TicTacToe:
+                        player = new TicTacToeAi(playerName);
+                        break;
+                }
+                break;
+            case HUMAN:
+                if (uiPlayer) {
+                    player = new UIPlayer(player);
+                }
+                break;
+        }
+
+
+        return player;
+    }
+
+    public void changeToLobby() {
+        setTournament(false);
+        setCurrentPane(paneLobby);
+    }
+
+    public boolean isTournament() {
+        return tournament;
+    }
+
+    public void setTournament(boolean tournament) {
+        this.tournament = tournament;
+    }
+
+    public void onlineGameSetup(GameType gameType, String playerName, PlayerType playerType) throws IOException {
+        GameController gameController = null;
+        if (!isTournament()) {
+            startFramework(createPlayer(playerName, playerType, gameType, false));
+        }
 
         switch (gameType) {
             case Reversi:
-                if (playerTypeOne == PlayerType.AI) {
-                    playerOne = new ReversiAi(playerOneName);
+                if (!isTournament()) {
+                    startReversi();
                 }
-                if (playerTypeTwo == PlayerType.AI) {
-                    playerTwo = new ReversiAi(playerTwoName);
-                }
-
-                match = new Match(new ReversiGame(), playerOne, playerTwo);
-                ReversiController reversiController = new ReversiController(this, match);
-
-                loader = new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
-                loader.setController(reversiController);
-                paneReversi = loader.load();
-                setCurrentPane(paneReversi);
-
-                reversiController.setup();
-                reversiController.start();
-
+                gameController = new ReversiController(this);
+                loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
                 break;
             case TicTacToe:
-                if (playerTypeOne == PlayerType.AI) {
-                    playerOne = new TicTacToeAi(playerOneName);
+                if (!isTournament()) {
+                    startTicTacToe();
                 }
-                if (playerTypeTwo == PlayerType.AI) {
-                    playerTwo = new TicTacToeAi(playerTwoName);
-                }
-
-                match = new Match(new TicTacToeGame(), playerOne, playerTwo);
-                TicTacToeController ticTacToeController = new TicTacToeController(this, match);
-
+                gameController = new TicTacToeController(this);
                 loader =  new FXMLLoader(getClass().getResource("/view/tictactoe.fxml"));
-                loader.setController(ticTacToeController);
-                paneTicTacToe = loader.load();
-                setCurrentPane(paneTicTacToe);
-
-                ticTacToeController.setup();
-                ticTacToeController.start();
                 break;
             default:
                 System.out.println("Something went wrong!");
         }
+
+        loader.setController(gameController);
+        paneGame = loader.load();
+        setCurrentPane(paneGame);
+
+        try {
+            gameController.setup(framework.getMatchFuture().get());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        gameController.start();
+    }
+
+    public void localGameSetup(GameType gameType, String playerOneName, String playerTwoName, PlayerType playerOneType, PlayerType playerTwoType) throws IOException {
+        GameController gameController = null;
+        GameInterface game = null;
+
+        switch (gameType) {
+            case Reversi:
+                game = new ReversiGame();
+                gameController = new ReversiController(this);
+                loader = new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
+                break;
+            case TicTacToe:
+                game = new TicTacToeGame();
+                gameController = new TicTacToeController(this);
+                loader =  new FXMLLoader(getClass().getResource("/view/tictactoe.fxml"));
+                break;
+            default:
+                System.out.println("Something went wrong!");
+        }
+
+        Match match = new Match(
+                game,
+                createPlayer(playerOneName, playerOneType, gameType, true),
+                createPlayer(playerTwoName, playerTwoType, gameType, true)
+        );
+
+        loader.setController(gameController);
+        paneGame = loader.load();
+        setCurrentPane(paneGame);
+
+        gameController.setup(match);
+        gameController.start();
 
         match.setupGame(GameState.TurnOne);
         match.startAsync();

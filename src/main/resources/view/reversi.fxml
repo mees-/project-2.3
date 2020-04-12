@@ -20,7 +20,7 @@
                   <Insets />
                </HBox.margin>
                <children>
-                  <GridPane fx:id="gpReversi" alignment="CENTER">
+                  <GridPane fx:id="gpGame" alignment="CENTER">
                     <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="90.0" prefWidth="90.0" />
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="90.0" prefWidth="90.0" />

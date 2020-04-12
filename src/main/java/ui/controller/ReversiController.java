@@ -4,30 +4,22 @@ import ai.Ai;
 import framework.*;
 import framework.player.*;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Text;
 import reversi.ReversiBoard;
 import ui.Main;
 import ui.update.GameStateUpdate;
 
 import static javafx.scene.paint.Color.BLACK;
 
-public class ReversiController extends Controller{
-
-    @FXML
-    private GridPane gpReversi;
-
-    public ReversiController(Main main, Match match) {
-        super(main, match);
-
+public class ReversiController extends GameController {
+    public ReversiController(Main main) {
+        super(main);
     }
 
     public void start() {
@@ -60,9 +52,10 @@ public class ReversiController extends Controller{
         });
     }
 
-    public void setup() {
+    public void setup(Match match) {
+        super.setup(match);
         setupNames();
-        childNodes = gpReversi.getChildren();
+        childNodes = gpGame.getChildren();
 
         for (Node node : childNodes) {
             if (node instanceof HBox) {
@@ -124,7 +117,11 @@ public class ReversiController extends Controller{
             throw new RuntimeException(e);
         }
 
-        main.changeToHome();
+        if (main.isTournament()) {
+            main.changeToLobby();
+        } else {
+            main.changeToHome();
+        }
     }
 
     private void resetMatch() {

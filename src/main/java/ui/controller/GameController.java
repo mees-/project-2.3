@@ -11,10 +11,13 @@ import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 import ui.Main;
 
-public abstract class Controller {
+public abstract class GameController {
     protected Main main;
     protected Player currentPlayer;
     protected Match match;
+
+    @FXML
+    protected GridPane gpGame;
 
     @FXML
     protected Text txtPlayerOne;
@@ -46,10 +49,15 @@ public abstract class Controller {
 
     protected Thread run = new Thread(this::run);
 
-    public Controller(Main main, Match match) {
+    public GameController(Main main) {
         this.main = main;
-        this.match = match;
     }
 
     abstract protected void run();
+
+    public void setup(Match match) {
+        this.match = match;
+    }
+
+    abstract public void start();
 }

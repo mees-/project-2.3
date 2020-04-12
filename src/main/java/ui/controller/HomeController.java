@@ -168,12 +168,15 @@ public class HomeController {
         if (chosenGameEnum != null && playTypeEnum != null ) {
             if (playTypeEnum == PlayType.LOCAL) {
                 if (playerOneTypeEnum != null && playerTwoTypeEnum != null) {
-                    main.changePane(chosenGameEnum, txtPlayerOneName.getText(), txtPlayerTwoName.getText(), playerOneTypeEnum, playerTwoTypeEnum);
+                    main.localGameSetup(chosenGameEnum, txtPlayerOneName.getText(), txtPlayerTwoName.getText(), playerOneTypeEnum, playerTwoTypeEnum);
                 }
             } else if (onlineOptionEnum != null) {
                 Button playButton = (Button) event.getSource();
-
-                main.changePane(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
+                if (onlineOptionEnum == OnlineOption.CHALLENGE) {
+                    main.lobbySetup(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
+                } else {
+                    main.onlineGameSetup(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
+                }
             }
         }
     }

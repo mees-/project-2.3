@@ -33,7 +33,7 @@
                   <Insets />
                </HBox.margin>
                <children>
-                  <GridPane fx:id="gpTicTacToe" maxHeight="-Infinity">
+                  <GridPane fx:id="gpGame" maxHeight="-Infinity">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />

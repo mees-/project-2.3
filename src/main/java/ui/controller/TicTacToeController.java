@@ -4,7 +4,6 @@ import ai.Ai;
 import framework.*;
 import framework.player.*;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,22 +13,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Text;
 import tictactoe.TicTacToeBoard;
 import ui.Main;
 import ui.update.GameStateUpdate;
 
 import static javafx.scene.paint.Color.BLACK;
 
-public class TicTacToeController extends Controller {
-    @FXML
-    protected GridPane gpTicTacToe;
+public class TicTacToeController extends GameController {
 
     private SVGPath crossHover = createCrossHover();
     private Circle circleHover = createCircleHover();
 
-    public TicTacToeController(Main main, Match match) {
-        super(main, match);
+    public TicTacToeController(Main main) {
+        super(main);
     }
 
     public void start() {
@@ -79,9 +75,10 @@ public class TicTacToeController extends Controller {
         });
     }
 
-    public void setup() {
+    public void setup(Match match) {
+        super.setup(match);
         setupNames();
-        childNodes = gpTicTacToe.getChildren();
+        childNodes = gpGame.getChildren();
 
         for (Node node : childNodes) {
             if (node instanceof HBox) {

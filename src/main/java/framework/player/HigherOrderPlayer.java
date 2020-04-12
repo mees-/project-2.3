@@ -48,4 +48,22 @@ public class HigherOrderPlayer extends Player {
         }
         return original;
     }
+
+    public <T> HigherOrderPlayer getOrder(Class<T> type) {
+        if (type.isInstance(this)) {
+            return this;
+        } else if (original instanceof HigherOrderPlayer) {
+            return ((HigherOrderPlayer) original).getOrder(type);
+        } else {
+            return null;
+        }
+    }
+
+    public Player getSource() {
+        if (!(original instanceof HigherOrderPlayer)) {
+            return original;
+        } else {
+            return ((HigherOrderPlayer) original).getSource();
+        }
+    }
 }

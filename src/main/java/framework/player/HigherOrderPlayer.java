@@ -49,13 +49,13 @@ public class HigherOrderPlayer extends Player {
         return original;
     }
 
-    public <T> HigherOrderPlayer getOrder(Class<T> type) {
+    public <T extends HigherOrderPlayer> HigherOrderPlayer getOrder(Class<T> type) throws IllegalStateException {
         if (type.isInstance(this)) {
             return this;
         } else if (original instanceof HigherOrderPlayer) {
             return ((HigherOrderPlayer) original).getOrder(type);
         } else {
-            return null;
+            throw new IllegalStateException("Cant find " + type.toString() + " in the chain");
         }
     }
 

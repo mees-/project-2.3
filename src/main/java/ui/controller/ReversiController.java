@@ -20,47 +20,14 @@ import ui.update.GameStateUpdate;
 
 import static javafx.scene.paint.Color.BLACK;
 
-public class ReversiController {
-    private Main main;
-    private Player currentPlayer;
-    private Match match;
+public class ReversiController extends Controller{
 
     @FXML
-    GridPane gpReversi;
-
-    @FXML
-    Text txtPlayerOne;
-
-    @FXML
-    Text txtPlayerTwo;
-
-    @FXML
-    SVGPath wcPlayerOne;
-
-    @FXML
-    SVGPath wcPlayerTwo;
-
-    @FXML
-    SVGPath tPlayerOne;
-
-    @FXML
-    SVGPath tPlayerTwo;
-
-    @FXML
-    Text sPlayerOne;
-
-    @FXML
-    Text sPlayerTwo;
-
-    private ObservableList<Node> childNodes;
-
-    private Players players;
-
-    private Thread run = new Thread(this::run);
+    private GridPane gpReversi;
 
     public ReversiController(Main main, Match match) {
-        this.main = main;
-        this.match = match;
+        super(main, match);
+
     }
 
     public void start() {
@@ -105,7 +72,7 @@ public class ReversiController {
         }
     }
 
-    public void run() {
+    protected void run() {
         while (match != null) {
             GameStateUpdate update;
 

@@ -21,53 +21,15 @@ import ui.update.GameStateUpdate;
 
 import static javafx.scene.paint.Color.BLACK;
 
-public class TicTacToeController {
-    private Framework framework;
-    private Main main;
-    private Player localPlayerOne, localPlayerTwo;
-    private Player currentPlayer;
-    private Match match;
-
+public class TicTacToeController extends Controller {
     @FXML
-    GridPane gpTicTacToe;
-
-    @FXML
-    Text txtPlayerOne;
-
-    @FXML
-    Text txtPlayerTwo;
-
-    @FXML
-    SVGPath wcPlayerOne;
-
-    @FXML
-    SVGPath wcPlayerTwo;
-
-    @FXML
-    SVGPath tPlayerOne;
-
-    @FXML
-    SVGPath tPlayerTwo;
-
-    @FXML
-    Text sPlayerOne;
-
-    @FXML
-    Text sPlayerTwo;
-
-    private ObservableList<Node> childNodes;
-
-    private Players players;
-
-    private Thread run = new Thread(this::run);
+    protected GridPane gpTicTacToe;
 
     private SVGPath crossHover = createCrossHover();
-
     private Circle circleHover = createCircleHover();
 
     public TicTacToeController(Main main, Match match) {
-        this.main = main;
-        this.match = match;
+        super(main, match);
     }
 
     public void start() {
@@ -123,14 +85,10 @@ public class TicTacToeController {
 
         for (Node node : childNodes) {
             if (node instanceof HBox) {
-                if (localPlayerTwo == null) {
-                    node.getStyleClass().add("tile-tictactoe-disabled");
-                }
-                if (!(localPlayerOne instanceof Ai)) {
-                    node.setOnMouseClicked(this::mouseClick);
-                    node.setOnMouseEntered(this::mouseHoverIn);
-                    node.setOnMouseExited(this::mouseHoverOut);
-                }
+                node.getStyleClass().add("tile-tictactoe-disabled");
+                node.setOnMouseClicked(this::mouseClick);
+                node.setOnMouseEntered(this::mouseHoverIn);
+                node.setOnMouseExited(this::mouseHoverOut);
             }
         }
     }
@@ -138,9 +96,9 @@ public class TicTacToeController {
     private void mouseHoverIn(Event event) {
         HBox hBox = (HBox) event.getSource();
         if (hBox.getChildren().size() == 0) {
-            if (match.getGameState() == GameState.TurnOne) {
+            if (match.getGameState() == GameState.TurnOne && match.getPlayers().one instanceof UIPlayer) {
                 hBox.getChildren().add(crossHover);
-            } else {
+            } else if (match.getGameState() == GameState.TurnTwo && match.getPlayers().two instanceof UIPlayer){
                 hBox.getChildren().add(circleHover);
             }
         }
@@ -206,7 +164,7 @@ public class TicTacToeController {
             if (node instanceof HBox) {
                 if (currentPlayer instanceof UIPlayer || currentPlayer instanceof Ai || currentPlayer instanceof LocalConnectedPlayer) {
                     Platform.runLater(() -> node.getStyleClass().remove("tile-tictactoe-disabled"));
-                } else if (!node.getStyleClass().contains("tile-tictactoe-disabled") && localPlayerTwo == null) {
+                } else if (!node.getStyleClass().contains("tile-tictactoe-disabled")) {
                     Platform.runLater(() -> node.getStyleClass().add("tile-tictactoe-disabled"));
                 }
 

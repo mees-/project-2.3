@@ -6,7 +6,7 @@ import framework.Move;
 
 import java.util.Set;
 
-public class ForfeitablePlayer extends HigherOrderPlayer {
+public class ForfeitablePlayer extends ComposablePlayer {
     private boolean hasForfeit = false;
     public ForfeitablePlayer(Player original) {
         super(original);

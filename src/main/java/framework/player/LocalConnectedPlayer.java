@@ -7,11 +7,10 @@ import connection.commands.LogoutCommand;
 import framework.BoardInterface;
 import framework.ForfeitMove;
 import framework.Move;
-import framework.player.Player;
 
 import java.util.Set;
 
-public class LocalConnectedPlayer extends HigherOrderPlayer {
+public class LocalConnectedPlayer extends ComposablePlayer {
     private final Connection connection;
 
     public LocalConnectedPlayer(Player original, Connection connection) {

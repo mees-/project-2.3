@@ -32,7 +32,7 @@ public class MoveTree {
     }
 
     private void buildTree(GameState nextTurn, int depth) {
-        if (depth > 1) {
+        if (depth > 0) {
             Iterable<Move> moves = gameUtils.getValidMoves(nextTurn, getBoard());
             for (Move move : moves) {
                 this.children.add(new MoveTree(gameUtils, this, depth-1, move));
@@ -68,6 +68,10 @@ public class MoveTree {
         return parent;
     }
 
+    public void removeParent() {
+        parent = null;
+    }
+
     public ArrayList<MoveTree> getChildren() {
         return children;
     }
@@ -80,11 +84,19 @@ public class MoveTree {
         this.evaluation = evaluation;
     }
 
-    public int getDepth() {
+    public int getHeight() {
         if (children.size() == 0) {
             return 1;
         } else {
-            return 1 + children.get(0).getDepth();
+            return 1 + children.get(0).getHeight();
+        }
+    }
+
+    public int getDepth() {
+        if (parent == null) {
+            return 1;
+        } else {
+            return 1 + parent.getDepth();
         }
     }
 

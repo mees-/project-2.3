@@ -20,18 +20,6 @@ public abstract class Ai extends Player {
 
     public abstract GameState getTurnAfterMove(BoardInterface currentBoard, Move lastMove);
 
-    public MoveTree getBestNode() {
-        minimax(tree, tree.getDepth(), Integer.MIN_VALUE, Integer.MAX_VALUE);
-        MoveTree best = tree.getChildren().get(0);
-        for (int i = 1; i < tree.getChildren().size(); i++) {
-            MoveTree current = tree.getChildren().get(i);
-            if (current.getEvaluation() > best.getEvaluation()) {
-                best = current;
-            }
-        }
-        return best;
-    }
-
     private int minimax(MoveTree position, int depth, int alpha, int beta) {
         if (depth == 0 || position.getChildren().size() == 0) {
             return analyzeMove(position.getMove(), position.getBoard());
@@ -82,16 +70,24 @@ public abstract class Ai extends Player {
                     break;
                 }
             }
-            if (tree.getDepth() != getDepth()) {
+            if (tree.getHeight() != getDepth()) {
                 for (MoveTree leaf: tree.getLeaves()) {
-                    leaf.buildTree(getDepth() - tree.getDepth());
+                    leaf.buildTree(getDepth() - leaf.getDepth());
                 }
             }
         }
-        MoveTree node = getBestNode();
-        tree = node;
+        minimax(tree, tree.getHeight(), Integer.MIN_VALUE, Integer.MAX_VALUE);
+        MoveTree best = tree.getChildren().get(0);
+        for (int i = 1; i < tree.getChildren().size(); i++) {
+            MoveTree current = tree.getChildren().get(i);
+            if (current.getEvaluation() > best.getEvaluation()) {
+                best = current;
+            }
+        }
+        tree = best;
+        tree.removeParent();
         for (Move possible : possibleMoves) {
-            if (possible.equals(node.getMove())) {
+            if (possible.equals(best.getMove())) {
                 return possible;
             }
         }

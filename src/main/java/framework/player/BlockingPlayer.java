@@ -1,9 +1,6 @@
 package framework.player;
 
-import framework.BoardInterface;
-import framework.GameResult;
-import framework.GameType;
-import framework.Move;
+import framework.*;
 
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -28,6 +25,9 @@ public class BlockingPlayer extends Player {
     public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
         try {
             Move sourceMove = move.take();
+            if (sourceMove instanceof ForfeitMove) {
+                return sourceMove;
+            }
             for (Move possibleMove : possibleMoves) {
                 if (possibleMove.getX() == sourceMove.getX() && possibleMove.getY() == sourceMove.getY()) {
                     return possibleMove;

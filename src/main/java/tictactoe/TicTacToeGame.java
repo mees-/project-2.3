@@ -2,15 +2,15 @@ package tictactoe;
 
 import framework.*;
 
-public class Game implements GameInterface
+public class TicTacToeGame implements GameInterface
 {
     private static final String GAME_NAME = "Tic-Tac-Toe";
-    private final Board board;
+    private final TicTacToeBoard board;
     private GameState lastTurn;
     private Boolean printToCommandLine = false;
 
-    public Game() {
-        board = new Board();
+    public TicTacToeGame() {
+        board = new TicTacToeBoard();
         lastTurn = null;
     }
 

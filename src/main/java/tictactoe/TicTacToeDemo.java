@@ -7,11 +7,11 @@ import framework.GameState;
 
 import java.util.Scanner;
 
-public class Demo
+public class TicTacToeDemo
 {
     public static void main(String[] args) throws InvalidMoveException, InvalidTurnException {
         Scanner input = new Scanner(System.in);
-        Game ttt = new Game();
+        TicTacToeGame ttt = new TicTacToeGame();
         boolean isGameOver = false;
         boolean draw = false;
         GameState currentTurn = GameState.TurnOne;

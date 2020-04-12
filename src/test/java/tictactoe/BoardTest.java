@@ -13,11 +13,11 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BoardTest {
 
-    static Board board;
+    static TicTacToeBoard board;
 
     @BeforeAll
     static void initializeBoard() {
-        board = new Board();
+        board = new TicTacToeBoard();
     }
 
     @Test

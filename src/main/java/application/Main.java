@@ -1,11 +1,8 @@
 package application;
 
 import ai.ReversiAi;
-import ai.TicTacToeAi;
-import connection.Connection;
 import framework.*;
 import reversi.ReversiGame;
-import tictactoe.Game;
 
 import java.io.IOException;
 import java.util.ArrayList;

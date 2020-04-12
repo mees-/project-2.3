@@ -1,13 +1,8 @@
 package reversi;
 
 import framework.*;
-import tictactoe.Board;
-import tictactoe.Game;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class ReversiBoard extends BoardInterface {

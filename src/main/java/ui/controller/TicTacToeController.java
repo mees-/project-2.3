@@ -2,10 +2,7 @@ package ui.controller;
 
 import ai.Ai;
 import framework.*;
-import framework.player.BlockingPlayer;
-import framework.player.UIPlayer;
-import framework.player.Player;
-import framework.player.Players;
+import framework.player.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -18,7 +15,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
-import tictactoe.Board;
+import tictactoe.TicTacToeBoard;
 import ui.Main;
 import ui.update.GameStateUpdate;
 
@@ -62,37 +59,19 @@ public class TicTacToeController {
 
     private Players players;
 
-    private Thread a;
+    private Thread run = new Thread(this::run);
 
-    public TicTacToeController(Main main, Framework framework, Player localPlayerOne) {
-        this.framework = framework;
+    private SVGPath crossHover = createCrossHover();
+
+    private Circle circleHover = createCircleHover();
+
+    public TicTacToeController(Main main, Match match) {
         this.main = main;
-        this.localPlayerOne = localPlayerOne;
-        System.out.println(localPlayerOne.getUsername());
-        getMatch();
-    }
-
-    public TicTacToeController(Main main, Match match, UIPlayer localPlayerOne, UIPlayer localPlayerTwo) {
-        this.localPlayerOne = localPlayerOne;
-        this.localPlayerTwo = localPlayerTwo;
         this.match = match;
-        new Thread(() -> {
-            setupNames();
-            run();
-        }).start();
     }
 
-    public void getMatch() {
-        new Thread(() -> {
-            while (match == null) {
-                match = framework.getMatch();
-                if (match != null) {
-                    match.startAsync();
-                    setupNames();
-                    run();
-                }
-            }
-        }).start();
+    public void start() {
+        run.start();
     }
 
     private SVGPath createCross() {
@@ -108,6 +87,13 @@ public class TicTacToeController {
         cross.getStyleClass().add("piece-tictactoe-possible-move");
 
         return cross;
+    }
+
+    private Circle createCircleHover() {
+        Circle circle = createCircle();
+        circle.getStyleClass().add("piece-tictactoe-possible-move");
+
+        return circle;
     }
 
     private Circle createCircle() {
@@ -132,6 +118,7 @@ public class TicTacToeController {
     }
 
     public void setup() {
+        setupNames();
         childNodes = gpTicTacToe.getChildren();
 
         for (Node node : childNodes) {
@@ -151,15 +138,18 @@ public class TicTacToeController {
     private void mouseHoverIn(Event event) {
         HBox hBox = (HBox) event.getSource();
         if (hBox.getChildren().size() == 0) {
-            hBox.getChildren().add(createCrossHover());
+            if (match.getGameState() == GameState.TurnOne) {
+                hBox.getChildren().add(crossHover);
+            } else {
+                hBox.getChildren().add(circleHover);
+            }
         }
     }
 
     private void mouseHoverOut(MouseEvent event) {
         HBox hBox = (HBox) event.getSource();
-        if (hBox.getChildren().size() > 0) {
-            hBox.getChildren().remove(0);
-        }
+        hBox.getChildren().remove(crossHover);
+        hBox.getChildren().remove(circleHover);
     }
 
     public void run() {
@@ -172,51 +162,52 @@ public class TicTacToeController {
                 throw new RuntimeException(e);
             }
 
-            Board board = ((Board) update.getBoard());
+            TicTacToeBoard board = ((TicTacToeBoard) update.getBoard());
             GameState gameState = update.getGameState();
 
-            if (gameState == GameState.TurnOne || gameState == GameState.TurnTwo) {
+            if (!gameState.isEnd()) {
                 if (gameState == GameState.TurnOne) {
-                    currentPlayer = localPlayerOne;
+                    currentPlayer = match.getPlayers().one;
                     tPlayerOne.setVisible(true);
                     tPlayerTwo.setVisible(false);
                 } else {
-                    currentPlayer = localPlayerTwo;
+                    currentPlayer = match.getPlayers().two;
                     tPlayerOne.setVisible(false);
                     tPlayerTwo.setVisible(true);
                 }
 
-                updateBoard(board, gameState);
+                updateBoard(board);
             } else if (gameState == GameState.OneWin) {
                 wcPlayerOne.setVisible(true);
-                updateBoard(board, GameState.TurnOne);
-                resetMatch();
             } else if (gameState == GameState.TwoWin) {
                 wcPlayerTwo.setVisible(true);
-                updateBoard(board, GameState.TurnTwo);
-                resetMatch();
-            } else if (gameState == GameState.Draw) {
-                // ???
-                resetMatch();
-            } else {
+            }
 
+            if (gameState.isEnd()) {
+                updateBoard(board);
+                resetMatch();
             }
         }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        main.changeToHome();
     }
 
     private void resetMatch() {
         match = null;
     }
 
-    private void updateBoard(BoardInterface board, GameState turn) {
+    private void updateBoard(BoardInterface board) {
         for (Node node : childNodes) {
             if (node instanceof HBox) {
-                if (turn == GameState.TurnOne && localPlayerTwo == null) {
+                if (currentPlayer instanceof UIPlayer || currentPlayer instanceof Ai || currentPlayer instanceof LocalConnectedPlayer) {
                     Platform.runLater(() -> node.getStyleClass().remove("tile-tictactoe-disabled"));
-                } else if (turn == GameState.TurnTwo) {
-                    if (!node.getStyleClass().contains("tile-tictactoe-disabled") && localPlayerTwo == null) {
-                        Platform.runLater(() -> node.getStyleClass().add("tile-tictactoe-disabled"));
-                    }
+                } else if (!node.getStyleClass().contains("tile-tictactoe-disabled") && localPlayerTwo == null) {
+                    Platform.runLater(() -> node.getStyleClass().add("tile-tictactoe-disabled"));
                 }
 
                 CellContent content = board.getCell(GridPane.getColumnIndex(node), GridPane.getRowIndex(node));
@@ -224,13 +215,15 @@ public class TicTacToeController {
 
                 if (content == CellContent.Local) {
                     Platform.runLater( () -> {
-                        if (hBox.getChildren().size() == 0) {
+                        if (hBox.getChildren().size() == 0 || (hBox.getChildren().size() == 1 && hBox.getChildren().contains(crossHover))) {
+                            hBox.getChildren().remove(crossHover);
                             hBox.getChildren().add((createCross()));
                         }
                     });
                 } else if (content == CellContent.Remote) {
                     Platform.runLater( () -> {
-                        if (hBox.getChildren().size() == 0) {
+                        if (hBox.getChildren().size() == 0 || (hBox.getChildren().size() == 1 && hBox.getChildren().contains(circleHover))) {
+                            hBox.getChildren().remove(circleHover);
                             hBox.getChildren().add((createCircle()));
                         }
                     });
@@ -244,6 +237,6 @@ public class TicTacToeController {
         System.out.println("click");
 
         Move move = new Move(currentPlayer.getTurn(), (GridPane.getColumnIndex(field)), (GridPane.getRowIndex(field)));
-        ((BlockingPlayer) currentPlayer).putMove(move);
+        ((BlockingPlayer)((HigherOrderPlayer) currentPlayer).getOriginal()).putMove(move);
     }
 }

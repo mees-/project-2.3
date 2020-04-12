@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import reversi.ReversiGame;
+import tictactoe.TicTacToeGame;
 import ui.controller.HomeController;
 import ui.controller.ReversiController;
 import ui.controller.TicTacToeController;
@@ -75,7 +76,6 @@ public class Main extends Application {
     }
 
     public void changePane(GameType gameType, String playerOneName, PlayerType playerType) throws IOException {
-        root.getChildren().remove(paneHome);
         Player sourcePlayer = new BlockingPlayer(playerOneName, gameType);
 
         switch (gameType) {
@@ -108,30 +108,32 @@ public class Main extends Application {
                 }
 
                 startFramework(sourcePlayer);
-                root.getChildren().remove(paneHome);
-                TicTacToeController ticTacToeController = new TicTacToeController(this, framework, sourcePlayer);
-                loader =  new FXMLLoader(getClass().getResource("/view/ticTacToe.fxml"));
+                startTicTacToe();
+                TicTacToeController ticTacToeController = null;
+
+                try {
+                    ticTacToeController = new TicTacToeController(this, framework.getMatchFuture().get());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                loader =  new FXMLLoader(getClass().getResource("/view/tictactoe.fxml"));
                 loader.setController(ticTacToeController);
                 paneTicTacToe = loader.load();
-                root.getChildren().add(paneTicTacToe);
+                setCurrentPane(paneTicTacToe);
+
                 ticTacToeController.setup();
-                startTicTacToe();
+                ticTacToeController.start();
                 break;
             default:
                 System.out.println("Something went wrong!");
         }
-
-//        ObservableList<Node> workingCollection = FXCollections.observableArrayList(root.getChildren());
-//        Collections.swap(workingCollection,0,1);
-//        root.getChildren().setAll(workingCollection);
     }
 
     public void changePane(GameType gameType, String playerOneName, String playerTwoName, PlayerType playerTypeOne, PlayerType playerTypeTwo) throws IOException {
         Player playerOne = new UIPlayer(new BlockingPlayer(playerOneName, gameType));
         Player playerTwo = new UIPlayer(new BlockingPlayer(playerTwoName, gameType));
         Match match = null;
-        root.getChildren().remove(paneFooter);
-        root.getChildren().remove(paneHome);
 
         switch (gameType) {
             case Reversi:
@@ -155,14 +157,23 @@ public class Main extends Application {
 
                 break;
             case TicTacToe:
-//                match = new Match(new Game(), playerOne, playerTwo);
-//                root.getChildren().remove(paneHome);
-//                TicTacToeController ticTacToeController = new TicTacToeController(this, match, playerOne, playerTwo);
-//                loader =  new FXMLLoader(getClass().getResource("/view/ticTacToe.fxml"));
-//                loader.setController(ticTacToeController);
-//                paneTicTacToe = loader.load();
-//                root.getChildren().add(paneTicTacToe);
-//                ticTacToeController.setup();
+                if (playerTypeOne == PlayerType.AI) {
+                    playerOne = new TicTacToeAi(playerOneName);
+                }
+                if (playerTypeTwo == PlayerType.AI) {
+                    playerTwo = new TicTacToeAi(playerTwoName);
+                }
+
+                match = new Match(new TicTacToeGame(), playerOne, playerTwo);
+                TicTacToeController ticTacToeController = new TicTacToeController(this, match);
+
+                loader =  new FXMLLoader(getClass().getResource("/view/tictactoe.fxml"));
+                loader.setController(ticTacToeController);
+                paneTicTacToe = loader.load();
+                setCurrentPane(paneTicTacToe);
+
+                ticTacToeController.setup();
+                ticTacToeController.start();
                 break;
             default:
                 System.out.println("Something went wrong!");
@@ -170,17 +181,11 @@ public class Main extends Application {
 
         match.setupGame(GameState.TurnOne);
         match.startAsync();
-
-        root.getChildren().add(paneFooter);
     }
 
     // TODO: this is definitely not how you forfeit. Use framework.ForfeitMove with a player.
     public void forfeit() {
-        try {
-            framework.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     private Pane getCurrentPane() {

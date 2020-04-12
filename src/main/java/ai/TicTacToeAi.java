@@ -1,7 +1,7 @@
 package ai;
 
 import framework.*;
-import tictactoe.Board;
+import tictactoe.TicTacToeBoard;
 
 import java.util.*;
 
@@ -23,7 +23,7 @@ public class TicTacToeAi extends Ai {
     public int analyzeMove(Move lastMove, BoardInterface board) {
         // this method was found on
         // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-2-evaluation-function/
-        CellContent gameWin = ((Board)board).checkForWinBetter();
+        CellContent gameWin = ((TicTacToeBoard)board).checkForWinBetter();
         if (gameWin == turn.toCellContent()) {
             return 10;
         } else if (gameWin == turn.otherPlayer().toCellContent()) {
@@ -35,7 +35,7 @@ public class TicTacToeAi extends Ai {
 
     @Override
     public Set<Move> getValidMoves(GameState state, BoardInterface board) {
-        if (((Board)board).checkForWin()) {
+        if (((TicTacToeBoard)board).checkForWin()) {
             return new HashSet<>();
         }
         HashSet<Move> result = new HashSet<>();

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Board extends BoardInterface {
+public class TicTacToeBoard extends BoardInterface {
     // Colored text for command line
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
@@ -15,7 +15,7 @@ public class Board extends BoardInterface {
 
         private final CellContent[][] board;
 
-    public Board() {
+    public TicTacToeBoard() {
         board = new CellContent[SIZE][SIZE];
         reset();
     }
@@ -198,8 +198,8 @@ public class Board extends BoardInterface {
             return result;
         }
 
-        public Board clone() {
-            Board clone = new Board();
+        public TicTacToeBoard clone() {
+            TicTacToeBoard clone = new TicTacToeBoard();
             for (int x = 0; x < SIZE; x++) {
                 for (int y = 0; y<SIZE; y++) {
                     clone.board[x][y] = this.board[x][y];

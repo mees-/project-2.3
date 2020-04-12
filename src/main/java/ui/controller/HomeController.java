@@ -113,7 +113,9 @@ public class HomeController {
     }
 
     private void btnChange(Button btnOne, Button btnTwo) {
-        btnOne.getStyleClass().add("btn-primary");
+        if (!btnOne.getStyleClass().contains("btn-primary")) {
+            btnOne.getStyleClass().add("btn-primary");
+        }
         btnTwo.getStyleClass().remove("btn-primary");
     }
 

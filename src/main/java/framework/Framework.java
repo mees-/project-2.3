@@ -7,7 +7,7 @@ import connection.eventHandlers.EventPayload;
 import connection.eventHandlers.MatchOfferHandler;
 import framework.player.Player;
 import reversi.ReversiGame;
-import tictactoe.Game;
+import tictactoe.TicTacToeGame;
 
 import java.io.IOException;
 
@@ -45,7 +45,7 @@ public class Framework {
                 MatchOfferHandler.MatchOffer matchOffer = (MatchOfferHandler.MatchOffer)payload;
                 switch (matchOffer.getGameType()) {
                     case TicTacToe:
-                        game = new Game();
+                        game = new TicTacToeGame();
                         break;
                     case Reversi:
                         game = new ReversiGame();

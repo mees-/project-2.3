@@ -9,15 +9,15 @@ import org.junit.jupiter.api.*;
 
 class GameTest {
 
-    static Game game;
+    static TicTacToeGame game;
 
     @BeforeAll
-    static void initializeGame() { game = new Game(); }
+    static void initializeGame() { game = new TicTacToeGame(); }
 
     @Test
     @Order(2)
     void getBoard() {
-        assertTrue(game.getBoard() instanceof Board);
+        assertTrue(game.getBoard() instanceof TicTacToeBoard);
     }
 
     @Test

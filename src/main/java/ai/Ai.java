@@ -20,7 +20,6 @@ public abstract class Ai extends Player {
 
     public abstract GameState getTurnAfterMove(BoardInterface currentBoard, Move lastMove);
 
-
     public MoveTree getBestNode() {
         minimax(tree, tree.getDepth(), Integer.MIN_VALUE, Integer.MAX_VALUE);
         MoveTree best = tree.getChildren().get(0);

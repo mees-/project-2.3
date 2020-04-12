@@ -10,6 +10,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 public class Match {
+    private static boolean printDebug = false;
+
     private GameState gameState;
     private GameInterface game;
     private LinkedBlockingQueue<GameStateUpdate> gameStateUpdates= new LinkedBlockingQueue<>();
@@ -39,6 +41,11 @@ public class Match {
 
         players.one.setTurn(GameState.TurnOne);
         players.two.setTurn(GameState.TurnTwo);
+
+        String printBoardEnv = System.getenv("GAME_MATCH_DEBUG");
+        if (printBoardEnv != null) {
+            printDebug = true;
+        }
     }
 
     public void setupGame(GameState startingPlayer) {
@@ -98,7 +105,9 @@ public class Match {
                 setGameState(newState);
                 lastMove = move;
                 gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
-                System.out.println(getGame().getBoard().toString());
+                if (printDebug) {
+                    System.out.println(getGame().getBoard().toString());
+                }
             } catch (InvalidMoveException e) {
                 throw new RuntimeException(e);
             } catch (InvalidTurnException e) {
@@ -108,7 +117,9 @@ public class Match {
             }
         }
 
-        System.out.println("Game end: " + getGameState().toString());
+        if (printDebug) {
+            System.out.println("Game end: " + getGameState().toString());
+        }
         switch (getGameState()) {
             case OneWin:
                 players.one.onEnd(GameResult.Win);

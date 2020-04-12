@@ -61,4 +61,9 @@ public class ReversiAi extends Ai {
             return lastMove.getPlayer();
         }
     }
+
+    @Override
+    public int getDepth() {
+        return 6;
+    }
 }

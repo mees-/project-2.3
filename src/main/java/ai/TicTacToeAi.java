@@ -92,6 +92,11 @@ public class TicTacToeAi extends Ai {
         return lastMove.getPlayer().otherPlayer();
     }
 
+    @Override
+    public int getDepth() {
+        return 9;
+    }
+
     private static class CoordinatePair {
         public final int x;
         public final int y;

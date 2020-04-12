@@ -31,13 +31,17 @@ public class MoveTree {
         buildTree(gameUtils.getTurnAfterMove(getBoard(), getMove()), depth);
     }
 
-    private void buildTree(GameState currentPlayer, int depth) {
+    private void buildTree(GameState nextTurn, int depth) {
         if (depth > 1) {
-            Iterable<Move> moves = gameUtils.getValidMoves(currentPlayer, getBoard());
+            Iterable<Move> moves = gameUtils.getValidMoves(nextTurn, getBoard());
             for (Move move : moves) {
                 this.children.add(new MoveTree(gameUtils, this, depth-1, move));
             }
         }
+    }
+
+    public void buildTree(int depth) {
+        buildTree(gameUtils.getTurnAfterMove(getBoard(), getMove()), depth);
     }
 
     public BoardInterface getBoard() {
@@ -82,5 +86,21 @@ public class MoveTree {
         } else {
             return 1 + children.get(0).getDepth();
         }
+    }
+
+    public boolean isLeaf() {
+        return children.size() == 0;
+    }
+
+    public ArrayList<MoveTree> getLeaves() {
+        ArrayList<MoveTree> result = new ArrayList<>();
+        for (MoveTree node : children) {
+            if (node.isLeaf()) {
+                result.add(node);
+            } else {
+                result.addAll(node.getLeaves());
+            }
+        }
+        return result;
     }
 }

@@ -2,7 +2,6 @@ package ai;
 
 import framework.*;
 import framework.player.Player;
-import tictactoe.Board;
 
 import java.util.Set;
 
@@ -22,13 +21,7 @@ public abstract class Ai extends Player {
     public abstract GameState getTurnAfterMove(BoardInterface currentBoard, Move lastMove);
 
 
-
-    private Move getBestMove(BoardInterface board, int depth) {
-        tree = new MoveTree(this, board, depth, turn);
-        return minimax();
-    }
-
-    public Move minimax () {
+    public MoveTree getBestNode() {
         minimax(tree, tree.getDepth(), Integer.MIN_VALUE, Integer.MAX_VALUE);
         MoveTree best = tree.getChildren().get(0);
         for (int i = 1; i < tree.getChildren().size(); i++) {
@@ -37,7 +30,7 @@ public abstract class Ai extends Player {
                 best = current;
             }
         }
-        return best.getMove();
+        return best;
     }
 
     private int minimax(MoveTree position, int depth, int alpha, int beta) {
@@ -71,13 +64,35 @@ public abstract class Ai extends Player {
         }
     }
 
-
+    public abstract int getDepth();
 
     @Override
     public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
-        Move move = getBestMove(board, 6);
+        // this is never called since we override the other overload
+        return null;
+    }
+
+    @Override
+    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
+        if (tree == null ) {
+            tree = new MoveTree(this, board, getDepth(), turn);
+        } else {
+            for (MoveTree child : tree.getChildren()) {
+                if (child.getMove().equals(lastMove)) {
+                    tree = child;
+                    break;
+                }
+            }
+            if (tree.getDepth() != getDepth()) {
+                for (MoveTree leaf: tree.getLeaves()) {
+                    leaf.buildTree(getDepth() - tree.getDepth());
+                }
+            }
+        }
+        MoveTree node = getBestNode();
+        tree = node;
         for (Move possible : possibleMoves) {
-            if (possible.equals(move)) {
+            if (possible.equals(node.getMove())) {
                 return possible;
             }
         }

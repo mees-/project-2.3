@@ -7,12 +7,16 @@ import ui.update.GameStateUpdate;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Consumer;
 
 public class Match {
     private GameState gameState;
     private GameInterface game;
     private LinkedBlockingQueue<GameStateUpdate> gameStateUpdates= new LinkedBlockingQueue<>();
     private Thread thread = new Thread(this::gameLoop);
+    private Move lastMove = null;
+
+    private Consumer<Match> onEnd;
 
     private final Players players = new Players();
 
@@ -71,7 +75,7 @@ public class Match {
                     throw new RuntimeException("Really shouldn't be here!");
             }
             Set<Move> possibleMoves = game.getBoard().getValidMoves(gameState);
-            Move move = playerToMove.getNextMove(game.getBoard(), Collections.unmodifiableSet(possibleMoves));
+            Move move = playerToMove.getNextMove(game.getBoard(), Collections.unmodifiableSet(possibleMoves), lastMove);
             if (move instanceof ForfeitMove) {
                 setGameState(playerToMove.getTurn().otherPlayer().toWin());
                 System.out.println(playerToMove.getUsername() + " forfeit");
@@ -92,6 +96,7 @@ public class Match {
             try {
                 GameState newState = game.doMove(move);
                 setGameState(newState);
+                lastMove = move;
                 gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
                 System.out.println(getGame().getBoard().toString());
             } catch (InvalidMoveException e) {
@@ -120,6 +125,9 @@ public class Match {
             default:
                 throw new RuntimeException("Really shoulnd't be here 2");
         }
+        if (onEnd != null) {
+            onEnd.accept(this);
+        }
     }
 
     public Players getPlayers() {
@@ -132,5 +140,9 @@ public class Match {
 
     public void waitForEnd() throws InterruptedException {
         thread.join();
+    }
+
+    public void onEnd(Consumer<Match> fn) {
+        onEnd = fn;
     }
 }

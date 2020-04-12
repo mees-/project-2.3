@@ -25,7 +25,7 @@ public class BlockingPlayer extends Player {
     }
 
     @Override
-    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
+    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
         try {
             Move sourceMove = move.take();
             for (Move possibleMove : possibleMoves) {

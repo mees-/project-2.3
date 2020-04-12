@@ -42,7 +42,7 @@ public class Main {
         }
 
         @Override
-        public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
+        public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
             for (Move move : possibleMoves) {
                 System.out.println("Possible move: " + move.toString());
             }
@@ -57,12 +57,12 @@ public class Main {
                     }
                 }
                 System.out.println("Not a valid move, try again");
-                return getNextMove(board, possibleMoves);
+                return getNextMove(board, possibleMoves, lastMove);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (NumberFormatException e) {
                 System.out.println("That's not a number, try again");
-                return getNextMove(board, possibleMoves);
+                return getNextMove(board, possibleMoves, lastMove);
             }
         }
 

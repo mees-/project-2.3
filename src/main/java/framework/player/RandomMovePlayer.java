@@ -17,7 +17,7 @@ public class RandomMovePlayer extends Player {
     }
 
     @Override
-    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
+    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
         int index = rand.nextInt(possibleMoves.size());
         for (Move move : possibleMoves) {
             if (index == 0) {

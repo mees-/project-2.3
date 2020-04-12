@@ -17,11 +17,7 @@ public abstract class Player {
         this.gameType = gameType;
     }
 
-    public abstract Move getNextMove(BoardInterface board, Set<Move> possibleMoves);
-
-    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
-        return getNextMove(board, possibleMoves);
-    }
+    public abstract Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove);
 
     public abstract void onEnd(GameResult state);
 

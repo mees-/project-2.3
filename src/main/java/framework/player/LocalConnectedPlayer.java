@@ -25,8 +25,8 @@ public class LocalConnectedPlayer extends HigherOrderPlayer {
     }
 
     @Override
-    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
-        Move nextMove = super.getNextMove(board, possibleMoves);
+    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
+        Move nextMove = super.getNextMove(board, possibleMoves, lastMove);
         if (nextMove instanceof ForfeitMove) {
 
         } else {

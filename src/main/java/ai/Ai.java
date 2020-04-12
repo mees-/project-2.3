@@ -54,12 +54,6 @@ public abstract class Ai extends Player {
     public abstract int getDepth();
 
     @Override
-    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
-        // this is never called since we override the other overload
-        return null;
-    }
-
-    @Override
     public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
         if (tree == null ) {
             tree = new MoveTree(this, board, getDepth(), turn);

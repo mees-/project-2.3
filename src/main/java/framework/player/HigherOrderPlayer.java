@@ -13,8 +13,8 @@ public class HigherOrderPlayer extends Player {
     }
 
     @Override
-    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
-        return original.getNextMove(board, possibleMoves);
+    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
+        return original.getNextMove(board, possibleMoves, lastMove);
     }
 
     @Override

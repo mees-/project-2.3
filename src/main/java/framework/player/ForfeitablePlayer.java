@@ -17,11 +17,11 @@ public class ForfeitablePlayer extends HigherOrderPlayer {
     }
 
     @Override
-    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves) {
+    public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
         if (hasForfeit) {
             return new ForfeitMove(turn);
         } else {
-            return super.getNextMove(board, possibleMoves);
+            return super.getNextMove(board, possibleMoves, lastMove);
         }
     }
 }

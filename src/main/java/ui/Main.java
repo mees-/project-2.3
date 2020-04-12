@@ -3,6 +3,7 @@ package ui;
 import ai.ReversiAi;
 import ai.TicTacToeAi;
 import connection.Connection;
+import connection.commands.LogoutCommand;
 import framework.Framework;
 import framework.GameState;
 import framework.GameType;
@@ -47,6 +48,15 @@ public class Main extends Application {
         stage.setTitle("Tha Koel Gamebox");
         initUI(stage);
         stage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        if (framework != null) {
+            connection.executeCommand(new LogoutCommand()).waitForResolve();
+            framework.close();
+        }
     }
 
     private void initUI(Stage stage) throws IOException {

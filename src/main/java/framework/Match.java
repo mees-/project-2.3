@@ -62,6 +62,10 @@ public class Match {
         thread.start();
     }
 
+    public void startSync() {
+        gameLoop();
+    }
+
     private void gameLoop() {
         try {
             gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));

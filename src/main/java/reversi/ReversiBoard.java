@@ -213,12 +213,7 @@ public class ReversiBoard extends BoardInterface {
      * @return boolean if move is valid.
      */
     public boolean validMove(GameState state, int currentX, int currentY, int checkX, int checkY) {
-        CellContent opposite;
-        try {
-            opposite = getOpposite(state).toCellContent();
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
-        }
+        CellContent opposite = getOpposite(state).toCellContent();
 
         if ((currentX + checkX < 0) || (currentX + checkX >= getSize() )) {
             return false;
@@ -249,12 +244,7 @@ public class ReversiBoard extends BoardInterface {
      * @return boolean if move creates line match
      */
     public boolean check_line_match(GameState state, int newX, int newY, int nextX, int nextY) {
-        CellContent player;
-        try {
-            player = state.toCellContent();
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
-        }
+        CellContent player = state.toCellContent();
         if (getCell(newX, newY) == player) {
             return true;
         }
@@ -271,13 +261,7 @@ public class ReversiBoard extends BoardInterface {
     }
 
     public GameState getOpposite(GameState state) {
-        GameState opponent;
-        if (state == GameState.TurnOne) {
-            opponent = GameState.TurnTwo;
-        } else {
-            opponent = GameState.TurnOne;
-        }
-        return opponent;
+        return state.otherPlayer();
     }
 
     public void setStartingPlayer(GameState startingPlayer) {

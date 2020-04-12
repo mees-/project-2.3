@@ -32,14 +32,14 @@ public enum GameState {
         return null;
     }
 
-    public CellContent toCellContent() throws InvalidOperationException {
+    public CellContent toCellContent() {
         switch (this) {
             case TurnOne:
                 return CellContent.Local;
             case TurnTwo:
                 return CellContent.Remote;
             default:
-                throw new InvalidOperationException("Can't turn " + this.toString() + " into a CellContent object");
+                return null;
         }
     }
 

@@ -43,12 +43,7 @@ public class ReversiGame implements GameInterface {
         if(!validCurrentTurn(move.getPlayer())) {
             throw new InvalidTurnException(move.getPlayer() + " took two turns in a row, only one is allowed.");
         }
-        CellContent player;
-        try {
-            player = move.getPlayer().toCellContent();
-        } catch (GameState.InvalidOperationException e) {
-            throw new RuntimeException(e);
-        }
+        CellContent player = move.getPlayer().toCellContent();
         validMoves = getBoard().getValidMoves(move.getPlayer());
         if (validMoves.contains(move)) {
             board.setCell(move.getX(), move.getY(), player);

@@ -164,6 +164,7 @@ public class Main extends Application {
         root.getChildren().add(paneFooter);
     }
 
+    // TODO: this is definitely not how you forfeit. Use framework.ForfeitMove with a player.
     public void forfeit() {
         try {
             framework.close();

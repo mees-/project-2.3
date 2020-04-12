@@ -195,7 +195,7 @@ public class ReversiController extends GameController {
 
         if (field.getStyleClass().contains("tile-reversi-available")) {
             Move move = new Move(currentPlayer.getTurn(), (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
-            ((BlockingPlayer)((HigherOrderPlayer) currentPlayer).getOriginal()).putMove(move);
+            ((BlockingPlayer)((HigherOrderPlayer) currentPlayer).getSource()).putMove(move);
         }
     }
 

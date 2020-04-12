@@ -10,13 +10,15 @@ import reversi.ReversiGame;
 import tictactoe.TicTacToeGame;
 
 import java.io.IOException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Framework {
     private Match match;
     private final Player localPlayer;
     private final Connection connection;
     private final Thread eventLoopThread = new Thread(this::eventLoop);
-    private GenericFuture<Match> matchFuture = new GenericFuture<>();
+    private BlockingQueue<Match> matchQueue = new LinkedBlockingQueue<>();
 
     public Framework(Player localPlayer, Connection connection) {
         this.localPlayer = localPlayer;
@@ -55,7 +57,11 @@ public class Framework {
                 synchronized (match) {
                     match.setupGame(matchOffer.getStartingState());
                     match.startAsync();
-                    matchFuture.resolve(match);
+                    try {
+                        matchQueue.put(match);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 break;
             }
@@ -72,7 +78,7 @@ public class Framework {
         return match;
     }
 
-    public synchronized GenericFuture<Match> getMatchFuture() {
-        return matchFuture;
+    public Match getNextMatch() throws InterruptedException {
+        return matchQueue.take();
     }
 }

@@ -42,10 +42,20 @@ public class HigherOrderPlayer extends Player {
         return super.getGameType();
     }
 
-    public Player getOriginal() {
+    public Player getSource() {
         if (original instanceof HigherOrderPlayer) {
-            return ((HigherOrderPlayer) original).getOriginal();
+            return ((HigherOrderPlayer) original).getSource();
         }
         return original;
+    }
+
+    public <T extends HigherOrderPlayer> HigherOrderPlayer getOrder(Class<T> type) throws IllegalStateException {
+        if (type.isInstance(this)) {
+            return this;
+        } else if (original instanceof HigherOrderPlayer) {
+            return ((HigherOrderPlayer) original).getOrder(type);
+        } else {
+            throw new IllegalStateException("Cant find " + type.toString() + " in the chain");
+        }
     }
 }

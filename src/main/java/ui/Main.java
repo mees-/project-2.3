@@ -219,8 +219,8 @@ public class Main extends Application {
             if (homeController.getPlayTypeEnum() == PlayType.ONLINE) {
                 try {
                     stopSubscribe();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -239,7 +239,7 @@ public class Main extends Application {
         connection.subscribe(GameType.TicTacToe);
     }
 
-    public void stopSubscribe() throws IOException {
+    public void stopSubscribe() throws IOException, InterruptedException {
         framework.close();
     }
 }

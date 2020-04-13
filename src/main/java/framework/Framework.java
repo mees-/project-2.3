@@ -68,8 +68,8 @@ public class Framework {
         }
     }
 
-    public void close() throws IOException {
-        connection.executeCommand(new LogoutCommand());
+    public void close() throws IOException, InterruptedException {
+        connection.executeCommand(new LogoutCommand()).waitForResolve();
         connection.close();
         eventLoopThread.interrupt();
     }

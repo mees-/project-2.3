@@ -63,6 +63,7 @@ public class Match {
     }
 
     public void startAsync() {
+//        thread.setPriority(Thread.MAX_PRIORITY);
         thread.start();
     }
 
@@ -114,11 +115,7 @@ public class Match {
                 if (printDebug) {
                     System.out.println(getGame().getBoard().toString());
                 }
-            } catch (InvalidMoveException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidTurnException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (InvalidMoveException | InvalidTurnException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }

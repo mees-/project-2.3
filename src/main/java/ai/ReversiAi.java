@@ -74,8 +74,8 @@ public class ReversiAi extends Ai {
     }
 
     @Override
-    public GameState getTurnAfterMove(BoardInterface currentBoard, Move lastMove) {
-        if (((ReversiBoard)currentBoard).canMakeTurn(((ReversiBoard)currentBoard).getOpposite(lastMove.getPlayer()))) {
+    public GameState getTurnAfterMove(BoardInterface board, Move lastMove) {
+        if (((ReversiBoard) board).canMakeTurn(lastMove.getPlayer().otherPlayer())) {
             return lastMove.getPlayer().otherPlayer();
         } else {
             return lastMove.getPlayer();

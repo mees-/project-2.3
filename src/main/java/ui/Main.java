@@ -78,6 +78,7 @@ public class Main extends Application {
         setCurrentPane(paneLobby);
 
         lobbyController.tournamentSetup();
+        lobbyController.start();
     }
 
     private Player createPlayer(String playerName, PlayerType playerType, GameType gameType) {
@@ -224,6 +225,11 @@ public class Main extends Application {
                 }
             }
         }
+    }
+
+    public void changeToHome() {
+        previousPane = paneHome;
+        changePane();
     }
 
     public void startFramework(Player player) throws IOException {

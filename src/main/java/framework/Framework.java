@@ -2,7 +2,11 @@ package framework;
 
 import connection.Connection;
 import connection.GenericFuture;
+import connection.commands.ChallengeCommand;
+import connection.commands.GetPlayerListCommand;
 import connection.commands.LogoutCommand;
+import connection.commands.response.PlayerList;
+import connection.commands.response.StandardResponse;
 import connection.eventHandlers.EventPayload;
 import connection.eventHandlers.MatchOfferHandler;
 import framework.player.Player;
@@ -80,5 +84,21 @@ public class Framework {
 
     public Match getNextMatch() throws InterruptedException {
         return matchQueue.take();
+    }
+
+    public PlayerList getPlayers() {
+        try {
+            return (PlayerList) connection.executeCommand(new GetPlayerListCommand()).get();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendChallenge(String name, GameType gameType) {
+        connection.executeCommand(new ChallengeCommand("", gameType));
+    }
+
+    public void cancelChallenge() {
+//        connection.executeCommand()
     }
 }

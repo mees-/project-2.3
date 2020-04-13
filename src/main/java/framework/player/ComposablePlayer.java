@@ -18,6 +18,11 @@ public class ComposablePlayer extends Player {
     }
 
     @Override
+    public void forfeit() {
+        original.forfeit();
+    }
+
+    @Override
     public void onEnd(GameResult state) {
         original.onEnd(state);
     }

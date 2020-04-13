@@ -18,6 +18,9 @@ public class RandomMovePlayer extends Player {
 
     @Override
     public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
+        if (hasForfeit) {
+            return new ForfeitMove(turn);
+        }
         int index = rand.nextInt(possibleMoves.size());
         for (Move move : possibleMoves) {
             if (index == 0) {
@@ -27,6 +30,11 @@ public class RandomMovePlayer extends Player {
             }
         }
         return null;
+    }
+
+    @Override
+    public void forfeit() {
+        hasForfeit = true;
     }
 
     @Override

@@ -8,6 +8,7 @@ public abstract class Player {
     private String username;
     protected GameState turn;
     protected GameType gameType;
+    protected boolean hasForfeit = false;
 
     public Player(String username, GameType gameType) {
         if (username == null) {
@@ -18,6 +19,8 @@ public abstract class Player {
     }
 
     public abstract Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove);
+
+    public abstract void forfeit();
 
     public abstract void onEnd(GameResult state);
 
@@ -35,6 +38,10 @@ public abstract class Player {
 
     public GameType getGameType() {
         return gameType;
+    }
+
+    public boolean hasForfeit() {
+        return hasForfeit;
     }
 
     public static void logEnd(GameResult state) {

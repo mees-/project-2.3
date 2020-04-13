@@ -46,6 +46,7 @@ public class ReversiController extends GameController {
         Platform.runLater(() -> {
             new Thread(() -> {
                 players = match.getPlayers();
+                System.out.println(players.one.getUsername());
                 txtPlayerOne.setText(players.one.getUsername());
                 txtPlayerTwo.setText(players.two.getUsername());
                 Player current = match.getCurrentPlayer();
@@ -67,7 +68,10 @@ public class ReversiController extends GameController {
 
         for (Node node : childNodes) {
             if (node instanceof HBox) {
-                node.getStyleClass().add("tile-reversi-disabled");
+                if (!node.getStyleClass().contains("tile-reversi-disabled")) {
+                    node.getStyleClass().add("tile-reversi-disabled");
+                }
+
                 node.setOnMouseClicked((this::mouseClick));
             }
         }
@@ -85,16 +89,24 @@ public class ReversiController extends GameController {
 
             ReversiBoard board = ((ReversiBoard) update.getBoard());
             GameState gameState = update.getGameState();
+
             int[] score = board.countPieces();
+            if (score[0] + score[1] == 64) {
+                int i = score[0] + score[1];
+                System.out.println(i);
+            }
+
             Platform.runLater( () -> {
                 if (!gameState.isEnd()) {
-                    if (match.getCurrentPlayer() == players.one) {
-                        tPlayerOne.setVisible(true);
-                        tPlayerTwo.setVisible(false);
-                    } else {
-                        tPlayerTwo.setVisible(true);
-                        tPlayerOne.setVisible(false);
-                    }
+//                    if (match.getCurrentPlayer() == players.one) {
+                        if (match.getGameState() == GameState.TurnOne) {
+                            tPlayerOne.setVisible(true);
+                            tPlayerTwo.setVisible(false);
+                        } else {
+                            tPlayerTwo.setVisible(true);
+                            tPlayerOne.setVisible(false);
+                        }
+//                    }
                 } else {
                     tPlayerOne.setVisible(false);
                     tPlayerTwo.setVisible(false);
@@ -103,6 +115,7 @@ public class ReversiController extends GameController {
                 sPlayerTwo.setText(Integer.toString(score[1]));
                 sPlayerOne.setText(Integer.toString(score[0]));
             });
+
 
             if (!gameState.isEnd()) {
                 updateBoard(board, gameState);
@@ -122,20 +135,26 @@ public class ReversiController extends GameController {
             }
         }
 
+
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        if (main.isTournament()) {
-            main.changeToLobby();
-        } else {
-            main.changeToHome();
-        }
+        main.changePane();
     }
 
     private void resetMatch() {
+        Player sourceOne = match.getPlayers().one.getSource();
+        Player sourceTwo = match.getPlayers().two.getSource();
+        if (sourceOne instanceof Ai) {
+            ((Ai) sourceOne).reset();
+        }
+        if (sourceTwo instanceof Ai) {
+            ((Ai) sourceTwo).reset();
+        }
+
         match = null;
     }
 
@@ -219,6 +238,6 @@ public class ReversiController extends GameController {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        main.changeToHome();
+        main.changePane();
     }
 }

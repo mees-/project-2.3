@@ -113,4 +113,8 @@ public abstract class Ai extends Player {
     public void onEnd(GameResult state) {
         Player.logEnd(state);
     }
+
+    public void reset() {
+        tree = null;
+    }
 }

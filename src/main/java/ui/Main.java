@@ -22,7 +22,7 @@ import java.io.IOException;
 
 public class Main extends Application {
     private Pane paneHome, paneGame, paneFooter, paneLobby;
-    private Pane currentPane;
+    private Pane currentPane, previousPane;
     private Pane root;
     private Framework framework;
     private Connection connection;
@@ -34,8 +34,6 @@ public class Main extends Application {
     private GameType chosenGameEnum = GameType.Reversi;
 
     private FXMLLoader loader;
-
-    private boolean tournament;
 
     public static void main(String[] args) {
         launch(args);
@@ -74,7 +72,7 @@ public class Main extends Application {
 
     public void lobbySetup(GameType gameType, String playerName, PlayerType playerType) throws IOException {
         startFramework(createPlayer(playerName, playerType, gameType));
-        LobbyController lobbyController = new LobbyController(this, framework, playerName, playerType);
+        LobbyController lobbyController = new LobbyController(this, framework, playerName, playerType, gameType);
         loader = new FXMLLoader(getClass().getResource("/view/lobby.fxml"));
         loader.setController(lobbyController);
         paneLobby = loader.load();
@@ -106,37 +104,43 @@ public class Main extends Application {
         return player;
     }
 
-    public void changeToLobby() {
-        setTournament(false);
-        setCurrentPane(paneLobby);
-    }
-
-    public boolean isTournament() {
-        return tournament;
-    }
-
-    public void setTournament(boolean tournament) {
-        this.tournament = tournament;
-    }
-
-    public void onlineGameSetup(GameType gameType, String playerName, PlayerType playerType) throws IOException {
-        GameController gameController = null;
-        if (!isTournament()) {
-            startFramework(createPlayer(playerName, playerType, gameType));
+    public void gameSetupSubscribe(GameType gameType, String playerName, PlayerType playerType) throws IOException {
+        startFramework(createPlayer(playerName, playerType, gameType));
+        switch (gameType) {
+            case Reversi:
+                startReversi();
+                break;
+            case TicTacToe:
+                startTicTacToe();
+                break;
         }
+
+        GameController gameController = onlineGameControllerSetup(gameType);
+        new Thread(() -> {
+            try {
+                gameController.setup(framework.getNextMatch());
+                gameController.start();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public void gameSetupLobby(GameType gameType, Match match) throws IOException {
+        GameController gameController = onlineGameControllerSetup(gameType);
+        gameController.setup(match);
+        gameController.start();
+    }
+
+    public GameController onlineGameControllerSetup(GameType gameType) throws IOException {
+        GameController gameController = null;
 
         switch (gameType) {
             case Reversi:
-                if (!isTournament()) {
-                    startReversi();
-                }
                 gameController = new ReversiController(this);
-                loader =  new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
+                loader = new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
                 break;
             case TicTacToe:
-                if (!isTournament()) {
-                    startTicTacToe();
-                }
                 gameController = new TicTacToeController(this);
                 loader =  new FXMLLoader(getClass().getResource("/view/tictactoe.fxml"));
                 break;
@@ -148,12 +152,7 @@ public class Main extends Application {
         paneGame = loader.load();
         setCurrentPane(paneGame);
 
-        try {
-            gameController.setup(framework.getNextMatch());
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        gameController.start();
+        return gameController;
     }
 
     public void localGameSetup(GameType gameType, String playerOneName, String playerTwoName, PlayerType playerOneType, PlayerType playerTwoType) throws IOException {
@@ -204,6 +203,7 @@ public class Main extends Application {
     private void setCurrentPane(Pane newCurrentPane) {
         Platform.runLater( () -> {
             root.getChildren().remove(getCurrentPane());
+            previousPane = getCurrentPane();
             this.currentPane = newCurrentPane;
             root.getChildren().add(newCurrentPane);
             root.getChildren().remove(paneFooter);
@@ -211,18 +211,19 @@ public class Main extends Application {
         });
     }
 
-    public void changeToHome() {
-        setCurrentPane(paneHome);
+    public void changePane() {
+        paneGame = null;
+
+        if (previousPane == paneLobby) {
+            setCurrentPane(paneLobby);
+        } else if (previousPane == paneHome) {
+            setCurrentPane(paneHome);
+        }
     }
 
     public void startFramework(Player player) throws IOException {
         connection = new Connection();
-        Player connectedPlayer = new LocalConnectedPlayer(player, connection);
-        if (player instanceof BlockingPlayer) {
-            connectedPlayer = new UIPlayer(connectedPlayer);
-        }
-
-        framework = new Framework(connectedPlayer, connection);
+        framework = new Framework(new LocalConnectedPlayer(player, connection), connection);
     }
 
     private void startReversi() {

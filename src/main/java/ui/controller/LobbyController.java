@@ -1,9 +1,11 @@
 package ui.controller;
 
+import ai.Ai;
 import framework.Framework;
 import framework.GameInterface;
 import framework.GameType;
 import framework.Match;
+import framework.player.Player;
 import javafx.fxml.FXML;
 import ui.Main;
 import ui.settings.PlayerType;
@@ -16,30 +18,30 @@ public class LobbyController {
     private Framework framework;
     private Match match;
     private Main main;
-    private Thread tournamentThread = new Thread(() -> {
+    private GameType gameType;
 
-        if (!main.isTournament()) {
+    private Thread tournamentThread = new Thread(() -> {
+        while (true) {
             try {
                 match = framework.getNextMatch();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
 
-        try {
-            main.setTournament(true);
-            main.onlineGameSetup(match.getGame().getType(), playerName, playerType);
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                main.gameSetupLobby(match.getGame().getType(), match);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     });
 
-
-    public LobbyController(Main main, Framework framework, String playerName, PlayerType playerType) {
+    public LobbyController(Main main, Framework framework, String playerName, PlayerType playerType, GameType gameType) {
         this.framework = framework;
         this.main = main;
         this.playerName = playerName;
         this.playerType = playerType;
+        this.gameType = gameType;
     }
 
     public void tournamentSetup() {

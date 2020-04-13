@@ -22,7 +22,7 @@ public class Match {
 
     private Consumer<Match> onEnd;
 
-    private final Players<ComposablePlayer> players = new Players();
+    private Players<ComposablePlayer> players = new Players<>();
 
     public GameState getGameState() {
         return gameState;

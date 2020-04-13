@@ -175,7 +175,7 @@ public class HomeController {
                 if (onlineOptionEnum == OnlineOption.CHALLENGE) {
                     main.lobbySetup(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
                 } else {
-                    main.onlineGameSetup(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
+                    main.gameSetupSubscribe(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
                 }
             }
         }

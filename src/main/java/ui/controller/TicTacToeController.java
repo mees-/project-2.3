@@ -138,7 +138,7 @@ public class TicTacToeController extends GameController {
             throw new RuntimeException(e);
         }
 
-        main.changeToHome();
+        main.changePane();
     }
 
     private void resetMatch() {

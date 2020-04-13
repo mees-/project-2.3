@@ -257,7 +257,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button fx:id="btnChallenge" mnemonicParsing="false" onAction="#optionButtonEvent" text="Challenge">
+                  <Button fx:id="btnChallenge" mnemonicParsing="false" onAction="#optionButtonEvent" text="Lobby">
                      <padding>
                         <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
                      </padding>
@@ -271,21 +271,6 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
-                  </Button>
-                  <Button fx:id="btnChallenge1" mnemonicParsing="false" onAction="#optionButtonEvent" text="Tournament">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <padding>
-                        <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
-                     </padding>
-                     <styleClass>
-                        <String fx:value="btn" />
-                        <String fx:value="btn-game" />
-                     </styleClass>
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
                   </Button>
                </children>
             </VBox>
@@ -296,8 +281,8 @@
          </padding>
       </HBox>
       <Separator />
-      <Region />
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <Region minHeight="40.0" />
+      <HBox alignment="CENTER">
          <children>
             <Button mnemonicParsing="false" onAction="#playButtonEvent" text="Play">
                <padding>
@@ -313,7 +298,7 @@
             </Button>
          </children>
       </HBox>
-      <Region />
+      <Region minHeight="40.0" />
    </children>
    <stylesheets>
       <URL value="@../css/bootstrapfx.css" />

@@ -82,6 +82,8 @@
 
 .btn-challenge:hover {
     -fx-background-color: #4b636e;
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
 }
 
 /**

@@ -22,10 +22,6 @@ public class ReversiController extends GameController {
         super(main);
     }
 
-    public void start() {
-        run.start();
-    }
-
     private Circle setupPiece(boolean blackOrWhite) {
         Circle circle = new Circle();
         circle.setRadius(1.0);
@@ -67,7 +63,10 @@ public class ReversiController extends GameController {
 
         for (Node node : childNodes) {
             if (node instanceof HBox) {
-                node.getStyleClass().add("tile-reversi-disabled");
+                if (!node.getStyleClass().contains("tile-reversi-disabled")) {
+                    node.getStyleClass().add("tile-reversi-disabled");
+                }
+
                 node.setOnMouseClicked((this::mouseClick));
             }
         }
@@ -85,40 +84,21 @@ public class ReversiController extends GameController {
 
             ReversiBoard board = ((ReversiBoard) update.getBoard());
             GameState gameState = update.getGameState();
-            int[] score = board.countPieces();
-            Platform.runLater( () -> {
-                if (!gameState.isEnd()) {
-                    if (match.getCurrentPlayer() == players.one) {
-                        tPlayerOne.setVisible(true);
-                        tPlayerTwo.setVisible(false);
-                    } else {
-                        tPlayerTwo.setVisible(true);
-                        tPlayerOne.setVisible(false);
-                    }
-                } else {
-                    tPlayerOne.setVisible(false);
-                    tPlayerTwo.setVisible(false);
-                }
 
+            int[] score = board.countPieces();
+
+            setTurns(gameState);
+
+            Platform.runLater( () -> {
                 sPlayerTwo.setText(Integer.toString(score[1]));
                 sPlayerOne.setText(Integer.toString(score[0]));
             });
 
-            if (!gameState.isEnd()) {
-                updateBoard(board, gameState);
-            } else if(gameState == GameState.OneWin) {
-                wcPlayerOne.setVisible(true);
-                updateBoard(board, GameState.TurnOne);
-                resetMatch();
-            } else if (gameState == GameState.TwoWin) {
-                wcPlayerTwo.setVisible(true);
-                updateBoard(board, GameState.TurnTwo);
-                resetMatch();
-            } else if (gameState == GameState.Draw) {
-                // ???
-                resetMatch();
-            } else {
+            updateBoard(board, gameState);
 
+            if (gameState.isEnd()) {
+                isEnd(gameState);
+                break;
             }
         }
 
@@ -128,18 +108,10 @@ public class ReversiController extends GameController {
             throw new RuntimeException(e);
         }
 
-        if (main.isTournament()) {
-            main.changeToLobby();
-        } else {
-            main.changeToHome();
-        }
+        main.changePane();
     }
 
-    private void resetMatch() {
-        match = null;
-    }
-
-    private void updateBoard(BoardInterface board, GameState turn) {
+    protected void updateBoard(BoardInterface board, GameState gameState) {
         for (Node node : childNodes) {
             if (node instanceof HBox) {
                 ComposablePlayer current = match.getCurrentPlayer();
@@ -170,7 +142,7 @@ public class ReversiController extends GameController {
                     });
                 }
                 if (match.getCurrentPlayer().isComposedOf(UIPlayer.class)) {
-                    for (Move move : board.getValidMoves(turn)) {
+                    for (Move move : board.getValidMoves(gameState)) {
                         if ((GridPane.getColumnIndex(node) - 1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
                             Platform.runLater(() -> node.getStyleClass().add("tile-reversi-available"));
                         }
@@ -202,23 +174,12 @@ public class ReversiController extends GameController {
         }
     }
 
-    private void mouseClick(MouseEvent event) {
+    protected void mouseClick(MouseEvent event) {
         HBox field = ((HBox)event.getSource());
 
         if (field.getStyleClass().contains("tile-reversi-available")) {
             Move move = new Move(match.getCurrentPlayer().getTurn(), (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
             ((BlockingPlayer)match.getCurrentPlayer().getSource()).putMove(move);
         }
-    }
-
-    @FXML
-    private void forfeit() {
-        main.forfeit();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        main.changeToHome();
     }
 }

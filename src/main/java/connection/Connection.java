@@ -109,6 +109,8 @@ public class Connection {
                     if (commandsWaitingForResponse.peek() instanceof LogoutCommand) {
                         commandsWaitingForResponse.poll().parseAndHandleResponse(null);
                         break;
+                    } else {
+                        throw new RuntimeException("Something's wrong");
                     }
                 }
                 String[] words = message.split("\\s+");

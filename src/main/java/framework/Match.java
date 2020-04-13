@@ -22,7 +22,7 @@ public class Match {
 
     private Consumer<Match> onEnd;
 
-    private final Players<ComposablePlayer> players = new Players();
+    private Players<ComposablePlayer> players = new Players<>();
 
     public GameState getGameState() {
         return gameState;
@@ -69,13 +69,12 @@ public class Match {
     }
 
     private void gameLoop() {
-        try {
-            gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
         while (!getGameState().isEnd()) {
+            try {
+                gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             Player playerToMove;
             switch (getGameState()) {
                 case TurnOne:
@@ -91,7 +90,6 @@ public class Match {
             Move move = playerToMove.getNextMove(game.getBoard(), Collections.unmodifiableSet(possibleMoves), lastMove);
             if (move instanceof ForfeitMove) {
                 setGameState(playerToMove.getTurn().otherPlayer().toWin());
-                System.out.println(playerToMove.getUsername() + " forfeit");
                 continue;
             }
             if (!possibleMoves.contains(move)) {
@@ -125,6 +123,11 @@ public class Match {
 
         if (printDebug) {
             System.out.println("Game end: " + getGameState().toString());
+        }
+        try {
+            gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         switch (getGameState()) {
             case OneWin:

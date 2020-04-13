@@ -2,6 +2,7 @@ package framework.player;
 
 import connection.Connection;
 import connection.GenericFuture;
+import connection.commands.ForfeitCommand;
 import connection.commands.LoginCommand;
 import connection.commands.LogoutCommand;
 import framework.BoardInterface;
@@ -27,7 +28,11 @@ public class LocalConnectedPlayer extends ComposablePlayer {
     public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
         Move nextMove = super.getNextMove(board, possibleMoves, lastMove);
         if (nextMove instanceof ForfeitMove) {
-
+            try {
+                connection.executeCommand(new ForfeitCommand()).get();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             connection.sendMove(nextMove, gameType.getBoardSize());
         }

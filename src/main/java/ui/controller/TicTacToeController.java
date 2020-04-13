@@ -5,6 +5,7 @@ import framework.*;
 import framework.player.*;
 import javafx.application.Platform;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -27,9 +28,6 @@ public class TicTacToeController extends GameController {
         super(main);
     }
 
-    public void start() {
-        run.start();
-    }
 
     private SVGPath createCross() {
         SVGPath cross = new SVGPath();
@@ -64,7 +62,7 @@ public class TicTacToeController extends GameController {
         return circle;
     }
 
-    public void setupNames() {
+    protected void setupNames() {
         Platform.runLater(() -> {
             new Thread(() -> {
                 players = match.getPlayers();
@@ -92,9 +90,9 @@ public class TicTacToeController extends GameController {
     private void mouseHoverIn(Event event) {
         HBox hBox = (HBox) event.getSource();
         if (hBox.getChildren().size() == 0) {
-            if (match.getGameState() == GameState.TurnOne && match.getPlayers().one instanceof UIPlayer) {
+            if (match.getGameState() == GameState.TurnOne && match.getPlayers().one.isComposedOf(UIPlayer.class)) {
                 hBox.getChildren().add(crossHover);
-            } else if (match.getGameState() == GameState.TurnTwo && match.getPlayers().two instanceof UIPlayer){
+            } else if (match.getGameState() == GameState.TurnTwo && match.getPlayers().two.isComposedOf(UIPlayer.class)){
                 hBox.getChildren().add(circleHover);
             }
         }
@@ -119,33 +117,26 @@ public class TicTacToeController extends GameController {
             TicTacToeBoard board = ((TicTacToeBoard) update.getBoard());
             GameState gameState = update.getGameState();
 
-            if (!gameState.isEnd()) {
-                updateBoard(board);
-            } else if (gameState == GameState.OneWin) {
-                wcPlayerOne.setVisible(true);
-            } else if (gameState == GameState.TwoWin) {
-                wcPlayerTwo.setVisible(true);
-            }
+            setTurns(gameState);
+
+            updateBoard(board, gameState);
 
             if (gameState.isEnd()) {
-                updateBoard(board);
-                resetMatch();
+                isEnd(gameState);
+                break;
             }
         }
+
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        main.changeToHome();
+        main.changePane();
     }
 
-    private void resetMatch() {
-        match = null;
-    }
-
-    private void updateBoard(BoardInterface board) {
+    protected void updateBoard(BoardInterface board, GameState gameState) {
         for (Node node : childNodes) {
             if (node instanceof HBox) {
                 ComposablePlayer current = match.getCurrentPlayer();
@@ -177,9 +168,8 @@ public class TicTacToeController extends GameController {
         }
     }
 
-    private void mouseClick(MouseEvent event) {
+    protected void mouseClick(MouseEvent event) {
         HBox field = ((HBox)event.getSource());
-        System.out.println("click");
 
         Move move = new Move(match.getCurrentPlayer().getTurn(), (GridPane.getColumnIndex(field)), (GridPane.getRowIndex(field)));
         ((BlockingPlayer) match.getCurrentPlayer().getSource()).putMove(move);

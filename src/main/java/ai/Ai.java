@@ -76,6 +76,9 @@ public abstract class Ai extends Player {
 
     @Override
     public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
+        if (hasForfeit) {
+            return new ForfeitMove(turn);
+        }
         if (tree == null ) {
             tree = new MoveTree(this, board, getDepth(), turn);
         } else {
@@ -112,5 +115,14 @@ public abstract class Ai extends Player {
     @Override
     public void onEnd(GameResult state) {
         Player.logEnd(state);
+    }
+
+    public void reset() {
+        tree = null;
+    }
+
+    @Override
+    public void forfeit() {
+        hasForfeit = true;
     }
 }

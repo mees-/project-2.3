@@ -47,11 +47,14 @@ public class Main {
             for (Move move : possibleMoves) {
                 System.out.println("Possible move: " + move.toString());
             }
+            String readLine = null;
             try {
                 System.out.print("Enter x: ");
-                int x = Integer.parseInt(reader.readLine());
+                readLine = reader.readLine();
+                int x = Integer.parseInt(readLine);
                 System.out.print("Enter y: ");
-                int y = Integer.parseInt(reader.readLine());
+                readLine = reader.readLine();
+                int y = Integer.parseInt(readLine);
                 for (Move move : possibleMoves) {
                     if (move.getY() == y && move.getX() == x) {
                         return move;
@@ -62,9 +65,18 @@ public class Main {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (NumberFormatException e) {
+                if (readLine.equalsIgnoreCase("forfeit")) {
+                    forfeit();
+                    return new ForfeitMove(turn);
+                }
                 System.out.println("That's not a number, try again");
                 return getNextMove(board, possibleMoves, lastMove);
             }
+        }
+
+        @Override
+        public void forfeit() {
+            hasForfeit = true;
         }
 
         @Override

@@ -214,12 +214,8 @@
                   </VBox>
                   <HBox alignment="CENTER">
                      <children>
-                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets top="20.0" />
-                           </HBox.margin>
-                        </HBox>
-                        <HBox alignment="BOTTOM_RIGHT">
+                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER_RIGHT">
                            <children>
                               <HBox alignment="CENTER">
                                  <children>
@@ -228,7 +224,7 @@
                                           <Insets right="6.0" />
                                        </HBox.margin>
                                     </SVGPath>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Forfeit">
+                                    <Text onMouseClicked="#forfeit" strokeType="OUTSIDE" strokeWidth="0.0" text="Forfeit">
                                        <styleClass>
                                           <String fx:value="h5" />
                                           <String fx:value="b" />
@@ -265,15 +261,12 @@
                                  </styleClass>
                               </Text>
                            </children>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT">
                            <children>
                               <HBox alignment="CENTER">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Leave">
+                                    <Text onMouseClicked="#forfeit" strokeType="OUTSIDE" strokeWidth="0.0" text="Leave">
                                        <styleClass>
                                           <String fx:value="h5" />
                                           <String fx:value="b" />
@@ -315,15 +308,12 @@
                                  </styleClass>
                               </Text>
                            </children>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT">
                            <children>
                               <HBox alignment="CENTER">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Leave">
+                                    <Text onMouseClicked="#forfeit" strokeType="OUTSIDE" strokeWidth="0.0" text="Leave">
                                        <styleClass>
                                           <String fx:value="h5" />
                                           <String fx:value="b" />

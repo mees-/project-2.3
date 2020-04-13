@@ -218,6 +218,11 @@ public class Main extends Application {
             setCurrentPane(paneLobby);
         } else if (previousPane == paneHome) {
             setCurrentPane(paneHome);
+            try {
+                stopSubscribe();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -234,7 +239,7 @@ public class Main extends Application {
         connection.subscribe(GameType.TicTacToe);
     }
 
-    public void stopFramework() throws IOException {
+    public void stopSubscribe() throws IOException {
         framework.close();
     }
 

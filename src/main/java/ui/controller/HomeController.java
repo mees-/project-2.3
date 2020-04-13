@@ -165,19 +165,23 @@ public class HomeController {
 
     @FXML
     private void playButtonEvent(ActionEvent event) throws IOException {
-        if (chosenGameEnum != null && playTypeEnum != null ) {
-            if (playTypeEnum == PlayType.LOCAL) {
-                if (playerOneTypeEnum != null && playerTwoTypeEnum != null) {
-                    main.localGameSetup(chosenGameEnum, txtPlayerOneName.getText(), txtPlayerTwoName.getText(), playerOneTypeEnum, playerTwoTypeEnum);
-                }
-            } else if (onlineOptionEnum != null) {
-                Button playButton = (Button) event.getSource();
-                if (onlineOptionEnum == OnlineOption.CHALLENGE) {
-                    main.lobbySetup(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
-                } else {
-                    main.gameSetupSubscribe(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
+        if (true /*validateFields(...args)*/) {
+            if (chosenGameEnum != null && playTypeEnum != null) {
+                if (playTypeEnum == PlayType.LOCAL) {
+                    if (playerOneTypeEnum != null && playerTwoTypeEnum != null) {
+                        main.localGameSetup(chosenGameEnum, txtPlayerOneName.getText(), txtPlayerTwoName.getText(), playerOneTypeEnum, playerTwoTypeEnum);
+                    }
+                } else if (onlineOptionEnum != null) {
+                    Button playButton = (Button) event.getSource();
+                    if (onlineOptionEnum == OnlineOption.CHALLENGE) {
+                        main.lobbySetup(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
+                    } else {
+                        main.gameSetupSubscribe(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
+                    }
                 }
             }
+        } else {
+            // masrk invalid field
         }
     }
 }

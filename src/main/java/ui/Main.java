@@ -82,7 +82,7 @@ public class Main extends Application {
     }
 
     private Player createPlayer(String playerName, PlayerType playerType, GameType gameType) {
-        Player player = new ForfeitablePlayer(new BlockingPlayer(playerName, gameType));
+        Player player = new BlockingPlayer(playerName, gameType);
 
         switch(playerType) {
             case AI:

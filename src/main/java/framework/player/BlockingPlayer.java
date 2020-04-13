@@ -4,10 +4,13 @@ import framework.*;
 
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class BlockingPlayer extends Player {
 
-    final ArrayBlockingQueue<Move> move = new ArrayBlockingQueue<>(1);
+    private static final int POLL_TIMEOUT_MS = 10;
+
+    final ArrayBlockingQueue<Move> moveQueue = new ArrayBlockingQueue<>(1);
 
     public BlockingPlayer(String username, GameType gameType) {
         super(username, gameType);
@@ -15,7 +18,7 @@ public class BlockingPlayer extends Player {
 
     public synchronized void putMove(Move move){
         try {
-            this.move.put(move);
+            this.moveQueue.put(move);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -23,20 +26,33 @@ public class BlockingPlayer extends Player {
 
     @Override
     public Move getNextMove(BoardInterface board, Set<Move> possibleMoves, Move lastMove) {
-        try {
-            Move sourceMove = move.take();
-            if (sourceMove instanceof ForfeitMove) {
-                return sourceMove;
+        Move move = null;
+        while (move == null) {
+            if (hasForfeit) {
+                return new ForfeitMove(turn);
             }
+            try {
+                move = moveQueue.poll(POLL_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if (!possibleMoves.contains(move)) {
             for (Move possibleMove : possibleMoves) {
-                if (possibleMove.getX() == sourceMove.getX() && possibleMove.getY() == sourceMove.getY()) {
+                if (move.equals(possibleMove)) {
                     return possibleMove;
                 }
             }
             throw new RuntimeException("The move from the async source wasn't found in the possible moves");
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } else {
+            return move;
         }
+    }
+
+    @Override
+    public void forfeit() {
+        hasForfeit = true;
     }
 
     @Override

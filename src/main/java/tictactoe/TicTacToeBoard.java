@@ -8,44 +8,60 @@ import java.util.List;
 import java.util.Set;
 
 public class TicTacToeBoard extends BoardInterface {
-    // Colored text for command line
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final int SIZE = 3;
-
-        private final CellContent[][] board;
+    public static final String ANSI_RED = "\u001B[31m"; // Red color for command line
+    public static final String ANSI_RESET = "\u001B[0m"; // Reset color for command line
+    public static final int SIZE = 3; // Size of game board
+    private final CellContent[][] board; // Two dimensional array that represents the game board
 
     public TicTacToeBoard() {
         board = new CellContent[SIZE][SIZE];
         reset();
     }
 
+    /**
+     * Return the content of a valid cell
+     * @param row
+     * @param col
+     * @return
+     */
     @Override
-    public CellContent getCell(int x, int y) {
-        if((x >= 0 && x < SIZE) && (y >= 0 && y < SIZE)) {
-            return board[x][y];
+    public CellContent getCell(int row, int col) {
+        if((row >= 0 && row < SIZE) && (col >= 0 && col < SIZE)) {
+            return board[row][col];
         }
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int getSize() {
         return SIZE;
     }
 
+    /**
+     *
+     * @param state
+     * @return
+     */
     @Override
     public Set<Move> getValidMoves(GameState state) {
         HashSet<Move> result = new HashSet<>();
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                if (getCell(x, y) == CellContent.Empty) {
-                    result.add(new Move(state, x, y));
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                if (getCell(row, col) == CellContent.Empty) {
+                    result.add(new Move(state, row, col));
                 }
             }
         }
         return result;
     }
 
+    /**
+     *
+     */
     @Override
     public void reset() {
         for (int row = 0; row < SIZE; row++) {
@@ -55,16 +71,27 @@ public class TicTacToeBoard extends BoardInterface {
         }
     }
 
+    /**
+     *
+     * @param row
+     * @param col
+     * @param cellContent
+     * @throws InvalidMoveException
+     */
     @Override
-    public void setCell(int x, int y, CellContent cellContent) throws InvalidMoveException {
-        if((x >= 0 && x < SIZE) && (y >= 0 && y < SIZE) && (board[x][y] == CellContent.Empty) && cellContent != CellContent.Empty) {
-            board[x][y] = cellContent;
+    public void setCell(int row, int col, CellContent cellContent) throws InvalidMoveException {
+        if((row >= 0 && row < SIZE) && (col >= 0 && col < SIZE) && (board[row][col] == CellContent.Empty) && cellContent != CellContent.Empty) {
+            board[row][col] = cellContent;
         }
         else {
-            throw new InvalidMoveException("The move to set yPos: " + (y + 1) + " and xPos: " + (x + 1) + " to " + cellContent + " is invalid.");
+            throw new InvalidMoveException("The move to set yPos: " + (col + 1) + " and xPos: " + (row + 1) + " to " + cellContent + " is invalid.");
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean boardIsFull() {
         boolean isFull = true;
         for (int row = 0; row < SIZE; row++) {
@@ -78,10 +105,18 @@ public class TicTacToeBoard extends BoardInterface {
         return isFull;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean checkForWin() {
         return checkRowForWin() || checkColForWin() || checkDiaForWin();
     }
 
+    /**
+     *
+     * @return
+     */
     public CellContent checkForWinBetter() {
         CellContent result = null;
         result = checkXForWin();
@@ -104,6 +139,10 @@ public class TicTacToeBoard extends BoardInterface {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     private CellContent checkYForWin() {
         for(int y = 0; y < SIZE; y++) {
             if(checkMarks(board[0][y], board[1][y], board[2][y])) {
@@ -113,6 +152,10 @@ public class TicTacToeBoard extends BoardInterface {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     private CellContent checkDiagonalForWin() {
         if (checkDiaForWin()) {
             return getCell(1,1);
@@ -121,6 +164,10 @@ public class TicTacToeBoard extends BoardInterface {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean checkColForWin() {
         for(int col = 0; col < SIZE; col++) {
             if(checkMarks(board[col][0], board[col][1], board[col][2])) {
@@ -130,6 +177,10 @@ public class TicTacToeBoard extends BoardInterface {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean checkRowForWin() {
         for(int row = 0; row < SIZE; row++) {
             if(checkMarks(board[0][row], board[1][row], board[2][row])) {
@@ -139,14 +190,28 @@ public class TicTacToeBoard extends BoardInterface {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean checkDiaForWin() {
         return ((checkMarks(board[0][0], board[1][1], board[2][2])) || (checkMarks(board[0][2], board[1][1], board[2][0])));
     }
 
+    /**
+     *
+     * @param c1
+     * @param c2
+     * @param c3
+     * @return
+     */
     private boolean checkMarks(CellContent c1, CellContent c2, CellContent c3) {
         return(c1 != CellContent.Empty && c1 == c2 && c2 == c3);
     }
 
+    /**
+     *
+     */
     public void printBoard() {
         synchronized (System.out) {
             System.out.print("  ");

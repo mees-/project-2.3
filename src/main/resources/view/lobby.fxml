@@ -71,7 +71,7 @@
                                        </children>
                                        <styleClass>
                                           <String fx:value="btn" />
-                                          <String fx:value="btn-challenge" />
+                                          <String fx:value="btn-secondary" />
                                        </styleClass>
                                     </HBox>
                                  </children>
@@ -115,7 +115,7 @@
                                        </children>
                                        <styleClass>
                                           <String fx:value="btn" />
-                                          <String fx:value="btn-challenge" />
+                                          <String fx:value="btn-secondary" />
                                        </styleClass>
                                     </HBox>
                                  </children>

@@ -36,6 +36,21 @@
     opacity: 0;
 }
 
+.btn-secondary {
+    -fx-background-color: #78909c;
+}
+
+.btn-secondary, .btn-secondary:focused, .btn-secondary.focused {
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #4b636e;
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}
+
 /**
  * Home
  */
@@ -66,24 +81,6 @@
     -fx-font-size: 18px;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
-}
-
-/**
- * Lobby
- */
-.btn-challenge {
-    -fx-background-color: #78909c;
-}
-
-.btn-challenge, .btn-challenge:focused, .btn-challenge.focused {
-    -fx-text-fill: #fff;
-    -fx-fill: #fff;
-}
-
-.btn-challenge:hover {
-    -fx-background-color: #4b636e;
-    -fx-text-fill: #fff;
-    -fx-fill: #fff;
 }
 
 /**

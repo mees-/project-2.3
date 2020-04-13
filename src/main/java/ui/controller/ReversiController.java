@@ -48,6 +48,14 @@ public class ReversiController extends GameController {
                 players = match.getPlayers();
                 txtPlayerOne.setText(players.one.getUsername());
                 txtPlayerTwo.setText(players.two.getUsername());
+                Player current = match.getCurrentPlayer();
+                if (current == players.one) {
+                    tPlayerOne.setVisible(true);
+                    tPlayerTwo.setVisible(false);
+                } else {
+                    tPlayerTwo.setVisible(true);
+                    tPlayerOne.setVisible(false);
+                }
             }).start();
         });
     }
@@ -79,6 +87,19 @@ public class ReversiController extends GameController {
             GameState gameState = update.getGameState();
             int[] score = board.countPieces();
             Platform.runLater( () -> {
+                if (!gameState.isEnd()) {
+                    if (match.getCurrentPlayer() == players.one) {
+                        tPlayerOne.setVisible(true);
+                        tPlayerTwo.setVisible(false);
+                    } else {
+                        tPlayerTwo.setVisible(true);
+                        tPlayerOne.setVisible(false);
+                    }
+                } else {
+                    tPlayerOne.setVisible(false);
+                    tPlayerTwo.setVisible(false);
+                }
+
                 sPlayerTwo.setText(Integer.toString(score[1]));
                 sPlayerOne.setText(Integer.toString(score[0]));
             });

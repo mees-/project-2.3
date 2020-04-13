@@ -226,12 +226,7 @@ public class ReversiController extends GameController {
 
     @FXML
     private void forfeit() {
-        main.forfeit();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        match.getCurrentPlayer().forfeit();
         main.changePane();
     }
 }

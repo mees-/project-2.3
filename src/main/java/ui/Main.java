@@ -242,5 +242,4 @@ public class Main extends Application {
     public void stopSubscribe() throws IOException {
         framework.close();
     }
-
 }

@@ -117,21 +117,21 @@ public class ReversiController extends GameController {
             });
 
 
-            if (!gameState.isEnd()) {
-                updateBoard(board, gameState);
-            } else if(gameState == GameState.OneWin) {
-                wcPlayerOne.setVisible(true);
-                updateBoard(board, GameState.TurnOne);
-                resetMatch();
-            } else if (gameState == GameState.TwoWin) {
-                wcPlayerTwo.setVisible(true);
-                updateBoard(board, GameState.TurnTwo);
-                resetMatch();
-            } else if (gameState == GameState.Draw) {
-                // ???
-                resetMatch();
-            } else {
-
+            updateBoard(board, gameState);
+            if (gameState.isEnd()) {
+                switch (gameState) {
+                    case OneWin:
+                        wcPlayerOne.setVisible(true);
+                        break;
+                    case TwoWin:
+                        wcPlayerTwo.setVisible(true);
+                        break;
+                    case Draw:
+                        wcPlayerOne.setVisible(true);
+                        wcPlayerTwo.setVisible(true);
+                }
+                Platform.runLater(this::resetMatch);
+                break;
             }
         }
 

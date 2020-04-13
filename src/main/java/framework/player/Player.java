@@ -24,6 +24,10 @@ public abstract class Player {
 
     public abstract void onEnd(GameResult state);
 
+    public void setStart(GameState startingPlayer) {
+
+    }
+
     public String getUsername() {
         return username;
     }

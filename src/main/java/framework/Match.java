@@ -52,6 +52,8 @@ public class Match {
 
     public void setupGame(GameState startingPlayer) {
         setGameState(startingPlayer);
+        players.one.setStart(getGameState());
+        players.two.setStart(getGameState());
         game.setup(gameState);
         try {
             gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));

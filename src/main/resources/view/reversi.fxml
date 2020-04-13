@@ -677,7 +677,7 @@
                                     <Insets right="6.0" />
                                  </HBox.margin>
                               </SVGPath>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Forfeit">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Forfeit" onMouseClicked="#forfeit">
                                  <styleClass>
                                     <String fx:value="h5" />
                                     <String fx:value="b" />

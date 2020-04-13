@@ -91,22 +91,16 @@ public class ReversiController extends GameController {
             GameState gameState = update.getGameState();
 
             int[] score = board.countPieces();
-            if (score[0] + score[1] == 64) {
-                int i = score[0] + score[1];
-                System.out.println(i);
-            }
 
             Platform.runLater( () -> {
                 if (!gameState.isEnd()) {
-//                    if (match.getCurrentPlayer() == players.one) {
-                        if (match.getGameState() == GameState.TurnOne) {
-                            tPlayerOne.setVisible(true);
-                            tPlayerTwo.setVisible(false);
-                        } else {
-                            tPlayerTwo.setVisible(true);
-                            tPlayerOne.setVisible(false);
-                        }
-//                    }
+                    if (match.getGameState() == GameState.TurnOne) {
+                        tPlayerOne.setVisible(true);
+                        tPlayerTwo.setVisible(false);
+                    } else {
+                        tPlayerTwo.setVisible(true);
+                        tPlayerOne.setVisible(false);
+                    }
                 } else {
                     tPlayerOne.setVisible(false);
                     tPlayerTwo.setVisible(false);

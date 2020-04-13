@@ -61,20 +61,15 @@ public class HomeController {
     @FXML
     private TextField txtPlayerTwoName;
 
-    private PlayType playTypeEnum;
-    private OnlineOption onlineOptionEnum;
-    private PlayerType playerOneTypeEnum;
-    private PlayerType playerTwoTypeEnum;
-    private GameType chosenGameEnum;
+    private PlayType playTypeEnum = PlayType.ONLINE;
+    private OnlineOption onlineOptionEnum = OnlineOption.SUBSCRIBE;
+    private PlayerType playerOneTypeEnum = PlayerType.HUMAN;
+    private PlayerType playerTwoTypeEnum = PlayerType.HUMAN;
+    private GameType chosenGameEnum = GameType.Reversi;
     private Main main;
 
-    public HomeController(Main main, PlayType gameTypeEnum, OnlineOption onlineOptionEnum, PlayerType playerOneTypeEnum, PlayerType playerTwoTypeEnum, GameType chosenGameEnum) {
+    public HomeController(Main main) {
         this.main = main;
-        this.playTypeEnum = gameTypeEnum;
-        this.onlineOptionEnum = onlineOptionEnum;
-        this.playerOneTypeEnum = playerOneTypeEnum;
-        this.playerTwoTypeEnum = playerTwoTypeEnum;
-        this.chosenGameEnum = chosenGameEnum;
     }
 
     @FXML
@@ -173,6 +168,7 @@ public class HomeController {
                     }
                 } else if (onlineOptionEnum != null) {
                     Button playButton = (Button) event.getSource();
+                    System.out.println("Player: " + txtPlayerOneName.getText());
                     if (onlineOptionEnum == OnlineOption.CHALLENGE) {
                         main.lobbySetup(chosenGameEnum, txtPlayerOneName.getText(), playerOneTypeEnum);
                     } else {
@@ -183,5 +179,21 @@ public class HomeController {
         } else {
             // masrk invalid field
         }
+    }
+
+    public PlayType getPlayTypeEnum() {
+        return playTypeEnum;
+    }
+
+    public OnlineOption getOnlineOptionEnum() {
+        return onlineOptionEnum;
+    }
+
+    public PlayerType getPlayerOneTypeEnum() {
+        return playerOneTypeEnum;
+    }
+
+    public PlayerType getPlayerTwoTypeEnum() {
+        return playerTwoTypeEnum;
     }
 }

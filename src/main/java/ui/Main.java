@@ -27,11 +27,9 @@ public class Main extends Application {
     private Framework framework;
     private Connection connection;
 
-    private PlayType playTypeEnum = PlayType.ONLINE;
-    private OnlineOption onlineOptionEnum = OnlineOption.SUBSCRIBE;
-    private PlayerType playerOneTypeEnum = PlayerType.HUMAN;
-    private PlayerType playerTwoTypeEnum = PlayerType.HUMAN;
-    private GameType chosenGameEnum = GameType.Reversi;
+    private GameController gameController;
+    private HomeController homeController;
+    private LobbyController lobbyController;
 
     private FXMLLoader loader;
 
@@ -58,7 +56,8 @@ public class Main extends Application {
     private void initUI(Stage stage) throws IOException {
         root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
         loader = new FXMLLoader(getClass().getResource("/view/home.fxml"));
-        loader.setController(new HomeController(this, playTypeEnum, onlineOptionEnum, playerOneTypeEnum, playerTwoTypeEnum, chosenGameEnum));
+        homeController = new HomeController(this);
+        loader.setController(homeController);
         paneHome = loader.load();
         setCurrentPane(paneHome);
 
@@ -72,7 +71,7 @@ public class Main extends Application {
 
     public void lobbySetup(GameType gameType, String playerName, PlayerType playerType) throws IOException {
         startFramework(createPlayer(playerName, playerType, gameType));
-        LobbyController lobbyController = new LobbyController(this, framework, playerName, playerType, gameType);
+        lobbyController = new LobbyController(this, framework, playerName, playerType, gameType);
         loader = new FXMLLoader(getClass().getResource("/view/lobby.fxml"));
         loader.setController(lobbyController);
         paneLobby = loader.load();
@@ -127,14 +126,13 @@ public class Main extends Application {
     }
 
     public void gameSetupLobby(GameType gameType, Match match) throws IOException {
-        GameController gameController = onlineGameControllerSetup(gameType);
+        gameController = onlineGameControllerSetup(gameType);
         gameController.setup(match);
         gameController.start();
     }
 
     public GameController onlineGameControllerSetup(GameType gameType) throws IOException {
         GameController gameController = null;
-
         switch (gameType) {
             case Reversi:
                 gameController = new ReversiController(this);
@@ -156,7 +154,6 @@ public class Main extends Application {
     }
 
     public void localGameSetup(GameType gameType, String playerOneName, String playerTwoName, PlayerType playerOneType, PlayerType playerTwoType) throws IOException {
-        GameController gameController = null;
         GameInterface game = null;
 
         switch (gameType) {
@@ -218,10 +215,13 @@ public class Main extends Application {
             setCurrentPane(paneLobby);
         } else if (previousPane == paneHome) {
             setCurrentPane(paneHome);
-            try {
-                stopSubscribe();
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            if (homeController.getPlayTypeEnum() == PlayType.ONLINE) {
+                try {
+                    stopSubscribe();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

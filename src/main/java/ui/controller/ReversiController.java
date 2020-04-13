@@ -46,7 +46,6 @@ public class ReversiController extends GameController {
         Platform.runLater(() -> {
             new Thread(() -> {
                 players = match.getPlayers();
-                System.out.println(players.one.getUsername());
                 txtPlayerOne.setText(players.one.getUsername());
                 txtPlayerTwo.setText(players.two.getUsername());
                 Player current = match.getCurrentPlayer();

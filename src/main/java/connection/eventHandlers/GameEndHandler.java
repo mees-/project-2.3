@@ -29,7 +29,7 @@ public class GameEndHandler extends EventHandler {
                     details.get("COMMENT").equalsIgnoreCase("Player forfeited match")
                     || details.get("COMMENT").equalsIgnoreCase("Client disconnected")
             ) {
-                connection.getRemotePlayer().putMove(new ForfeitMove(connection.getRemotePlayer().getTurn()));
+                connection.getRemotePlayer().forfeit();
             }
         }
         return null;

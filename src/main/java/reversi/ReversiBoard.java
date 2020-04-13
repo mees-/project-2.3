@@ -17,6 +17,8 @@ public class ReversiBoard extends BoardInterface {
     private char playerColour;
     private char opponentColour;
 
+    private Set<Move> cachedValidMoves = null;
+
     private static final int BOARD_SIZE = 8;
 
     private CellContent[][] board;
@@ -174,6 +176,9 @@ public class ReversiBoard extends BoardInterface {
 
     @Override
     public Set<Move> getValidMoves(GameState state) {
+        if (cachedValidMoves != null) {
+            return cachedValidMoves;
+        }
         HashSet<Move> set = new HashSet<>();
 
         for (int i = 0; i < getSize(); i++) {
@@ -194,7 +199,13 @@ public class ReversiBoard extends BoardInterface {
                 }
             }
         }
+
+        cachedValidMoves = set;
         return set;
+    }
+
+    public void invalidateCache() {
+        cachedValidMoves = null;
     }
 
     /**

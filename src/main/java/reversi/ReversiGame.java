@@ -46,6 +46,7 @@ public class ReversiGame implements GameInterface {
         CellContent player = move.getPlayer().toCellContent();
         validMoves = getBoard().getValidMoves(move.getPlayer());
         if (validMoves.contains(move)) {
+            board.invalidateCache();
             board.setCell(move.getX(), move.getY(), player);
             flipDiscs(move, player);
         } else {

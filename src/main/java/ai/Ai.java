@@ -11,14 +11,14 @@ import java.util.concurrent.*;
 
 public abstract class Ai extends Player {
     private MoveTree tree;
-    private Thread treeBuilderThread = new Thread(this::treeBuilder);
+//    private Thread treeBuilderThread = new Thread(this::treeBuilder);
     private PausableExecutor executor = new PausableExecutor(8);
 
     // TEMP
     public LinkedList<Long> times = new LinkedList<>();
     public LinkedList<Integer> depths = new LinkedList<>();
 
-    private static final long TREE_BUILD_TIME_MS = 5000;
+    private static final long TREE_BUILD_TIME_MS = 2000;
 
     public Ai(String username, GameType gameType) {
         super(username, gameType);
@@ -43,7 +43,7 @@ public abstract class Ai extends Player {
         ReversiBoard board = new ReversiBoard();
         board.setStartingPlayer(startingPlayer);
         tree = new MoveTree(this, board, startingPlayer);
-        treeBuilderThread.start();
+        treeBuilder();
     }
 
     private void treeBuilder() {
@@ -202,12 +202,15 @@ public abstract class Ai extends Player {
         System.out.println();
     }
 
-    public void reset() {
-        tree = null;
-    }
-
     @Override
     public void forfeit() {
         hasForfeit = true;
+    }
+
+    public void reset() {
+        executor.shutdownNow();
+        executor = new PausableExecutor(8);
+//        treeBuilderThread.interrupt();
+        tree = null;
     }
 }

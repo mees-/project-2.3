@@ -1,5 +1,6 @@
 package framework;
 
+import ai.Ai;
 import connection.Connection;
 import connection.GenericFuture;
 import connection.commands.ChallengeCommand;
@@ -9,6 +10,7 @@ import connection.commands.response.PlayerList;
 import connection.commands.response.StandardResponse;
 import connection.eventHandlers.EventPayload;
 import connection.eventHandlers.MatchOfferHandler;
+import framework.player.ComposablePlayer;
 import framework.player.Player;
 import reversi.ReversiGame;
 import tictactoe.TicTacToeGame;
@@ -56,6 +58,9 @@ public class Framework {
                     case Reversi:
                         game = new ReversiGame();
                         break;
+                }
+                if (((ComposablePlayer)localPlayer).getSource() instanceof Ai) {
+                    ((Ai) ((ComposablePlayer)localPlayer).getSource()).reset();
                 }
                 match = new Match(game, localPlayer, matchOffer.getRemotePlayer());
                 synchronized (match) {

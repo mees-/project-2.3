@@ -31,7 +31,7 @@ public class Main {
         ReversiAi ai = new ReversiAi(username);
         LocalConnectedPlayer player = new LocalConnectedPlayer(ai,connection);
         Framework framework = new Framework(player, connection);
-        connection.subscribe(GameType.Reversi);
+//        connection.subscribe(GameType.Reversi);
 //        framework.close();
     }
 

@@ -6,6 +6,8 @@ import framework.InvalidMoveException;
 import framework.Move;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MoveTree {
     private BoardInterface board;
@@ -17,31 +19,16 @@ public class MoveTree {
     private MoveTree parent;
     private ArrayList<MoveTree> children = new ArrayList<>();
 
-    public MoveTree(Ai gameUtils, BoardInterface board, int depth, GameState startingPlayer) {
+    public MoveTree(Ai gameUtils, BoardInterface board, GameState startingPlayer) {
         this.gameUtils = gameUtils;
         this.board = board;
         this.move = new Move(startingPlayer.otherPlayer(), -1,-1);
-        buildTree(startingPlayer, depth);
     }
 
-    public MoveTree(Ai gameUtils, MoveTree parent, int depth, Move move) {
+    public MoveTree(Ai gameUtils, MoveTree parent, Move move) {
         this.gameUtils = gameUtils;
         this.parent = parent;
         this.move = move;
-        buildTree(gameUtils.getTurnAfterMove(getBoard(), getMove()), depth);
-    }
-
-    private void buildTree(GameState nextTurn, int depth) {
-        if (depth > 0) {
-            Iterable<Move> moves = gameUtils.getValidMoves(nextTurn, getBoard());
-            for (Move move : moves) {
-                this.children.add(new MoveTree(gameUtils, this, depth-1, move));
-            }
-        }
-    }
-
-    public void buildTree(int depth) {
-        buildTree(gameUtils.getTurnAfterMove(getBoard(), getMove()), depth);
     }
 
     public BoardInterface getBoard() {
@@ -64,11 +51,17 @@ public class MoveTree {
         return move;
     }
 
-    public MoveTree getParent() {
-        return parent;
+    public synchronized boolean hasParent(MoveTree parent) {
+        if (parent == this.parent) {
+            return true;
+        } else if (this.parent != null) {
+            return this.parent.hasParent(parent);
+        } else {
+            return false;
+        }
     }
 
-    public void removeParent() {
+    public synchronized void removeParent() {
         parent = null;
     }
 
@@ -91,6 +84,21 @@ public class MoveTree {
             return 1 + children.get(0).getHeight();
         }
     }
+    public int getAvgHeight() {
+        if (children.size() == 0) {
+            return 1;
+        } else {
+            return 1 + getAvg(children.stream().map(child -> child.getAvgHeight()).collect(Collectors.toList()));
+        }
+    }
+
+    public int getAvg(List<Integer> list) {
+        int total = 0;
+        for (int el : list) {
+            total += el;
+        }
+        return total / list.size();
+    }
 
     public int getDepth() {
         if (parent == null) {
@@ -110,7 +118,18 @@ public class MoveTree {
             if (node.isLeaf()) {
                 result.add(node);
             } else {
-                result.addAll(node.getLeaves());
+                result.addAll(node.getLeaves(result));
+            }
+        }
+        return result;
+    }
+
+    private ArrayList<MoveTree> getLeaves(ArrayList<MoveTree> result) {
+        for (MoveTree node : children) {
+            if (node.isLeaf()) {
+                result.add(node);
+            } else {
+                result.addAll(node.getLeaves(result));
             }
         }
         return result;

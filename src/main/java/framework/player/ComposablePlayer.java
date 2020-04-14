@@ -28,6 +28,11 @@ public class ComposablePlayer extends Player {
     }
 
     @Override
+    public void setStart(GameState startingPlayer) {
+        original.setStart(startingPlayer);
+    }
+
+    @Override
     public String getUsername() {
         return original.getUsername();
     }

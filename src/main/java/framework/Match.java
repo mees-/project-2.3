@@ -52,6 +52,8 @@ public class Match {
 
     public void setupGame(GameState startingPlayer) {
         setGameState(startingPlayer);
+        players.one.setStart(getGameState());
+        players.two.setStart(getGameState());
         game.setup(gameState);
         try {
             gameStateUpdates.put(new GameStateUpdate(getGame().getBoard().clone(), getGameState()));
@@ -61,6 +63,7 @@ public class Match {
     }
 
     public void startAsync() {
+//        thread.setPriority(Thread.MAX_PRIORITY);
         thread.start();
     }
 
@@ -112,11 +115,7 @@ public class Match {
                 if (printDebug) {
                     System.out.println(getGame().getBoard().toString());
                 }
-            } catch (InvalidMoveException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidTurnException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (InvalidMoveException | InvalidTurnException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }

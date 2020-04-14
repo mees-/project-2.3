@@ -1,20 +1,18 @@
 package ui.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.text.Text;
 
 public class HeaderController {
 
     @FXML
-    private String title;
+    private Text headerTitle;
 
     @FXML
-    private String subTitle;
-
-    public HeaderController() {
-    }
+    private Text headerSubTitle;
 
     public void setup(String title, String subTitle) {
-        this.title = title;
-        this.subTitle = subTitle;
+        this.headerTitle.setText(title);
+        this.headerSubTitle.setText(subTitle);
     }
 }

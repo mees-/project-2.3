@@ -229,12 +229,13 @@ public class Main extends Application {
     private void setCurrentPane(Pane newCurrentPane) {
         Platform.runLater( () -> {
             previousPane = getCurrentPane();
-//            root.getChildren().remove(getCurrentPane());
-            root.getChildren().removeAll(paneHeader, paneFooter, getCurrentPane());
+            root.getChildren().removeAll(paneHeader, paneFooter, previousPane);
             this.currentPane = newCurrentPane;
-            root.getChildren().add(paneHeader);
+
+            if (paneHome != newCurrentPane) {
+                root.getChildren().add(paneHeader);
+            }
             root.getChildren().add(newCurrentPane);
-//            root.getChildren().remove(paneFooter);
             root.getChildren().add(paneFooter);
         });
     }

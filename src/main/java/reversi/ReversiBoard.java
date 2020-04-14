@@ -40,10 +40,10 @@ public class ReversiBoard extends BoardInterface {
         //These values were found in a Stanford paper that is no longer available,
         //but can be viewed at https://www.youtube.com/watch?v=y7AKtWGOPAE&t=16m6s at 16 minutes and 6 seconds.
         //CORNERS
-        valueBoard[0][0] = 161;
-        valueBoard[0][7] = 161;
-        valueBoard[7][0] = 161;
-        valueBoard[7][7] = 161;
+        valueBoard[0][0] = 1610;
+        valueBoard[0][7] = 1610;
+        valueBoard[7][0] = 1610;
+        valueBoard[7][7] = 1610;
         //BUFFERS
         valueBoard[0][1] = -40;
         valueBoard[1][0] = -40;

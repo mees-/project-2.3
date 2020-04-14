@@ -60,15 +60,20 @@ public class ReversiAi extends Ai {
     public int analyzeMove(Move lastMove, BoardInterface board) {
         CellContent gameWin = ((ReversiBoard)board).checkForWin();
         if (gameWin == turn.toCellContent()) {
-            return 1000;
+            return 10000;
         } else if (gameWin == turn.otherPlayer().toCellContent()) {
-            return -1000;
-        } else if (!((ReversiBoard)board).canMakeTurn(turn.otherPlayer())) {
-            return 50 + (((ReversiBoard) board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
-        } else if (!((ReversiBoard)board).canMakeTurn(turn)) {
-            return -50 + (((ReversiBoard) board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
+            return -10000;
+//        } else if (!((ReversiBoard)board).canMakeTurn(turn.otherPlayer())) {
+//            return 500 + (((ReversiBoard) board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
+//        } else if (!((ReversiBoard)board).canMakeTurn(turn)) {
+//            return -500 + (((ReversiBoard) board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
         } else {
-            return (((ReversiBoard)board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
+            int score = (((ReversiBoard)board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
+            if (getTurnAfterMove(board, lastMove) == turn) {
+                return score;
+            } else {
+                return -1 * score;
+            }
         }
     }
 

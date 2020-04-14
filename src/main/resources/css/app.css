@@ -162,6 +162,7 @@
 
 .piece-tictactoe-possible-move {
     -fx-opacity: 0.2;
+    -fx-cursor: HAND;
 }
 
 /**

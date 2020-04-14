@@ -10,13 +10,13 @@
    <children>
       <VBox alignment="CENTER">
          <children>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Game (bijv. Reversi)">
+            <Text fx:id="title" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Game (bijv. Reversi)">
                <styleClass>
                   <String fx:value="title-lg" />
                   <String fx:value="b" />
                </styleClass>
             </Text>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="View (bijv. Online Match)">
+            <Text fx:id="subTitle" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="View (bijv. Online Match)">
                <styleClass>
                   <String fx:value="h3" />
                   <String fx:value="b" />

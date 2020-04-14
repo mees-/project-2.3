@@ -75,6 +75,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setMaximized(true);
+        stage.setFullScreen(true);
     }
 
     public void lobbySetup(GameType gameType, String playerName, PlayerType playerType) throws IOException {

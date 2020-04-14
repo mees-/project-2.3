@@ -181,7 +181,8 @@ public abstract class Ai extends Player {
                 return possible;
             }
         }
-        throw new RuntimeException("Minimax returned an invalid move");
+        return possibleMoves.iterator().next();
+//        throw new RuntimeException("Minimax returned an invalid move");
     }
 
     @Override

@@ -24,6 +24,9 @@ public class StandardResponse {
     }
 
     public static boolean isStandardResponse(String[] response) {
+        if (response == null) {
+            return false;
+        }
         return response[0].equalsIgnoreCase("ok") || response[0].equalsIgnoreCase("err");
     }
 

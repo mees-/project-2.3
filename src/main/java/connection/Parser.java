@@ -101,6 +101,7 @@ public class Parser {
                      if (currentChar == '"') {
                          result.add(token.toString());
                          token = new StringBuilder();
+                         state = ListParseState.AfterValue;
                      } else {
                          token.append(currentChar);
                      }

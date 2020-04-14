@@ -1,0 +1,217 @@
+/**
+ * Declaring variables
+ */
+* {
+    -fx-primary-color: #004d40;
+    -fx-primary-color-shade: #00251a;
+    -fx-dark-color: #494949;
+}
+
+/**
+ * General
+ */
+.title-lg {
+    -fx-font-size: 4em;
+}
+
+.text-white {
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}
+
+.text-dark {
+    -fx-text-fill: -fx-dark-color;
+    -fx-fill: -fx-dark-color;
+}
+
+.bg-dark {
+    -fx-background-color: -fx-dark-color;
+}
+
+.bg-light {
+    -fx-background-color: #efefef;
+}
+
+.invisible {
+    opacity: 0;
+}
+
+/**
+ * Home
+ */
+.title-xl {
+    -fx-font-size: 8em;
+}
+
+.panel-game {
+    -fx-border-width: 3px;
+    -fx-border-style: solid;
+    -fx-border-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.05), 1px, 0, 0, 1px);
+    -fx-background-radius: 10px;
+}
+
+.panel-game-active {
+    -fx-border-color: -fx-primary-color;
+}
+
+.panel-game:hover {
+    -fx-opacity: 0.7;
+}
+
+.btn-game {
+    -fx-pref-height: 60px;
+    -fx-pref-width: 200px;
+    -fx-font-size: 18px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+/**
+ * Lobby
+ */
+.btn-challenge {
+    -fx-background-color: #78909c;
+}
+
+.btn-challenge, .btn-challenge:focused, .btn-challenge.focused {
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}
+
+.btn-challenge:hover {
+    -fx-background-color: #4b636e;
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}
+
+/**
+ * Game
+ */
+
+.text-gold {
+    -fx-text-fill: #ffcf40;
+    -fx-fill: #ffcf40;
+}
+
+/**
+ * TicTacToe
+ */
+.tile-tictactoe {
+    -fx-min-height: 200px;
+    -fx-min-width: 200px;
+    -fx-border-width: 5;
+}
+
+.tile-tictactoe-top-left {
+    -fx-border-color: transparent -fx-dark-color -fx-dark-color transparent;
+}
+
+.tile-tictactoe-top-middle {
+    -fx-border-color: transparent -fx-dark-color -fx-dark-color -fx-dark-color;
+}
+
+.tile-tictactoe-top-right {
+    -fx-border-color: transparent transparent -fx-dark-color -fx-dark-color;
+}
+
+.tile-tictactoe-middle-left {
+    -fx-border-color: -fx-dark-color -fx-dark-color -fx-dark-color transparent;
+}
+
+.tile-tictactoe-middle-center {
+    -fx-border-color: -fx-dark-color;
+}
+
+.tile-tictactoe-middle-right {
+    -fx-border-color: -fx-dark-color transparent -fx-dark-color -fx-dark-color;
+}
+
+.tile-tictactoe-bottom-left {
+    -fx-border-color: -fx-dark-color -fx-dark-color transparent transparent;
+}
+
+.tile-tictactoe-bottom-middle {
+    -fx-border-color: -fx-dark-color -fx-dark-color transparent -fx-dark-color;
+}
+
+.tile-tictactoe-bottom-right {
+    -fx-border-color: -fx-dark-color transparent transparent -fx-dark-color;
+}
+
+.piece-tictactoe-cross {
+    -fx-text-fill: #b71c1c;
+    -fx-fill: #b71c1c;
+
+}
+
+.piece-tictactoe-circle-base {
+    -fx-stroke-width: 0.35;
+    -fx-text-fill: transparent;
+    -fx-fill: transparent;
+    -fx-stroke: #0d47a1;
+}
+
+.piece-tictactoe-circle {
+    -fx-scale-x: 78;
+    -fx-scale-y: 78;
+}
+
+.piece-tictactoe-circle-player {
+    -fx-scale-x: 12;
+    -fx-scale-y: 12;
+}
+
+.piece-tictactoe-possible-move {
+    -fx-opacity: 0.2;
+}
+
+/**
+ * Reversi
+ */
+.tile-reversi {
+    -fx-border-color: -fx-dark-color;
+    -fx-border-width: 1px;
+    -fx-background-color: #2eae52;
+    -fx-min-height: 90px;
+    -fx-min-width: 90px;
+}
+
+
+.tile-tictactoe-disabled {
+    -fx-background-color: gray;
+}
+
+.tile-reversi-disabled {
+    -fx-background-color: gray;
+}
+
+.tile-reversi-available {
+    -fx-cursor: HAND;
+    -fx-opacity: 0.7;
+}
+
+.tile-reversi-available:hover {
+    -fx-opacity: 0.4;
+    -fx-cursor: hand;
+}
+
+.tile-reversi-occupied {
+}
+
+.piece-reversi {
+    -fx-stroke-width: 0.06;
+    -fx-scale-x: 38;
+    -fx-scale-y: 38;
+}
+
+.piece-reversi-black {
+    -fx-text-fill: #000;
+    -fx-fill: #000;
+}
+
+.piece-reversi-white {
+    -fx-text-fill: #fff;
+    -fx-fill: #fff;
+}

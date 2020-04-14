@@ -1,15 +1,89 @@
 package framework;
 
-public abstract class Framework {
-    public abstract void Move(Move move);
+import ai.Ai;
+import connection.Connection;
+import connection.GenericFuture;
+import connection.commands.LogoutCommand;
+import connection.eventHandlers.EventPayload;
+import connection.eventHandlers.MatchOfferHandler;
+import framework.player.ComposablePlayer;
+import framework.player.Player;
+import reversi.ReversiGame;
+import tictactoe.TicTacToeGame;
 
-    public abstract State getState();
+import java.io.IOException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-    public abstract void startGame(GameType gameType);
+public class Framework {
+    private Match match;
+    private final Player localPlayer;
+    private final Connection connection;
+    private final Thread eventLoopThread = new Thread(this::eventLoop);
+    private BlockingQueue<Match> matchQueue = new LinkedBlockingQueue<>();
 
-    public abstract void notifyMove(Move move);
+    public Framework(Player localPlayer, Connection connection) {
+        this.localPlayer = localPlayer;
+        this.connection = connection;
+        eventLoopThread.start();
+    }
 
-    public abstract void notifyGameOffer(GameType gameType);
+    public int getBoardSize() {
+        return match.getGame().getBoard().getSize();
+    }
 
-    public abstract void notifyTurn(PlayerType playerType);
+    private void eventLoop() {
+        while (true) {
+            try {
+                handleEvent(connection.getEvent());
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }
+
+    private synchronized void handleEvent(EventPayload payload) {
+        switch (payload.getType()) {
+            case MatchOffer: {
+                GameInterface game = null;
+                MatchOfferHandler.MatchOffer matchOffer = (MatchOfferHandler.MatchOffer)payload;
+                switch (matchOffer.getGameType()) {
+                    case TicTacToe:
+                        game = new TicTacToeGame();
+                        break;
+                    case Reversi:
+                        game = new ReversiGame();
+                        break;
+                }
+                if (((ComposablePlayer)localPlayer).getSource() instanceof Ai) {
+                    ((Ai) ((ComposablePlayer)localPlayer).getSource()).reset();
+                }
+                match = new Match(game, localPlayer, matchOffer.getRemotePlayer());
+                synchronized (match) {
+                    match.setupGame(matchOffer.getStartingState());
+                    match.startAsync();
+                    try {
+                        matchQueue.put(match);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    public void close() throws IOException {
+        connection.executeCommand(new LogoutCommand());
+        connection.close();
+        eventLoopThread.interrupt();
+    }
+
+    public Match getMatch() {
+        return match;
+    }
+
+    public Match getNextMatch() throws InterruptedException {
+        return matchQueue.take();
+    }
 }

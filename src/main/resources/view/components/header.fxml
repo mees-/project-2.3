@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox alignment="CENTER" styleClass="bg-primary" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Game (bijv. Reversi)">
+               <styleClass>
+                  <String fx:value="title-lg" />
+                  <String fx:value="b" />
+               </styleClass>
+            </Text>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="View (bijv. Online Match)">
+               <styleClass>
+                  <String fx:value="h3" />
+                  <String fx:value="b" />
+               </styleClass>
+            </Text>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <stylesheets>
+      <URL value="@../../css/bootstrapfx.css" />
+      <URL value="@../../css/app.css" />
+   </stylesheets>
+</HBox>

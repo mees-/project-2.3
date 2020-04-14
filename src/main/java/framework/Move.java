@@ -1,8 +1,56 @@
 package framework;
 
 public class Move {
-    public PlayerType player;
-    public int x;
-    public int y;
+    private final GameState player;
+    private final int x;
+    private final int y;
 
+    public Move(GameState player, int x, int y) {
+        this.player = player;
+        this.x = x;
+        this.y = y;
+    }
+
+    public static Move fromSimplePosition(GameState player, int boardSize, int position) {
+        return new Move(player, position % boardSize, position / boardSize);
+    }
+
+    public GameState getPlayer() {
+        return player;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (super.equals(obj)) {
+            return true;
+        }
+        if (obj instanceof Move) {
+            Move move = (Move)obj;
+            return this.player == move.player && this.x == move.x && this.y == move.y;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + player.hashCode();
+        result = 31 * result + x;
+        result = 31 * result + y;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "x: " + getX() + " y: " + getY() + " player: " +getPlayer();
+    }
 }

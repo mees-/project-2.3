@@ -64,11 +64,20 @@ public class ReversiAi extends Ai {
         } else if (gameWin == turn.otherPlayer().toCellContent()) {
             return -1000;
         } else if (!((ReversiBoard)board).canMakeTurn(turn.otherPlayer())) {
-            return 50 + (((ReversiBoard) board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
+            return 50 + getSimpleScore(lastMove, board);
         } else if (!((ReversiBoard)board).canMakeTurn(turn)) {
-            return -50 + (((ReversiBoard) board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
+            return -50 + getSimpleScore(lastMove, board);
         } else {
-            return (((ReversiBoard)board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
+            return getSimpleScore(lastMove, board);
+        }
+    }
+
+    private int getSimpleScore(Move lastMove, BoardInterface board) {
+        int score = (((ReversiBoard)board).getValueBoard()[lastMove.getX()][lastMove.getY()]);
+        if (getTurnAfterMove(board, lastMove) == turn) {
+            return score * -1;
+        } else {
+            return score;
         }
     }
 

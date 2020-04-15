@@ -46,7 +46,7 @@ public class Connection {
         eventHandlers.add(new MoveHandler(this));
         eventHandlers.add(new TurnHandler(this));
         eventHandlers.add(new ChallengeCancelledHandler(this));
-        eventHandlers.add(new ChallangeHandler(this));
+        eventHandlers.add(new ChallengeHandler(this));
         readingThread.start();
     }
 

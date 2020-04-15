@@ -7,8 +7,8 @@ import framework.GameType;
 import java.text.ParseException;
 import java.util.HashMap;
 
-public class ChallangeHandler extends EventHandler<ChallangeHandler.ChallengePayload> {
-    public ChallangeHandler(Connection connection) {
+public class ChallengeHandler extends EventHandler<ChallengeHandler.ChallengePayload> {
+    public ChallengeHandler(Connection connection) {
         super(connection);
     }
 

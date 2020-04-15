@@ -1,6 +1,5 @@
 package ui.controller;
 
-import connection.commands.response.PlayerList;
 import framework.Framework;
 import framework.GameType;
 import framework.Match;
@@ -21,8 +20,8 @@ import ui.settings.ButtonType;
 import ui.settings.PlayerType;
 
 import java.io.IOException;
-import java.rmi.Remote;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class LobbyController {
     @FXML
@@ -42,8 +41,8 @@ public class LobbyController {
     private Main main;
     private GameType gameType;
 
-    private PlayerList playerList;
-    private ArrayList<RemotePlayer> challengeList;
+    private List<String> playerList;
+    private List<RemotePlayer> challengeList;
 
     private Thread runThread = new Thread(this::run);
     private Thread gameThread = new Thread(() -> {
@@ -61,8 +60,6 @@ public class LobbyController {
             }
         }
     });
-
-
 
     public LobbyController(Main main, Framework framework, String playerName, PlayerType playerType, GameType gameType) {
         this.framework = framework;
@@ -87,30 +84,11 @@ public class LobbyController {
 
     private void run() {
         while(true) {
-            PlayerList playerListTemp = framework.getPlayers();
-            ArrayList<RemotePlayer> challengeListTemp = framework.getChalllenges();
-            if (!playerListTemp.equals(playerList)) {
-                playerList = playerListTemp;
-                Platform.runLater(() -> {
-                    while (playersTable.getChildren().size() > 0) {
-                        playersTable.getChildren().remove(0);
-                    }
-                    for (String name : playerList.getPlayers()) {
-                        if (!name.equals(playerName)) {
-                            playersTable.getChildren().add(createPlayerRow(name));
-                        }
-                    }
-                });
-            }
+            List<String> playerListTemp = framework.getPlayers();
+            List<RemotePlayer> challengeListTemp = framework.getChalllenges();
 
-            if (challengeList != null && !challengeList.equals(challengeListTemp)) {
-                while(challengesTable.getChildren().size() > 0) {
-                    challengesTable.getChildren().remove(0);
-                }
-                for (RemotePlayer player : challengeList) {
-                    challengesTable.getChildren().add(createChallengesRow(player.getUsername()));
-                }
-            }
+            checkPlayers(playerListTemp);
+            checkChallenges(challengeListTemp);
 
             try {
                 Thread.sleep(2000);
@@ -118,45 +96,54 @@ public class LobbyController {
                 e.printStackTrace();
             }
         }
-
-//        Platform.runLater( () -> {
-//            for (int i = 0; i < 5; i++) {
-//                playersTable.getChildren().add(createPlayerRow(i));
-//                challengesTable.getChildren().add(createChallengesRow(i));
-//            }
-//        });
     }
 
-    private HBox createRow(String playerName) {
+    private HBox createRow() {
         HBox row = new HBox();
         row.setAlignment(Pos.TOP_CENTER);
-
-        HBox hbPlayerOneText = new HBox();
-        hbPlayerOneText.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(hbPlayerOneText, Priority.ALWAYS);
-        Text tPlayerOne = new Text(playerName);
-        tPlayerOne.getStyleClass().addAll("h3", "text-dark", "b");
-        hbPlayerOneText.getChildren().add(tPlayerOne);
-
-        row.getChildren().add(hbPlayerOneText);
 
         return row;
     }
 
-    private HBox createPlayerRow(String playerName) {
-        HBox row = createRow(playerName);
+    private HBox addText(String playerName) {
+        HBox hbPlayerText = new HBox();
+        hbPlayerText.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(hbPlayerText, Priority.ALWAYS);
 
-        row.getChildren().add(createButtons(ButtonType.CHALLENGE, playerName));
+        Text tPlayer = new Text(playerName);
+        tPlayer.getStyleClass().addAll("h3", "text-dark", "b");
+
+        hbPlayerText.getChildren().add(tPlayer);
+
+        return hbPlayerText;
+    }
+
+    private HBox createPlayerRow(String playerName) {
+        HBox row = createRow();
+
+        row.getChildren().add(addText(playerName));
+
+        row.getChildren().add(setupButton(ButtonType.CHALLENGE, playerName));
         row.setPadding(new Insets(10,0,10,0));
 
         return row;
     }
 
-    private HBox createChallengesRow(String playerName) {
-        HBox row = createRow(playerName);
+    private HBox createChallengesRow(String playerName, GameType game) {
+        HBox row = createRow();
 
-        row.getChildren().add(createButtons(ButtonType.ACCEPT, playerName));
-        row.getChildren().add(createButtons(ButtonType.DECLINE, playerName));
+        row.getChildren().add(addText(playerName));
+        switch (game) {
+            case Reversi:
+                row.getChildren().add(addText("Reversi"));
+                break;
+            case TicTacToe:
+                row.getChildren().add(addText("Tic-Tac-Toe"));
+                break;
+        }
+
+        row.getChildren().add(setupButton(ButtonType.ACCEPT, playerName));
+        row.getChildren().add(setupButton(ButtonType.DECLINE, playerName));
         row.setPadding(new Insets(10,0,10,0));
 
         return row;
@@ -204,15 +191,39 @@ public class LobbyController {
         return button;
     }
 
-    private void checkPlayers() {
+    private void checkPlayers(List<String> playerListTemp) {
+        if (!playerListTemp.equals(playerList)) {
+            playerList = Collections.unmodifiableList(playerListTemp);
 
+            Platform.runLater(() -> {
+                while (playersTable.getChildren().size() > 0) {
+                    playersTable.getChildren().remove(0);
+                }
+                for (String name : playerList) {
+                    if (!name.equals(playerName)) {
+                        playersTable.getChildren().add(createPlayerRow(name));
+                    }
+                }
+            });
+        }
     }
 
-    private void checkChallenges() {
+    private void checkChallenges(List<RemotePlayer> challengeListTemp) {
+        if (!challengeListTemp.equals(challengeList) && challengeListTemp.size() > 0) {
+            challengeList = Collections.unmodifiableList(challengeListTemp);
 
+            Platform.runLater(() -> {
+                while (challengesTable.getChildren().size() > 0) {
+                    challengesTable.getChildren().remove(0);
+                }
+                for (RemotePlayer player : challengeList) {
+                    challengesTable.getChildren().add(createChallengesRow(player.getUsername(), player.getGameType()));
+                }
+            });
+        }
     }
 
-    private HBox createButtons(ButtonType buttonType, String playerName) {
+    private HBox setupButton(ButtonType buttonType, String playerName) {
         HBox hbPlayerOneButtons = new HBox();
         hbPlayerOneButtons.setAlignment(Pos.CENTER_RIGHT);
         hbPlayerOneButtons.getStyleClass().add("btn");
@@ -240,14 +251,12 @@ public class LobbyController {
         HBox field = (HBox) event.getSource();
 
         Text text = (Text) field.getChildren().get(1);
-        if (text.getText().equals("Cancel")) {
-            framework.cancelChallenge();
-        } else if (text.getText().equals("Challenge")) {
-            framework.sendChallenge(text.getId(), gameType);
+        framework.sendChallenge(text.getId(), gameType);
+
+        if (text.getText().equals("Challenge")) {
             Platform.runLater( () -> {
                 HBox parent = (HBox) text.getParent().getParent().getParent();
                 parent.getChildren().remove(1);
-
             });
         }
     }
@@ -257,7 +266,17 @@ public class LobbyController {
     }
 
     private void clickAccept(MouseEvent event) {
+        HBox field = (HBox) event.getSource();
 
+        Text text = (Text) field.getChildren().get(1);
+        framework.sendChallenge(text.getId(), gameType);
+
+        if (text.getText().equals("Accept")) {
+            Platform.runLater( () -> {
+                HBox parent = (HBox) text.getParent().getParent();
+                parent.getChildren().remove(0);
+            });
+        }
     }
 
     private void clickDecline(MouseEvent event) {

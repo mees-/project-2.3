@@ -3,7 +3,7 @@ package framework;
 import ai.Ai;
 import connection.Connection;
 import connection.commands.ChallengeCommand;
-import connection.eventHandlers.ChallangeHandler;
+import connection.eventHandlers.ChallengeHandler;
 import connection.commands.GetPlayerListCommand;
 import connection.commands.LogoutCommand;
 import connection.commands.response.PlayerList;
@@ -18,6 +18,7 @@ import tictactoe.TicTacToeGame;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -80,7 +81,7 @@ public class Framework {
                 break;
             }
             case Challenge: {
-                ChallangeHandler.ChallengePayload challengeOffer = (ChallangeHandler.ChallengePayload) payload;
+                ChallengeHandler.ChallengePayload challengeOffer = (ChallengeHandler.ChallengePayload) payload;
                 String name = challengeOffer.getChallenger();
                 GameType game = challengeOffer.getGame();
 
@@ -109,9 +110,9 @@ public class Framework {
         return matchQueue.take();
     }
 
-    public PlayerList getPlayers() {
+    public List<String> getPlayers() {
         try {
-            return connection.executeCommand(new GetPlayerListCommand()).get();
+            return connection.executeCommand(new GetPlayerListCommand()).get().getPlayers();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -124,7 +125,8 @@ public class Framework {
     public void retrieveChallenges() {
         synchronized (openChallenges) {
             try {
-                openChallenges.add(challengeQueue.poll(1000, TimeUnit.MILLISECONDS));
+                RemotePlayer player = challengeQueue.take();
+                openChallenges.add(player);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -133,9 +135,5 @@ public class Framework {
 
     public ArrayList<RemotePlayer> getChalllenges() {
         return openChallenges;
-    }
-
-    public void cancelChallenge() {
-//        connection.executeCommand(new Challenge)
     }
 }

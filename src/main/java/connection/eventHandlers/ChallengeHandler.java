@@ -7,14 +7,14 @@ import framework.GameType;
 import java.text.ParseException;
 import java.util.HashMap;
 
-public class ChallangeHandler extends EventHandler<ChallangeHandler.ChallengePayload> {
-    public ChallangeHandler(Connection connection) {
+public class ChallengeHandler extends EventHandler<ChallengeHandler.ChallengePayload> {
+    public ChallengeHandler(Connection connection) {
         super(connection);
     }
 
     @Override
     public boolean isValidMessage(String[] message) {
-        return EventHandler.validateWords(new String[]{"SVR", "GAME", "CHALLENGE"}, message);
+        return EventHandler.validateWords(new String[]{"SVR", "GAME", "CHALLENGE"}, message) && !message[3].equalsIgnoreCase("CANCELLED");
     }
 
     @Override

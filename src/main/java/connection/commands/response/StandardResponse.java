@@ -6,6 +6,15 @@ public class StandardResponse {
     private final boolean success;
     private String errorMessage;
 
+    public StandardResponse(String[] response) {
+        if (response[0].equalsIgnoreCase("ok")) {
+            success = true;
+        } else {
+            success = false;
+            errorMessage = String.join(" ", Arrays.copyOfRange(response, 1, response.length));
+        }
+    }
+
     public StandardResponse(boolean success) {
         this.success = success;
     }

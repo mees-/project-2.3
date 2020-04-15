@@ -2,6 +2,7 @@ package connection.commands;
 
 import connection.Parser;
 import connection.commands.response.PlayerList;
+import connection.commands.response.StandardResponse;
 import connection.eventHandlers.EventHandler;
 
 import java.text.ParseException;
@@ -17,12 +18,23 @@ public class GetPlayerListCommand extends Command<PlayerList> {
 
     @Override
     public boolean isValidResponse(String[] response) {
-        return EventHandler.validateWords(new String[]{"SVR", "PLAYERLIST"}, response);
+        return StandardResponse.isStandardResponse(response);
     }
 
     @Override
     public PlayerList parseResponse(String[] response) {
-        String rawList = Parser.sliceStringFromParts(response, 2, response.length);
+        // Unused
+        return null;
+    }
+
+    @Override
+    public int getLines() {
+        return 2;
+    }
+
+    @Override
+    public PlayerList parseResponse(String[][] response) {
+        String rawList = Parser.sliceStringFromParts(response[1], 2, response[1].length);
         try {
             ArrayList<String> players = Parser.parseList(rawList);
             return new PlayerList(true, players);

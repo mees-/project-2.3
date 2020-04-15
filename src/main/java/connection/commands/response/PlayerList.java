@@ -18,4 +18,14 @@ public class PlayerList extends StandardResponse {
     public List<String> getPlayers() {
         return Collections.unmodifiableList(players);
     }
+
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("PlayerList:");
+        for (String player : getPlayers()) {
+            str.append('\n');
+            str.append(player);
+        }
+        return str.toString();
+    }
 }

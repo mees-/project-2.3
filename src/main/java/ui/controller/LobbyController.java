@@ -3,6 +3,8 @@ package ui.controller;
 import framework.Framework;
 import framework.GameType;
 import framework.Match;
+import framework.player.ChallengePlayer;
+import framework.player.RemotePlayer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +21,8 @@ import ui.settings.ButtonType;
 import ui.settings.PlayerType;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 public class LobbyController {
     @FXML
@@ -38,8 +42,10 @@ public class LobbyController {
     private Main main;
     private GameType gameType;
 
-    private Thread runThread = new Thread(this::run);
+    private List<String> playerList;
+    private List<ChallengePlayer> challengeList;
 
+    private Thread runThread = new Thread(this::run);
     private Thread gameThread = new Thread(() -> {
         while (true) {
             try {
@@ -66,6 +72,11 @@ public class LobbyController {
 
     public void tournamentSetup() {
         gameThread.start();
+        new Thread(() -> {
+            while(true) {
+                framework.retrieveChallenges();
+            }
+        }).start();
     }
 
     public void start() {
@@ -73,90 +84,100 @@ public class LobbyController {
     }
 
     private void run() {
-//        while(true) {
-//            PlayerList a = framework.getPlayers();
-//
-//            for (String b : a.getPlayers()) {
-//                System.out.println(b);
-//            }
-//        }
+        while(true) {
+            List<String> playerListTemp = framework.getPlayers();
+            List<ChallengePlayer> challengeListTemp = framework.getChalllenges();
 
-        Platform.runLater( () -> {
-            for (int i = 0; i < 5; i++) {
-                playersTable.getChildren().add(createPlayerRow(i));
-                challengesTable.getChildren().add(createChallengesRow(i));
+            checkPlayers(playerListTemp);
+            checkChallenges(challengeListTemp);
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
 
-    private HBox createRow(int i) {
+    private HBox createRow(String playerName) {
         HBox row = new HBox();
         row.setAlignment(Pos.TOP_CENTER);
-
-        HBox hbPlayerOneText = new HBox();
-        hbPlayerOneText.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(hbPlayerOneText, Priority.ALWAYS);
-        Text tPlayerOne = new Text("Player Name " + i);
-        tPlayerOne.getStyleClass().addAll("h3", "text-dark", "b");
-        hbPlayerOneText.getChildren().add(tPlayerOne);
-
-        row.getChildren().add(hbPlayerOneText);
+        row.setId("row-" + playerName);
 
         return row;
     }
 
-    private HBox createPlayerRow(int i) {
-        HBox row = createRow(i);
+    private HBox addText(String playerName) {
+        HBox hbPlayerText = new HBox();
+        hbPlayerText.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(hbPlayerText, Priority.ALWAYS);
 
-        row.getChildren().add(createButtons(ButtonType.CHALLENGE, i));
+        Text tPlayer = new Text(playerName);
+        tPlayer.getStyleClass().addAll("h3", "text-dark", "b");
+
+        hbPlayerText.getChildren().add(tPlayer);
+
+        return hbPlayerText;
+    }
+
+    private HBox createPlayerRow(String playerName) {
+        HBox row = createRow(playerName);
+
+        row.getChildren().add(addText(playerName));
+
+        row.getChildren().add(setupButtonPlayers(ButtonType.CHALLENGE, playerName));
         row.setPadding(new Insets(10,0,10,0));
 
         return row;
     }
 
-    private HBox createChallengesRow(int i) {
-        HBox row = createRow(i);
+    private HBox createChallengesRow(String playerName, GameType game, Integer challengeNumber) {
+        HBox row = createRow(playerName);
 
-        row.getChildren().add(createButtons(ButtonType.ACCEPT, i));
-        row.getChildren().add(createButtons(ButtonType.DECLINE, i));
+        row.getChildren().add(addText(playerName));
+
+        switch (game) {
+            case Reversi:
+                row.getChildren().add(addText("Reversi"));
+                break;
+            case TicTacToe:
+                row.getChildren().add(addText("Tic-Tac-Toe"));
+                break;
+        }
+
+        row.getChildren().add(setupButtonChallenges(ButtonType.ACCEPT, challengeNumber));
+        row.getChildren().add(setupButtonChallenges(ButtonType.DECLINE, challengeNumber));
         row.setPadding(new Insets(10,0,10,0));
 
         return row;
     }
 
-    private HBox createButton(ButtonType buttonType, int i) {
-        HBox button = new HBox();
-        button.setAlignment(Pos.CENTER);
-
+    private SVGPath setupButtonImage() {
         SVGPath buttonImage = new SVGPath();
         buttonImage.getStyleClass().add("text-white");
 
         HBox.setMargin(buttonImage, new Insets(0, 6.0, 0, 0));
 
+        return buttonImage;
+    }
+
+    private HBox createButtonPlayers(ButtonType buttonType, String playerName) {
+        HBox button = new HBox();
+        button.setAlignment(Pos.CENTER);
+
+        SVGPath buttonImage = setupButtonImage();
+
         Text buttonText = new Text();
         buttonText.getStyleClass().addAll("h5", "b", "text-white");
+        buttonText.setId(playerName);
 
         switch (buttonType) {
-            case DECLINE:
-                buttonText.setId("Decline " + i);
-                buttonText.setText("Decline");
-                buttonImage.setContent(SVGcancel);
-                button.setOnMouseClicked(this::clickDecline);
-                break;
             case CHALLENGE:
-                buttonText.setId("Challenge " + i);
                 buttonText.setText("Challenge");
                 buttonImage.setContent(SVGchallenge);
                 button.setOnMouseClicked(this::clickChallenge);
                 break;
-            case ACCEPT:
-                buttonText.setId("Accept " + i);
-                buttonText.setText("Accept");
-                buttonImage.setContent(SVGaccept);
-                button.setOnMouseClicked(this::clickAccept);
-                break;
             case CANCEL:
-                buttonText.setId("Cancel " + i);
                 buttonText.setText("Cancel");
                 buttonImage.setContent(SVGcancel);
                 button.setOnMouseClicked(this::clickCancel);
@@ -169,55 +190,146 @@ public class LobbyController {
         return button;
     }
 
-    private void checkPlayers() {
+    private HBox createButtonChallenges(ButtonType buttonType, Integer challengeNumber) {
+        HBox button = new HBox();
+        button.setAlignment(Pos.CENTER);
 
+        SVGPath buttonImage = setupButtonImage();
+
+        Text buttonText = new Text();
+        buttonText.getStyleClass().addAll("h5", "b", "text-white");
+        buttonText.setId(Integer.toString(challengeNumber));
+
+        switch (buttonType) {
+            case DECLINE:
+                buttonText.setText("Decline");
+                buttonImage.setContent(SVGcancel);
+                button.setOnMouseClicked(this::clickDecline);
+                break;
+            case ACCEPT:
+                buttonText.setText("Accept");
+                buttonImage.setContent(SVGaccept);
+                button.setOnMouseClicked(this::clickAccept);
+                break;
+        }
+
+        button.getChildren().add(buttonImage);
+        button.getChildren().add(buttonText);
+
+        return button;
     }
 
-    private void checkChallenges() {
+    private void checkPlayers(List<String> playerListTemp) {
+        if (!playerListTemp.equals(playerList)) {
+            playerList = Collections.unmodifiableList(playerListTemp);
 
+            Platform.runLater(() -> {
+                while (playersTable.getChildren().size() > 0) {
+                    playersTable.getChildren().remove(0);
+                }
+                for (String name : playerList) {
+                    if (!name.equals(playerName)) {
+                        playersTable.getChildren().add(createPlayerRow(name));
+                    }
+                }
+            });
+        }
     }
 
-    private HBox createButtons(ButtonType buttonType, int i) {
+    private void checkChallenges(List<ChallengePlayer> challengeListTemp) {
+        if (!challengeListTemp.equals(challengeList) && challengeListTemp.size() > 0) {
+            challengeList = Collections.unmodifiableList(challengeListTemp);
+
+            Platform.runLater(() -> {
+                while (challengesTable.getChildren().size() > 0) {
+                    challengesTable.getChildren().remove(0);
+                }
+                for (ChallengePlayer player : challengeList) {
+                    challengesTable.getChildren().add(createChallengesRow(player.getUsername(), player.getGameType(), player.getChallengeNumber()));
+                }
+            });
+        }
+    }
+
+    private HBox setupButtonPlayers(ButtonType buttonType, String playerName) {
         HBox hbPlayerOneButtons = new HBox();
         hbPlayerOneButtons.setAlignment(Pos.CENTER_RIGHT);
         hbPlayerOneButtons.getStyleClass().add("btn");
 
-        switch (buttonType) {
-            case CANCEL:
-            case CHALLENGE:
-                hbPlayerOneButtons.getStyleClass().add("btn-secondary");
-                break;
-            case ACCEPT:
-                hbPlayerOneButtons.getStyleClass().add("btn-success");
-                break;
-            case DECLINE:
-                hbPlayerOneButtons.getStyleClass().add("btn-danger");
-                break;
-        }
+        hbPlayerOneButtons.getStyleClass().add("btn-secondary");
 
-        hbPlayerOneButtons.getChildren().add(createButton(buttonType, i));
+        hbPlayerOneButtons.getChildren().add(createButtonPlayers(buttonType, playerName));
         HBox.setMargin(hbPlayerOneButtons, new Insets(0,10,0,0));
 
         return hbPlayerOneButtons;
+    }
+
+    private HBox setupButtonChallenges(ButtonType buttonType, Integer challengeNumber) {
+        HBox hbChallengeButtons = new HBox();
+        hbChallengeButtons.setAlignment(Pos.CENTER_RIGHT);
+        hbChallengeButtons.getStyleClass().add("btn");
+
+        switch (buttonType) {
+            case ACCEPT:
+                hbChallengeButtons.getStyleClass().add("btn-success");
+                break;
+            case DECLINE:
+                hbChallengeButtons.getStyleClass().add("btn-danger");
+                break;
+        }
+
+        hbChallengeButtons.getChildren().add(createButtonChallenges(buttonType, challengeNumber));
+        HBox.setMargin(hbChallengeButtons, new Insets(0,10,0,0));
+
+        return hbChallengeButtons;
     }
 
     private void clickChallenge(MouseEvent event) {
         HBox field = (HBox) event.getSource();
 
         Text text = (Text) field.getChildren().get(1);
-        if (text.getText().equals("Cancel")) {
-            framework.cancelChallenge();
-        } else if (text.getText().equals("Challenge")) {
-            framework.sendChallenge(text.getId(), gameType);
+        framework.sendChallenge(text.getId(), gameType);
+
+        if (text.getText().equals("Challenge")) {
+            Platform.runLater( () -> {
+                HBox parent = (HBox) text.getParent().getParent().getParent();
+                parent.getChildren().remove(1);
+            });
+        }
+    }
+
+    private void clickAccept(MouseEvent event) {
+        HBox field = (HBox) event.getSource();
+
+        Text text = (Text) field.getChildren().get(1);
+        int id = Integer.parseInt(text.getId());
+
+        if (text.getText().equals("Accept")) {
+            Platform.runLater( () -> {
+                HBox row = (HBox) text.getParent().getParent().getParent();
+                VBox parent = (VBox) row.getParent();
+                System.out.println(row.getId());
+
+                // knop moet terugkomen, de challenge is namelijk voorbij
+                HBox playerRow = (HBox) playersTable.lookup("#" + row.getId());
+                HBox test = (HBox) row.getChildren().get(0);
+                Text veldname = (Text) test.getChildren().get(0);
+                System.out.println(veldname.getText());
+
+                playerRow.getChildren().add(createButtonPlayers(
+                        ButtonType.CHALLENGE,
+                        veldname.getText()
+                ));
+
+                parent.getChildren().remove(row);
+
+                framework.acceptChallenge(id);
+            });
         }
     }
 
     private void clickCancel(MouseEvent event) {
-
-    }
-
-    private void clickAccept(MouseEvent event) {
-
+        System.out.println("Cancel");
     }
 
     private void clickDecline(MouseEvent event) {

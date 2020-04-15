@@ -45,6 +45,8 @@ public class Connection {
         eventHandlers.add(new MatchOfferHandler(this));
         eventHandlers.add(new MoveHandler(this));
         eventHandlers.add(new TurnHandler(this));
+        eventHandlers.add(new ChallengeCancelledHandler(this));
+        eventHandlers.add(new ChallengeHandler(this));
         readingThread.start();
     }
 
@@ -83,7 +85,7 @@ public class Connection {
         throw new RuntimeException(String.join(" ", message) + "\ndidn't match the first command in the queue and didn't match any eventHandler");
     }
 
-    public <T extends Command> GenericFuture<? extends StandardResponse> executeCommand(T command) {
+    public <R extends StandardResponse, T extends Command<R>> GenericFuture<R> executeCommand(T command) {
         try {
             commandsWaitingForResponse.put(command);
             out.println(command.getCommandString());
@@ -116,8 +118,16 @@ public class Connection {
                 String[] words = message.split("\\s+");
                 Command command = commandsWaitingForResponse.peek();
                 if (command != null && command.isValidResponse(words)) {
+                    String[][] lines = new String[command.getLines()][];
+                    lines[0] = words;
                     commandsWaitingForResponse.poll();
-                    StandardResponse response = command.parseAndHandleResponse(words);
+                    if (command.getLines() > 1) {
+                        lines[0] = words;
+                        for (int i = 1; i < command.getLines(); i++) {
+                            lines[i] = in.readLine().split("\\s+");
+                        }
+                    }
+                    StandardResponse response = command.parseAndHandleResponse(lines);
                     if (!response.isSuccess()) {
                         throw new RuntimeException("failed executing command: " + command.getCommandString() + "\nerror: " + response.getErrorMessage());
                     }

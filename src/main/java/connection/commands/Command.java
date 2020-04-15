@@ -12,10 +12,18 @@ public abstract class Command<R extends StandardResponse> {
 
     public abstract R parseResponse(String[] response);
 
-    public R parseAndHandleResponse(String[] message) {
+    public R parseResponse(String[][] response) {
+        return parseResponse(response[0]);
+    }
+
+    public R parseAndHandleResponse(String[][] message) {
         R response = parseResponse(message);
         future.resolve(response);
         return response;
+    }
+
+    public int getLines() {
+        return 1;
     }
 
     public GenericFuture<R> getFuture() {

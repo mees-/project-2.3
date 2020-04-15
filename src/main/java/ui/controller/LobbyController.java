@@ -98,9 +98,10 @@ public class LobbyController {
         }
     }
 
-    private HBox createRow() {
+    private HBox createRow(String playerName) {
         HBox row = new HBox();
         row.setAlignment(Pos.TOP_CENTER);
+        row.setId("row-" + playerName);
 
         return row;
     }
@@ -119,7 +120,7 @@ public class LobbyController {
     }
 
     private HBox createPlayerRow(String playerName) {
-        HBox row = createRow();
+        HBox row = createRow(playerName);
 
         row.getChildren().add(addText(playerName));
 
@@ -130,7 +131,7 @@ public class LobbyController {
     }
 
     private HBox createChallengesRow(String playerName, GameType game) {
-        HBox row = createRow();
+        HBox row = createRow(playerName);
 
         row.getChildren().add(addText(playerName));
         switch (game) {
@@ -176,7 +177,7 @@ public class LobbyController {
             case ACCEPT:
                 buttonText.setText("Accept");
                 buttonImage.setContent(SVGaccept);
-                button.setOnMouseClicked(this::clickAccept);
+                button.setOnMouseClicked(this::clickChallenge);
                 break;
             case CANCEL:
                 buttonText.setText("Cancel");
@@ -258,25 +259,16 @@ public class LobbyController {
                 HBox parent = (HBox) text.getParent().getParent().getParent();
                 parent.getChildren().remove(1);
             });
+        } else if (text.getText().equals("Accept")) {
+            Platform.runLater( () -> {
+                VBox parent = (VBox) text.getParent().getParent().getParent().getParent();
+                parent.getChildren().remove(parent.lookup("#row-" + text.getId()));
+            });
         }
     }
 
     private void clickCancel(MouseEvent event) {
         System.out.println("Cancel");
-    }
-
-    private void clickAccept(MouseEvent event) {
-        HBox field = (HBox) event.getSource();
-
-        Text text = (Text) field.getChildren().get(1);
-        framework.sendChallenge(text.getId(), gameType);
-
-        if (text.getText().equals("Accept")) {
-            Platform.runLater( () -> {
-                HBox parent = (HBox) text.getParent().getParent();
-                parent.getChildren().remove(0);
-            });
-        }
     }
 
     private void clickDecline(MouseEvent event) {

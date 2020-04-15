@@ -2,6 +2,7 @@ package framework;
 
 import ai.Ai;
 import connection.Connection;
+import connection.commands.ChallengeAcceptCommand;
 import connection.commands.ChallengeCommand;
 import connection.eventHandlers.ChallengeHandler;
 import connection.commands.GetPlayerListCommand;
@@ -9,6 +10,7 @@ import connection.commands.LogoutCommand;
 import connection.commands.response.PlayerList;
 import connection.eventHandlers.EventPayload;
 import connection.eventHandlers.MatchOfferHandler;
+import framework.player.ChallengePlayer;
 import framework.player.ComposablePlayer;
 import framework.player.Player;
 import framework.player.RemotePlayer;
@@ -29,8 +31,8 @@ public class Framework {
     private final Connection connection;
     private final Thread eventLoopThread = new Thread(this::eventLoop);
     private BlockingQueue<Match> matchQueue = new LinkedBlockingQueue<>();
-    private BlockingQueue<RemotePlayer> challengeQueue = new LinkedBlockingQueue<>();
-    private final ArrayList<RemotePlayer> openChallenges = new ArrayList<>();
+    private BlockingQueue<ChallengePlayer> challengeQueue = new LinkedBlockingQueue<>();
+    private final ArrayList<ChallengePlayer> openChallenges = new ArrayList<>();
 
     public Framework(Player localPlayer, Connection connection) {
         this.localPlayer = localPlayer;
@@ -84,9 +86,10 @@ public class Framework {
                 ChallengeHandler.ChallengePayload challengeOffer = (ChallengeHandler.ChallengePayload) payload;
                 String name = challengeOffer.getChallenger();
                 GameType game = challengeOffer.getGame();
+                Integer challengeNumber = challengeOffer.getChallengeNumber();
 
                 try {
-                    challengeQueue.put(new RemotePlayer(name, game));
+                    challengeQueue.put(new ChallengePlayer(name, game, challengeNumber));
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -122,10 +125,14 @@ public class Framework {
         connection.executeCommand(new ChallengeCommand(name, gameType));
     }
 
+    public void acceptChallenge(Integer challengeNumber) {
+        connection.executeCommand(new ChallengeAcceptCommand(challengeNumber));
+    }
+
     public void retrieveChallenges() {
         synchronized (openChallenges) {
             try {
-                RemotePlayer player = challengeQueue.take();
+                ChallengePlayer player = challengeQueue.take();
                 openChallenges.add(player);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -133,7 +140,7 @@ public class Framework {
         }
     }
 
-    public ArrayList<RemotePlayer> getChalllenges() {
+    public ArrayList<ChallengePlayer> getChalllenges() {
         return openChallenges;
     }
 }

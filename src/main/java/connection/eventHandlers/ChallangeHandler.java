@@ -14,7 +14,7 @@ public class ChallangeHandler extends EventHandler<ChallangeHandler.ChallengePay
 
     @Override
     public boolean isValidMessage(String[] message) {
-        return EventHandler.validateWords(new String[]{"SVR", "GAME", "CHALLENGE"}, message);
+        return EventHandler.validateWords(new String[]{"SVR", "GAME", "CHALLENGE"}, message) && !message[3].equalsIgnoreCase("CANCELLED");
     }
 
     @Override

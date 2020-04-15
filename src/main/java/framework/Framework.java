@@ -2,22 +2,25 @@ package framework;
 
 import ai.Ai;
 import connection.Connection;
-import connection.GenericFuture;
 import connection.commands.ChallengeCommand;
+import connection.eventHandlers.ChallangeHandler;
 import connection.commands.GetPlayerListCommand;
 import connection.commands.LogoutCommand;
 import connection.commands.response.PlayerList;
-import connection.commands.response.StandardResponse;
 import connection.eventHandlers.EventPayload;
 import connection.eventHandlers.MatchOfferHandler;
 import framework.player.ComposablePlayer;
 import framework.player.Player;
+import framework.player.RemotePlayer;
 import reversi.ReversiGame;
 import tictactoe.TicTacToeGame;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class Framework {
     private Match match;
@@ -25,6 +28,8 @@ public class Framework {
     private final Connection connection;
     private final Thread eventLoopThread = new Thread(this::eventLoop);
     private BlockingQueue<Match> matchQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<RemotePlayer> challengeQueue = new LinkedBlockingQueue<>();
+    private final ArrayList<RemotePlayer> openChallenges = new ArrayList<>();
 
     public Framework(Player localPlayer, Connection connection) {
         this.localPlayer = localPlayer;
@@ -74,6 +79,19 @@ public class Framework {
                 }
                 break;
             }
+            case Challenge: {
+                ChallangeHandler.ChallengePayload challengeOffer = (ChallangeHandler.ChallengePayload) payload;
+                String name = challengeOffer.getChallenger();
+                GameType game = challengeOffer.getGame();
+
+                try {
+                    challengeQueue.put(new RemotePlayer(name, game));
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                break;
+            }
         }
     }
 
@@ -93,17 +111,31 @@ public class Framework {
 
     public PlayerList getPlayers() {
         try {
-            return (PlayerList) connection.executeCommand(new GetPlayerListCommand()).get();
+            return connection.executeCommand(new GetPlayerListCommand()).get();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void sendChallenge(String name, GameType gameType) {
-        connection.executeCommand(new ChallengeCommand("", gameType));
+        connection.executeCommand(new ChallengeCommand(name, gameType));
+    }
+
+    public void retrieveChallenges() {
+        synchronized (openChallenges) {
+            try {
+                openChallenges.add(challengeQueue.poll(1000, TimeUnit.MILLISECONDS));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public ArrayList<RemotePlayer> getChalllenges() {
+        return openChallenges;
     }
 
     public void cancelChallenge() {
-//        connection.executeCommand()
+//        connection.executeCommand(new Challenge)
     }
 }

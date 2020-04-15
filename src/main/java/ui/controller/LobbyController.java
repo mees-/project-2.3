@@ -310,6 +310,7 @@ public class LobbyController {
                 VBox parent = (VBox) row.getParent();
                 System.out.println(row.getId());
 
+                // knop moet terugkomen, de challenge is namelijk voorbij
                 HBox playerRow = (HBox) playersTable.lookup("#" + row.getId());
                 HBox test = (HBox) row.getChildren().get(0);
                 Text veldname = (Text) test.getChildren().get(0);

@@ -26,10 +26,10 @@ public class Root extends Application {
     private void initUI(Stage stage) throws IOException {
         VBox root = FXMLLoader.load(getClass().getResource("/view/root.fxml"));
 
-        Pane header = (Pane) FXMLLoader.load(getClass().getResource("/view/components/header.fxml"));
-        Pane footer = (Pane) FXMLLoader.load(getClass().getResource("/view/components/footer.fxml"));
+        Pane header = FXMLLoader.load(getClass().getResource("/view/components/header.fxml"));
+        Pane footer = FXMLLoader.load(getClass().getResource("/view/components/footer.fxml"));
 
-        Pane home = (Pane) FXMLLoader.load(getClass().getResource("/view/lobby.fxml"));
+        Pane home = FXMLLoader.load(getClass().getResource("/view/lobby.fxml"));
 
         root.getChildren().add(header);
         root.getChildren().add(home);

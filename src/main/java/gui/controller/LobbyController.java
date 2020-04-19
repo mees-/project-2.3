@@ -1,10 +1,9 @@
-package ui.controller;
+package gui.controller;
 
 import framework.Framework;
 import framework.GameType;
 import framework.Match;
 import framework.player.ChallengePlayer;
-import framework.player.RemotePlayer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,9 +15,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
-import ui.Main;
-import ui.settings.ButtonType;
-import ui.settings.PlayerType;
+import gui.Main;
+import gui.settings.ButtonType;
+import gui.settings.PlayerType;
 
 import java.io.IOException;
 import java.util.Collections;

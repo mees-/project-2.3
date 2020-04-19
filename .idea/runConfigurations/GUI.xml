@@ -4,11 +4,11 @@
       <env name="GAME_HOST" value="localhost" />
       <env name="GAME_PORT" value="7789" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="ui.Main" />
+    <option name="MAIN_CLASS_NAME" value="gui.Main" />
     <module name="project-2.3" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="ui.*" />
+        <option name="PATTERN" value="gui.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

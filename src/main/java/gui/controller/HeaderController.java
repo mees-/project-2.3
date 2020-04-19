@@ -1,4 +1,4 @@
-package ui.controller;
+package gui.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;

@@ -1,11 +1,10 @@
-package ui.controller;
+package gui.controller;
 
 import ai.Ai;
 import framework.*;
 import framework.player.*;
 import javafx.application.Platform;
 import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -14,8 +13,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
 import tictactoe.TicTacToeBoard;
-import ui.Main;
-import ui.update.GameStateUpdate;
+import gui.Main;
+import gui.update.GameStateUpdate;
 
 import static javafx.scene.paint.Color.BLACK;
 

@@ -4,7 +4,7 @@ import framework.player.ComposablePlayer;
 import framework.player.NoopComposer;
 import framework.player.Player;
 import framework.player.Players;
-import ui.update.GameStateUpdate;
+import gui.update.GameStateUpdate;
 
 import java.util.Collections;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package ui.update;
+package gui.update;
 
 import framework.BoardInterface;
 import framework.GameState;

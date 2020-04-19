@@ -1,12 +1,12 @@
-package ui.controller;
+package gui.controller;
 
 import framework.GameType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import ui.Main;
-import ui.settings.*;
+import gui.Main;
+import gui.settings.*;
 
 import javafx.scene.input.MouseEvent;
 

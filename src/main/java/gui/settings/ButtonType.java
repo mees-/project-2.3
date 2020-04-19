@@ -1,4 +1,4 @@
-package ui.settings;
+package gui.settings;
 
 public enum ButtonType {
     CHALLENGE,

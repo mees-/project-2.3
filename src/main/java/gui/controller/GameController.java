@@ -1,4 +1,4 @@
-package ui.controller;
+package gui.controller;
 
 import ai.Ai;
 import framework.BoardInterface;
@@ -14,7 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
-import ui.Main;
+import gui.Main;
 
 public abstract class GameController {
     protected Main main;

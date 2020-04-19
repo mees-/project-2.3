@@ -1,4 +1,4 @@
-package ui;
+package gui;
 
 import ai.ReversiAi;
 import ai.TicTacToeAi;
@@ -14,9 +14,9 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import reversi.ReversiGame;
 import tictactoe.TicTacToeGame;
-import ui.controller.*;
-import ui.settings.PlayType;
-import ui.settings.PlayerType;
+import gui.controller.*;
+import gui.settings.PlayType;
+import gui.settings.PlayerType;
 import java.io.IOException;
 
 public class Main extends Application {

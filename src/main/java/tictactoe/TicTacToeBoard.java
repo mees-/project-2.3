@@ -224,8 +224,7 @@ public class TicTacToeBoard extends BoardInterface {
      * @param c1 The first mark.
      * @param c2 The second mark.
      * @param c3 The third mark.
-     * @return True if all marks are the same,
-     * return false if not.
+     * @return True if all marks are the same, false if not.
      */
     private boolean checkMarks(CellContent c1, CellContent c2, CellContent c3) {
         return(c1 != CellContent.Empty && c1 == c2 && c2 == c3);

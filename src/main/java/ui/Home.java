@@ -18,7 +18,6 @@ public class Home extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("Tha Koel Gamebox");
-        //stage.getIcons().add(new Image("/img/tictactoe.png"));
         initUI(stage);
         stage.show();
     }

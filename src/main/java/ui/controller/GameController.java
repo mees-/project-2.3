@@ -4,7 +4,6 @@ import ai.Ai;
 import framework.BoardInterface;
 import framework.GameState;
 import framework.Match;
-import framework.player.Player;
 import framework.player.Players;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;

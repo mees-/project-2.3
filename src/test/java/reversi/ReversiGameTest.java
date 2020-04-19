@@ -17,16 +17,16 @@ class ReversiGameTest {
     static void initializeGame() { game = new ReversiGame(); }
 
     @Test
-    @Order(2)
+    @Order(3)
     void getBoard() {
         assertTrue(game.getBoard() instanceof ReversiBoard);
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     void doMove() throws InvalidMoveException, InvalidTurnException {
-        game.doMove(new Move(GameState.TurnOne, 5, 4));
-        assertEquals(CellContent.Local, game.getBoard().getCell(5,4));
+        game.doMove(new Move(GameState.TurnOne, 4, 5));
+        assertEquals(CellContent.Local, game.getBoard().getCell(4,5));
         assertEquals(CellContent.Empty, game.getBoard().getCell(7,7));
 
         InvalidMoveException e = assertThrows(
@@ -34,8 +34,8 @@ class ReversiGameTest {
                 () -> game.doMove(new Move(GameState.TurnTwo, 5, 4)));
         assertEquals("The move to set xPos: 5 and yPos: 4 to " + CellContent.Remote + " is invalid.", e.getMessage());
 
-        game.doMove(new Move(GameState.TurnTwo, 5, 4));
-        assertEquals(CellContent.Remote, game.getBoard().getCell(5,4));
+        game.doMove(new Move(GameState.TurnTwo, 5, 3));
+        assertEquals(CellContent.Remote, game.getBoard().getCell(5,3));
 
         InvalidTurnException e2 = assertThrows(
                 InvalidTurnException.class,
@@ -49,14 +49,13 @@ class ReversiGameTest {
     }
 
     @Test
-    @Order(4)
+    @Order(2)
     void setup() {
-//        game.setup();
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
-                assertEquals(CellContent.Empty, game.getBoard().getCell(i,j));
-            }
-        }
+        game.setup(GameState.TurnOne);
+        assertEquals(CellContent.Remote, game.getBoard().getCell(3, 3));
+        assertEquals(CellContent.Local, game.getBoard().getCell(3, 4));
+        assertEquals(CellContent.Local, game.getBoard().getCell(4, 3));
+        assertEquals(CellContent.Remote, game.getBoard().getCell(4, 4));
     }
 
     @Test

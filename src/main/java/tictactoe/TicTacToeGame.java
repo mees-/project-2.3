@@ -15,8 +15,8 @@ public class TicTacToeGame implements GameInterface
     }
 
     /**
-     *
-     * @return
+     * returns the current game board.
+     * @return the current game board.
      */
     @Override
     public BoardInterface getBoard() {
@@ -25,10 +25,10 @@ public class TicTacToeGame implements GameInterface
 
     /**
      *
-     * @param move
-     * @return
-     * @throws InvalidMoveException
-     * @throws InvalidTurnException
+     * @param move The next move that is taken.
+     * @return The result of a successful move.
+     * @throws InvalidMoveException When the move is not valid.
+     * @throws InvalidTurnException When it is not the player's turn.
      */
     @Override
     public GameState doMove(Move move) throws InvalidMoveException, InvalidTurnException {
@@ -49,8 +49,8 @@ public class TicTacToeGame implements GameInterface
     }
 
     /**
-     * Resets the board
-     * @param gameState
+     * Resets the board for a new game.
+     * @param gameState Not used.
      */
     @Override
     public void setup(GameState gameState) {
@@ -58,12 +58,13 @@ public class TicTacToeGame implements GameInterface
     }
 
     /**
-     *
-     * @param move
-     * @return
+     * Returns the result of a successful move. This could be an end of the game,
+     * (win for either players or a draw) or a next turn for either players, which
+     * means the game continues.
+     * @param move The next (successful) move that is taken.
+     * @return either a OneWin, TwoWin, Draw, TurnOne or TurnTwo.
      */
     private GameState getResult(Move move) {
-        // todo CheckForWin laten controleren welke speler gewonnen heeft.
         if(board.checkForWin() && move.getPlayer() == GameState.TurnOne) {
             return GameState.OneWin;
         }
@@ -83,9 +84,10 @@ public class TicTacToeGame implements GameInterface
     }
 
     /**
-     *
-     * @param player
-     * @return
+     * See if the current move is valid (when it is the player's turn).
+     * @param player The player who made the latest (successful) move.
+     * @return True when it is the player's turn, false when it
+     * is not the player's turn.
      */
     private boolean validCurrentTurn(GameState player) {
         if(lastTurn == null) {
@@ -98,16 +100,17 @@ public class TicTacToeGame implements GameInterface
     }
 
     /**
-     *
-     * @param player
+     * Sets lastTurn to the player who made the latest successful
+     * move.
+     * @param player The player who made the latest move.
      */
     private void setLastTurn(GameState player) {
         lastTurn = player;
     }
 
     /**
-     *
-     * @return
+     * Returns the type of game.
+     * @return The gameType, in this case TicTacToe.
      */
     @Override
     public GameType getType() {
@@ -117,7 +120,7 @@ public class TicTacToeGame implements GameInterface
     /**
      * For demo purposes
      * Sets printing to command line
-     * @param printToCommandLine
+     * @param printToCommandLine True for printing, false for no printing.
      */
     public void setPrintToCommandLine(Boolean printToCommandLine) {
         this.printToCommandLine = printToCommandLine;

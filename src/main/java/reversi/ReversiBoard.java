@@ -168,10 +168,7 @@ public class ReversiBoard extends BoardInterface {
     }
 
     public boolean canMakeTurn(GameState state) {
-        if (getValidMoves(state).isEmpty()) {
-            return false;
-        }
-        return true;
+        return !getValidMoves(state).isEmpty();
     }
 
     @Override
@@ -328,7 +325,7 @@ public class ReversiBoard extends BoardInterface {
                     }
                 }
             }
-            System.out.println("");
+            System.out.println();
             System.out.println(ANSI_WHITE+"---"+ANSI_RED+"--------------------------------");
         }
         System.out.println(ANSI_WHITE+"");

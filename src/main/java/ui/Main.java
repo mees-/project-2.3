@@ -20,12 +20,13 @@ import ui.settings.PlayerType;
 import java.io.IOException;
 
 public class Main extends Application {
-    private Pane paneHome, paneGame, paneFooter, paneLobby;
+    private Pane paneHome, paneGame, paneHeader, paneFooter, paneLobby;
     private Pane currentPane, previousPane;
     private Pane root;
     private Framework framework;
     private Connection connection;
 
+    private HeaderController headerController;
     private GameController gameController;
     private HomeController homeController;
     private LobbyController lobbyController;
@@ -58,14 +59,22 @@ public class Main extends Application {
         homeController = new HomeController(this);
         loader.setController(homeController);
         paneHome = loader.load();
-        setCurrentPane(paneHome);
+
+        loader = new FXMLLoader(getClass().getResource("/view/components/header.fxml"));
+        headerController = new HeaderController();
+        loader.setController(headerController);
+        paneHeader = loader.load();
 
         paneFooter = FXMLLoader.load(getClass().getResource("/view/components/footer.fxml"));
-        root.getChildren().add(paneFooter);
+
+        setCurrentPane(paneHome);
+
+        root.getChildren().remove(paneHeader);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setMaximized(true);
+        stage.setFullScreen(true);
     }
 
     public void lobbySetup(GameType gameType, String playerName, PlayerType playerType) throws IOException {
@@ -75,8 +84,22 @@ public class Main extends Application {
         loader.setController(lobbyController);
         paneLobby = loader.load();
         setCurrentPane(paneLobby);
+        String subTitle = "Lobby";
+
+        switch (gameType) {
+            case Reversi:
+                setHeaderReversi(subTitle);
+                break;
+            case TicTacToe:
+                setHeaderTicTacToe(subTitle);
+                break;
+            default:
+                System.out.println("Something went wrong!");
+        }
+
 
         lobbyController.tournamentSetup();
+        lobbyController.start();
     }
 
     private Player createPlayer(String playerName, PlayerType playerType, GameType gameType) {
@@ -132,14 +155,18 @@ public class Main extends Application {
 
     public GameController onlineGameControllerSetup(GameType gameType) throws IOException {
         GameController gameController = null;
+        String subTitle = "Online Game";
+
         switch (gameType) {
             case Reversi:
                 gameController = new ReversiController(this);
                 loader = new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
+                setHeaderReversi(subTitle);
                 break;
             case TicTacToe:
                 gameController = new TicTacToeController(this);
                 loader =  new FXMLLoader(getClass().getResource("/view/tictactoe.fxml"));
+                setHeaderTicTacToe(subTitle);
                 break;
             default:
                 System.out.println("Something went wrong!");
@@ -154,17 +181,20 @@ public class Main extends Application {
 
     public void localGameSetup(GameType gameType, String playerOneName, String playerTwoName, PlayerType playerOneType, PlayerType playerTwoType) throws IOException {
         GameInterface game = null;
+        String subTitle = "Local Game";
 
         switch (gameType) {
             case Reversi:
                 game = new ReversiGame();
                 gameController = new ReversiController(this);
                 loader = new FXMLLoader(getClass().getResource("/view/reversi.fxml"));
+                setHeaderReversi(subTitle);
                 break;
             case TicTacToe:
                 game = new TicTacToeGame();
                 gameController = new TicTacToeController(this);
                 loader =  new FXMLLoader(getClass().getResource("/view/tictactoe.fxml"));
+                setHeaderTicTacToe(subTitle);
                 break;
             default:
                 System.out.println("Something went wrong!");
@@ -198,11 +228,14 @@ public class Main extends Application {
 
     private void setCurrentPane(Pane newCurrentPane) {
         Platform.runLater( () -> {
-            root.getChildren().remove(getCurrentPane());
             previousPane = getCurrentPane();
+            root.getChildren().removeAll(paneHeader, paneFooter, previousPane);
             this.currentPane = newCurrentPane;
+
+            if (paneHome != newCurrentPane) {
+                root.getChildren().add(paneHeader);
+            }
             root.getChildren().add(newCurrentPane);
-            root.getChildren().remove(paneFooter);
             root.getChildren().add(paneFooter);
         });
     }
@@ -218,11 +251,16 @@ public class Main extends Application {
             if (homeController.getPlayTypeEnum() == PlayType.ONLINE) {
                 try {
                     stopSubscribe();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
+    }
+
+    public void changeToHome() {
+        previousPane = paneHome;
+        changePane();
     }
 
     public void startFramework(Player player) throws IOException {
@@ -238,7 +276,15 @@ public class Main extends Application {
         connection.subscribe(GameType.TicTacToe);
     }
 
-    public void stopSubscribe() throws IOException {
+    public void stopSubscribe() throws IOException, InterruptedException {
         framework.close();
+    }
+
+    private void setHeaderReversi(String subTitle) {
+        headerController.setup("Reversi", subTitle);
+    }
+
+    private void setHeaderTicTacToe(String subTitle) {
+        headerController.setup("Tic-Tac-Toe", subTitle);
     }
 }

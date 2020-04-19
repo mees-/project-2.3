@@ -14,11 +14,22 @@ public class TicTacToeGame implements GameInterface
         lastTurn = null;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public BoardInterface getBoard() {
         return board;
     }
 
+    /**
+     *
+     * @param move
+     * @return
+     * @throws InvalidMoveException
+     * @throws InvalidTurnException
+     */
     @Override
     public GameState doMove(Move move) throws InvalidMoveException, InvalidTurnException {
 
@@ -37,11 +48,20 @@ public class TicTacToeGame implements GameInterface
         return getResult(move);
     }
 
+    /**
+     * Resets the board
+     * @param gameState
+     */
     @Override
     public void setup(GameState gameState) {
         board.reset();
     }
 
+    /**
+     *
+     * @param move
+     * @return
+     */
     private GameState getResult(Move move) {
         // todo CheckForWin laten controleren welke speler gewonnen heeft.
         if(board.checkForWin() && move.getPlayer() == GameState.TurnOne) {
@@ -62,6 +82,11 @@ public class TicTacToeGame implements GameInterface
         return null;
     }
 
+    /**
+     *
+     * @param player
+     * @return
+     */
     private boolean validCurrentTurn(GameState player) {
         if(lastTurn == null) {
             lastTurn = player;
@@ -72,19 +97,36 @@ public class TicTacToeGame implements GameInterface
         }
     }
 
+    /**
+     *
+     * @param player
+     */
     private void setLastTurn(GameState player) {
         lastTurn = player;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public GameType getType() {
         return GameType.TicTacToe;
     }
 
+    /**
+     * For demo purposes
+     * Sets printing to command line
+     * @param printToCommandLine
+     */
     public void setPrintToCommandLine(Boolean printToCommandLine) {
         this.printToCommandLine = printToCommandLine;
     }
 
+    /**
+     * For demo purposes
+     * Prints the board to the command line
+     */
     public void printBoard() {
         board.printBoard();
     }

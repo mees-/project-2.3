@@ -22,10 +22,6 @@ public class ReversiController extends GameController {
         super(main);
     }
 
-    public void start() {
-        run.start();
-    }
-
     private Circle setupPiece(boolean blackOrWhite) {
         Circle circle = new Circle();
         circle.setRadius(1.0);
@@ -91,43 +87,20 @@ public class ReversiController extends GameController {
 
             int[] score = board.countPieces();
 
-            Platform.runLater( () -> {
-                if (!gameState.isEnd()) {
-                    if (match.getGameState() == GameState.TurnOne) {
-                        tPlayerOne.setVisible(true);
-                        tPlayerTwo.setVisible(false);
-                    } else {
-                        tPlayerTwo.setVisible(true);
-                        tPlayerOne.setVisible(false);
-                    }
-                } else {
-                    tPlayerOne.setVisible(false);
-                    tPlayerTwo.setVisible(false);
-                }
+            setTurns(gameState);
 
+            Platform.runLater( () -> {
                 sPlayerTwo.setText(Integer.toString(score[1]));
                 sPlayerOne.setText(Integer.toString(score[0]));
             });
 
-
             updateBoard(board, gameState);
+
             if (gameState.isEnd()) {
-                switch (gameState) {
-                    case OneWin:
-                        wcPlayerOne.setVisible(true);
-                        break;
-                    case TwoWin:
-                        wcPlayerTwo.setVisible(true);
-                        break;
-                    case Draw:
-                        wcPlayerOne.setVisible(true);
-                        wcPlayerTwo.setVisible(true);
-                }
-                Platform.runLater(this::resetMatch);
+                isEnd(gameState);
                 break;
             }
         }
-
 
         try {
             Thread.sleep(2000);
@@ -138,20 +111,7 @@ public class ReversiController extends GameController {
         main.changePane();
     }
 
-    private void resetMatch() {
-        Player sourceOne = match.getPlayers().one.getSource();
-        Player sourceTwo = match.getPlayers().two.getSource();
-        if (sourceOne instanceof Ai) {
-            ((Ai) sourceOne).reset();
-        }
-        if (sourceTwo instanceof Ai) {
-            ((Ai) sourceTwo).reset();
-        }
-
-        match = null;
-    }
-
-    private void updateBoard(BoardInterface board, GameState turn) {
+    protected void updateBoard(BoardInterface board, GameState gameState) {
         for (Node node : childNodes) {
             if (node instanceof HBox) {
                 ComposablePlayer current = match.getCurrentPlayer();
@@ -182,7 +142,7 @@ public class ReversiController extends GameController {
                     });
                 }
                 if (match.getCurrentPlayer().isComposedOf(UIPlayer.class)) {
-                    for (Move move : board.getValidMoves(turn)) {
+                    for (Move move : board.getValidMoves(gameState)) {
                         if ((GridPane.getColumnIndex(node) - 1) == move.getX() && (GridPane.getRowIndex(node) - 1) == move.getY()) {
                             Platform.runLater(() -> node.getStyleClass().add("tile-reversi-available"));
                         }
@@ -214,18 +174,12 @@ public class ReversiController extends GameController {
         }
     }
 
-    private void mouseClick(MouseEvent event) {
+    protected void mouseClick(MouseEvent event) {
         HBox field = ((HBox)event.getSource());
 
         if (field.getStyleClass().contains("tile-reversi-available")) {
             Move move = new Move(match.getCurrentPlayer().getTurn(), (GridPane.getColumnIndex(field) - 1), (GridPane.getRowIndex(field) - 1));
             ((BlockingPlayer)match.getCurrentPlayer().getSource()).putMove(move);
         }
-    }
-
-    @FXML
-    private void forfeit() {
-        match.getCurrentPlayer().forfeit();
-        main.changePane();
     }
 }

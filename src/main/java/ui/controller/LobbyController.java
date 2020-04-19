@@ -1,12 +1,8 @@
 package ui.controller;
 
-import ai.Ai;
 import framework.Framework;
-import framework.GameInterface;
 import framework.GameType;
 import framework.Match;
-import framework.player.Player;
-import javafx.fxml.FXML;
 import ui.Main;
 import ui.settings.PlayerType;
 

@@ -15,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import reversi.ReversiGame;
 import tictactoe.TicTacToeGame;
 import ui.controller.*;
-import ui.settings.OnlineOption;
 import ui.settings.PlayType;
 import ui.settings.PlayerType;
 import java.io.IOException;

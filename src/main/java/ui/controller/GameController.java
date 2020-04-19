@@ -1,7 +1,6 @@
 package ui.controller;
 
 import framework.Match;
-import framework.player.Player;
 import framework.player.Players;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

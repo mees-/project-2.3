@@ -6,6 +6,7 @@ import framework.ForfeitMove;
 import framework.GameState;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class GameEndHandler extends EventHandler {
@@ -28,6 +29,7 @@ public class GameEndHandler extends EventHandler {
             if (
                     details.get("COMMENT").equalsIgnoreCase("Player forfeited match")
                     || details.get("COMMENT").equalsIgnoreCase("Client disconnected")
+                    || details.get("COMMENT").equalsIgnoreCase("Turn timelimit reached")
             ) {
                 connection.getRemotePlayer().forfeit();
             }

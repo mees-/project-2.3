@@ -6,6 +6,7 @@ import framework.ForfeitMove;
 import framework.GameState;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class GameEndHandler extends EventHandler {
@@ -21,13 +22,16 @@ public class GameEndHandler extends EventHandler {
 
     @Override
     public EventPayload handle(String[] message) throws ParseException {
+//        System.out.println(Arrays.toString(message));
         if (message[2].equalsIgnoreCase("win")) {
             HashMap<String, String> details = Parser.parseMap(
                     Parser.sliceStringFromParts(message, 3, message.length)
             );
+//            System.out.println(details);
             if (
                     details.get("COMMENT").equalsIgnoreCase("Player forfeited match")
                     || details.get("COMMENT").equalsIgnoreCase("Client disconnected")
+                    || details.get("COMMENT").equalsIgnoreCase("Turn timelimit reached")
             ) {
                 connection.getRemotePlayer().forfeit();
             }

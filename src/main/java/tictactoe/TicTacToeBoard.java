@@ -237,11 +237,11 @@ public class TicTacToeBoard extends BoardInterface {
         synchronized (System.out) {
             System.out.print("  ");
             for (int i = 0; i < SIZE; i++) {
-                System.out.print(" " + i);
+                System.out.print(" " + (i + 1));
             }
             System.out.println();
             for (int y = 0; y < SIZE; y++) {
-                System.out.print(y + " |");
+                System.out.print(y + 1 + " |");
                 for (int x = 0; x < SIZE; x++) {
                     char playerMark;
                     switch (board[x][y]) {

@@ -11,7 +11,7 @@ public class LoginCommand extends Command<StandardResponse> {
 
     @Override
     public String getCommandString() {
-        return "LOGIN " + username;
+        return "login " + username;
     }
 
     @Override

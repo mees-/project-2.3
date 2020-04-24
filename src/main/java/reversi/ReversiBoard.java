@@ -121,7 +121,7 @@ public class ReversiBoard extends BoardInterface {
         else if(checkForWin() == CellContent.Remote) {
             return GameState.TwoWin;
         }
-        else if(pieces[0] == pieces[1] && !canMakeTurn(move.getPlayer())
+        else if(pieces[0] == pieces[1] && !canMakeTurn(state)
                 && !canMakeTurn(getOpposite(state))) {
             return GameState.Draw;
         } else if (!canMakeTurn(getOpposite(state))) {
@@ -173,9 +173,6 @@ public class ReversiBoard extends BoardInterface {
 
     @Override
     public Set<Move> getValidMoves(GameState state) {
-//        if (cachedValidMoves != null) {
-//            return cachedValidMoves;
-//        }
         HashSet<Move> set = new HashSet<>();
 
         for (int i = 0; i < getSize(); i++) {
@@ -196,8 +193,6 @@ public class ReversiBoard extends BoardInterface {
                 }
             }
         }
-
-//        cachedValidMoves = set;
         return set;
     }
 
@@ -233,7 +228,7 @@ public class ReversiBoard extends BoardInterface {
         if ((currentY + 2 * checkY < 0) || (currentY + 2 * checkY >= getSize() )) {
             return false;
         }
-        return check_line_match(state, currentX + 2 * checkX, currentY + 2 * checkY, checkX, checkY);
+        return checkLineMatch(state, currentX + 2 * checkX, currentY + 2 * checkY, checkX, checkY);
     }
 
     /**
@@ -246,7 +241,7 @@ public class ReversiBoard extends BoardInterface {
      * @param nextY
      * @return boolean if move creates line match
      */
-    public boolean check_line_match(GameState state, int newX, int newY, int nextX, int nextY) {
+    public boolean checkLineMatch(GameState state, int newX, int newY, int nextX, int nextY) {
         CellContent player = state.toCellContent();
         if (getCell(newX, newY) == player) {
             return true;
@@ -260,7 +255,7 @@ public class ReversiBoard extends BoardInterface {
         if ((nextY + newY < 0) || (nextY + newY >= getSize() )) {
             return false;
         }
-        return check_line_match(state, newX + nextX, newY + nextY, nextX, nextY);
+        return checkLineMatch(state, newX + nextX, newY + nextY, nextX, nextY);
     }
 
     public GameState getOpposite(GameState state) {

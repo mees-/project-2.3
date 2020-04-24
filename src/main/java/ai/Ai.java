@@ -18,7 +18,7 @@ public abstract class Ai extends Player {
     public LinkedList<Long> times = new LinkedList<>();
     public LinkedList<Integer> depths = new LinkedList<>();
 
-    private static final long TREE_BUILD_TIME_MS = 2000;
+    private static final long TREE_BUILD_TIME_MS = 5000;
 
     public Ai(String username, GameType gameType) {
         super(username, gameType);

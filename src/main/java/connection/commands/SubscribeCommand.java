@@ -12,7 +12,7 @@ public class SubscribeCommand extends Command<StandardResponse> {
 
     @Override
     public String getCommandString() {
-        return "SUBSCRIBE " + gameType.toString();
+        return "subscribe " + gameType.toString();
     }
 
     @Override
